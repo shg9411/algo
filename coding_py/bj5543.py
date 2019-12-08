@@ -1,0 +1,6 @@
+u = int(input())
+m = int(input())
+d = int(input())
+c = int(input())
+s = int(input())
+print(min(u, min(m, d))+min(c, s)-50)
