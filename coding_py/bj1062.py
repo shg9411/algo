@@ -13,16 +13,17 @@ alpha = set('acint')
 check = set()
 
 for _ in range(n):
-    word = set(sys.stdin.readline().strip()[4:-4])-alpha
-    if len(word) <= k-5:
-        text.append(word)
-        check = check | word
+    word = set(sys.stdin.readline().strip())
+    text.append(word)
+    check = check.union(word)
+check = check-alpha
 tmp = 0
 
 for c in combinations(check, min(k-5, len(check))):
     count = 0
+    subset = set(c).union(alpha)
     for word in text:
-        if len(word-set(c)) == 0:
+        if word.issubset(subset):
             count += 1
     if tmp < count:
         tmp = count
