@@ -1,26 +1,34 @@
+import sys
+input = sys.stdin.readline
+
 n, m = map(int, input().split())
 r, c, d = map(int, input().split())
-field = [list(map(int, input().split())) for _ in range(n)]
-U, R, D, L = 0, 1, 2, 3
-move = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+ground = [list(map(int, input().split())) for _ in range(n)]
 
-res = 0
-while True:
-    if field[r][c] == 0:
-        field[r][c] = 2
-        res += 1
-
-    for _ in range(4):
-        d = (d - 1) % 4
-        nr, nc = r + move[d][0], c + move[d][1]
-        if field[nr][nc] == 0:
-            r, c = nr, nc
+dx = [0, -1, 0, 1]
+dy = [-1, 0, 1, 0]
+ground[r][c] = 2
+count = 1
+while 1:
+    curx = r
+    cury = c
+    for i in range(4):
+        nx = r+dx[d]
+        ny = c+dy[d]
+        d = (d+3) % 4
+        if ground[nx][ny] == 0:
+            ground[nx][ny] = 2
+            count += 1
+            r = nx
+            c = ny
             break
-    else:
-        nr, nc = r - move[d][0], c - move[d][1]
-        if field[nr][nc] == 1:
+    if i == 3 and curx == r and cury == c:
+        nx = r+dx[(d+3) % 4]
+        ny = c+dy[(d+3) % 4]
+        if ground[nx][ny] == 1:
             break
         else:
-            r, c = nr, nc
+            r = nx
+            c = ny
 
-print(res)
+print(count)
