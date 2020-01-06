@@ -5,8 +5,8 @@ answer = 0
 if n < 3 or m < 3:
     pass
 else:
-    for i in range(n):
-        for j in range(m):
+    for i in range(n-2):
+        for j in range(m-2):
             if a[i][j] == b[i][j]:
                 continue
             for k in range(3):

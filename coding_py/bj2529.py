@@ -1,32 +1,75 @@
-n = int(input())
-op = input().split()
-c = [False] * 10
-mx, mn = "", ""
+import sys
+K = int(input())
+signs = list(input().split())
+initial = list(range(10))
+visited = [0 for _ in range(11)]
+min_res = []
+max_res = []
 
-
-def possible(i, j, k):
-    if k == '<':
-        return i < j
-    if k == '>':
-        return i > j
-    return True
-
-
-def solve(cnt, s):
-    global mx, mn
-    if cnt == n+1:
-        if not len(mn):
-            mn = s
-        else:
-            mx = s
+def dfs(last, visited, count):
+    global found
+    if count == K+1 and not found:
+        # print(visited)
+        res_list = [0 for _ in range(K+1)]
+        for i in range(11):
+            if visited[i]:
+                res_list[visited[i]-1] = i
+        found = True
+        print(*res_list, sep="")
         return
-    for i in range(10):
-        if not c[i]:
-            if cnt == 0 or possible(s[-1], str(i), op[cnt-1]):
-                c[i] = True
-                solve(cnt+1, s+str(i))
-                c[i] = False
+
+    if not found:
+        sign = signs[count-1]
+        if sign == "<":
+            for num in range(last+1, 10):
+                if not visited[num]:
+                    visited[num] = count + 1
+                    dfs(num, visited, count + 1)
+                    visited[num] = 0
+
+        else:
+            for num in range(0, last):
+                if not visited[num]:
+                    visited[num] = count + 1
+                    dfs(num, visited, count + 1)
+                    visited[num] = 0
+
+def reverse_dfs(last, visited, count):
+    global found
+    if count == K+1 and not found:
+        res_list = [0 for _ in range(K+1)]
+        for i in range(11):
+            if visited[i]:
+                res_list[visited[i]-1] = i
+        found = True
+        print(*res_list, sep="")
+        return
+
+    if not found:
+        sign = signs[count-1]
+        if sign == "<":
+            for num in range(9, last, -1):
+                if not visited[num]:
+                    visited[num] = count + 1
+                    reverse_dfs(num, visited, count + 1)
+                    visited[num] = 0
+
+        else:
+            for num in range(last-1, -1, -1):
+                if not visited[num]:
+                    visited[num] = count + 1
+                    reverse_dfs(num, visited, count + 1)
+                    visited[num] = 0
 
 
-solve(0, "")
-print("%s\n%s" % (mx, mn))
+found = False
+for i in range(9,-1,-1):
+    visited[i] = 1
+    reverse_dfs(i, visited, 1)
+    visited[i] = 0
+
+found = False
+for i in range(10):
+    visited[i] = 1
+    dfs(i, visited, 1)
+    visited[i] = 0

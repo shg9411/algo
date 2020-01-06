@@ -25,7 +25,7 @@ def dijkstra(f, t, a):
             if dist[nxt] > ncost:
                 dist[nxt] = ncost
                 heappush(hq, (ncost, nxt))
-
+    
 
 for i in range(1,n+1):
     dijkstra(i,x,a)

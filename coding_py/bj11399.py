@@ -5,6 +5,5 @@ real = 0
 for i in range(n):
     sum += que[i]
     real += sum
-    print(real)
 
 print(real)
