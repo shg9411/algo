@@ -1,15 +1,27 @@
 package DP;
 
-import java.util.Arrays;
-
-public class test {
-
-	public static void main(String[] args) {
-		int[] arr = {1,21,3,4,5,35,5,4,3,5,98,21,14,17,32};
-		Arrays.sort(arr);
-		for(int i = 0; i < arr.length; i++)
-			System.out.print(arr[i]+" ");
-
+import java.io.IOException;
+import java.util.Scanner;
+public class test{
+	
+	public static void main(String args[]) throws IOException{
+		Scanner sc = new Scanner(System.in);
+		String s = sc.next();
+		
+		int dist = 0;
+		int[] arr = new int[51];
+		for(int i=0;i<s.length();i++) {
+			if(s.charAt(i)=='+' || s.charAt(i)=='-') {
+				dist++;
+				continue;
+			}
+			arr[dist]=arr[dist]*10+(s.charAt(i)-'0');
+		}
+		int sum = arr[0];
+		for(int i=1;i<arr.length;i++) {
+			sum-=arr[i];
+			//System.out.println(arr[i]);
+		}
+		System.out.println(sum);
 	}
-
 }

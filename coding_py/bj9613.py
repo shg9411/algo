@@ -14,6 +14,5 @@ for _ in range(t):
     res = 0
     for i in range(len(num)-1):
         for j in range(i+1, len(num)):
-            print(i, j)
             res += gcd(num[j], num[i])
     print(res)

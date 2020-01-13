@@ -1,2 +1,2 @@
 n = oct(int('0b'+input().rstrip(),2))
-print(n)
+print(n[2:])
