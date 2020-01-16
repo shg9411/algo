@@ -1,36 +1,46 @@
 package DP;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.util.StringTokenizer;
 
 public class test {
-	private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	private static final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+   static int n, count = 0;
+   static int arr[];
 
-	public static void main(String args[]) throws IOException {
-		int T = Integer.parseInt(br.readLine());
+   public static void main(String[] args) throws IOException {
+      // TODO Auto-generated method stub
+      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+      StringTokenizer st = new StringTokenizer(br.readLine());
+      n = Integer.parseInt(st.nextToken());
+      arr = new int[n];
+      int max = 0;
+      st = new StringTokenizer(br.readLine());
+      for (int i = 0; i < n; i++)
+         arr[i] = Integer.parseInt(st.nextToken());
+      int index;
+      int tmp2 = 0;
+      for (int i = 0; i < n; i++) {
+         int tmp = arr[i];
+         index = i;
+         for (int j = i; j < n; j++) {
+            if (arr[j] >= tmp) {
+               count++;
+               tmp = arr[j];
+               tmp2 = index;
+               index = j;
+            } else if (arr[tmp2] <= arr[j] && tmp >= arr[tmp2]) {
+               tmp = arr[j];
+               tmp2 = index;
+               index = j;
+            } else
+               continue;
+         }
+         max = Math.max(max, count);
+         count = 0;
+      }
+      System.out.println(max);
+   }
 
-		for (int i = 0; i < T; i++) {
-			int n = Integer.parseInt(br.readLine());
-			long[] DP = new long[n + 1];
-
-			for (int j = 0; j <= n; j++)
-				DP[j] = solve(j);
-
-			bw.write(Long.toString(DP[n])+'\n');
-			bw.flush();
-		}
-	}
-
-	public static int solve(int n) {
-		if (n < 0)
-			return 0;
-		if (n == 0)
-			return 1;
-
-		return solve(n - 1) + solve(n - 2) + solve(n - 3);
-	}
 }
