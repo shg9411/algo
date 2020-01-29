@@ -27,4 +27,4 @@ ans = (a//c[-1])*(b//c[-1])*c[-1]
 
 
 print(c[-1])
-print(ans)  asdasdasdasdasd
+print(ans)
