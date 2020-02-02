@@ -32,3 +32,4 @@ while 1:
             c = ny
 
 print(count)
+print(ground)
