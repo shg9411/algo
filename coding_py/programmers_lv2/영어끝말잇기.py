@@ -4,7 +4,6 @@ def solution(n, words):
     tmp = words[0][0]
     for w in words:
         count+=1
-        print(tmp)
         if w in word_set or w[0]!=tmp:
             return [count%n+1, count//n+1]
         word_set.add(w)
