@@ -16,8 +16,7 @@ while k:
     else:
         stack.append(num[i])
         i += 1
-    print(i,k)
-    print(stack)
+
 
 for k in range(i, n):
     stack.append(num[k])

@@ -2,8 +2,8 @@ from collections import deque
 
 def solution(priorities, location):
     p_l = deque(sorted(priorities,reverse=True))
-    print(p_l)
     answer = 0
+    
     return answer
 
 
