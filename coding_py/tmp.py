@@ -1,78 +1,23 @@
-import sys
-sys.setrecursionlimit(10**6)
+S = input()
+result = list()
 
-startpointlocation=[[0,0]]*5001
-for i in range(1, 5001):
-    startpointlocation[i]=[i,i-1]
+if '<' not in S:
+    S = S.split(' ')
+    for s in S:
+        result.append(s[::-1])
+    print(' '.join(result))
 
-startpointvalue=[1]
-for i in range(1,5001):
-    startpointvalue.append(pow((2*(i-1))+1,2)+1)
-
-def findshellnum(r,loc):
-    if loc[0]==0 and loc[1]==0:
-        return 1
-
-    shellnum=startpointlocation[r].copy()
-    shellcount = startpointvalue[r]
-
-    
-    for i in range(2*r-1):
-        if loc[0]==shellnum[0] and loc[1]==shellnum[1]:
-            return shellcount
-        shellnum[1]-=1
-        shellcount+=1
-
-    for i in range(2*r):
-        
-        if loc[0]==shellnum[0] and loc[1]==shellnum[1]:
-            return shellcount
-        shellnum[0]-=1
-        shellcount += 1
-
-    for i in range(2 * r):
-        if loc[0]==shellnum[0] and loc[1]==shellnum[1]:
-            return shellcount
-        shellnum[1]+=1
-        shellcount += 1
-
-    for i in range(2 * r+1):
-       
-        if loc[0]==shellnum[0] and loc[1]==shellnum[1]:
-            return shellcount
-        shellnum[0]+=1
-        shellcount += 1
-
-r1,c1,r2,c2=map(int,input().split())
-
-biggestshellnum=0
-for j in range(r1,r2+1):
-    for i in range(c1,c2+1):
-        whichshell = max(abs(i), abs(j))
-        shellnum=findshellnum(whichshell,[i,j])
-        #print("shellnum=",shellnum)
-
-        #print(biggestshellnum,shellnum)
-        if biggestshellnum<shellnum:
-            biggestshellnum=shellnum
-
-cnt=1
-while True:
-    if biggestshellnum//pow(10,cnt)==0:
-        break
-    cnt+=1
-
-res=''
-
-for j in range(r1,r2+1):
-    for i in range(c1,c2+1):
-        whichshell1 = max(abs(i), abs(j))
-        res += '%' + str(cnt) + 's'
-        res =res % findshellnum(whichshell1,[i,j])
-        if i!=c2:
-            res+=' '
-
-    if j!=r2:
-        res+='\n'
-
-print(res)
+else:
+    start_index = 0
+    for i in range(len(S)):
+        if S[i] =='<':
+            if i!=0:
+                result.append(S[i-1:start_index:-1])
+            start_index = i
+        if S[i] =='>':
+            result.append(S[start_index:i+1])
+            start_index = i
+            
+    if len(''.join(result))!=len(S):
+        result.append(S[:start_index:-1])
+    print(''.join(result))
