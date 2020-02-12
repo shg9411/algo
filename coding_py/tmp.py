@@ -14,3 +14,7 @@ for y in range(a,b+1):
             S += L.index(x) + 1
             break
 print(S)
+
+'''
+test bat file
+'''
