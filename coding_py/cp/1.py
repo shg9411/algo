@@ -5,8 +5,7 @@ def solution(goods,coupons):
     goods_list = []
     coupon_list = []
     for i,j in goods:
-        for _ in range(j):
-            goods_list.extend([i])
+        goods_list.extend([i])
     for i,j in coupons:
         for _ in range(j):
             coupon_list.append(i)

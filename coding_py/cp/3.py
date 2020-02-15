@@ -29,8 +29,8 @@ def solution(r, delivery):
         tmp = tmp[0]
         if x < tmp[2][0]:
             while x+1 < tmp[2][0]:
-                x += 1
-                if not selected[x][y]:
+                if not selected[x+1][y]:
+                    x += 1
                     selected[x][y] = True
                     answer += tip[x][y]
         elif x > tmp[2][0]:
