@@ -1,64 +1,88 @@
 package DP;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
-class XY{
-    int x,y;
-    XY(int x, int y){
-        this.x=x;
-        this.y=y;
-    }
-}
+
 public class Main {
-	static int[] dx= {-1,0,1,0};
-	static int[] dy= {0,1,0,-1};
-	static int[][] map;
-	static int[][] ans;
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
-		int cnt=1;
-		int t=Integer.parseInt(br.readLine());
-		while(t!=0) {
-			map=new int[t+1][t+1];
-			ans=new int[t+1][t+1];
-			for(int i=1; i<=t; i++) {
-				st=new StringTokenizer(br.readLine());
-				for(int j=1; j<=t; j++) {
-					map[i][j]=Integer.parseInt(st.nextToken());
-				}
+
+	private static boolean[] isCut;
+	private static int[] visitedOrder;
+	private static ArrayList<Integer>[] array;
+	private static int count = 0;
+
+	private static int dfs(int here, boolean isRoot) {
+		visitedOrder[here] = ++count;
+		int result = visitedOrder[here];
+
+		int child = 0;
+
+		for (int next : array[here]) {
+			if (visitedOrder[next] != 0) {
+				result = Math.min(result, visitedOrder[next]);
+				continue;
 			}
-			ans[1][1]=map[1][1];
-			Queue<XY> q=new LinkedList<>();
-			q.add(new XY(1,1));
-			while(!q.isEmpty()) {
-				XY xy=q.poll();
-				for(int i=0; i<4; i++) {
-					int nx=xy.x+dx[i];
-					int ny=xy.y+dy[i];
-					if(nx<1 || ny<1 || nx>t || ny>t) 
-						continue;
-					if(ans[nx][ny]!=0) {
-						if(ans[nx][ny]>ans[xy.x][xy.y]+map[nx][ny]) {
-							ans[nx][ny]=ans[xy.x][xy.y]+map[nx][ny];
-							q.add(new XY(nx,ny));
-						}
-					}
-					else if(ans[nx][ny]==0) {
-						ans[nx][ny]=map[nx][ny]+ans[xy.x][xy.y];
-						q.add(new XY(nx,ny));
-					}
-				}
+
+			child++;
+			int prev = dfs(next, false);
+
+			if (!isRoot && prev >= visitedOrder[here]) {
+				isCut[here] = true;
 			}
-			System.out.println("Problem "+(cnt++)+": "+ans[t][t]);
-			t=Integer.parseInt(br.readLine());
 		}
 
-
+		if (isRoot) {
+			if (child >= 2) {
+				isCut[here] = true;
+			}
+		}
+		return result;
 	}
 
+	public static void main(String[] args) throws IOException {
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringBuilder sb = new StringBuilder();
+		StringTokenizer st = new StringTokenizer(bf.readLine());
+		int v = Integer.parseInt(st.nextToken());
+		int e = Integer.parseInt(st.nextToken());
+
+		visitedOrder = new int[v + 1];
+		isCut = new boolean[v + 1];
+		array = new ArrayList[v + 1];
+		for (int i = 1; i <= v; i++) {
+			array[i] = new ArrayList<>();
+		}
+
+		for (int i = 0; i < e; i++) {
+			st = new StringTokenizer(bf.readLine());
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+
+			array[a].add(b);
+			array[b].add(a);
+		}
+
+		for (int i = 1; i <= v; i++) {
+			if (visitedOrder[i] == 0) {
+				dfs(i, true);
+			}
+		}
+
+		int cnt = 0;
+		for (int i = 1; i <= v; i++) {
+			if (isCut[i])
+				cnt++;
+		}
+		bw.write(cnt + "\n");
+
+		for (int i = 1; i <= v; i++) {
+			if (isCut[i]) {
+				sb.append(i + " ");
+			}
+		}
+		sb.delete(sb.length() - 1, sb.length());
+		bw.write(sb.toString());
+		bw.flush();
+	}
 }
