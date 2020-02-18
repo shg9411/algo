@@ -1,12 +1,15 @@
 import sys
 input = sys.stdin.readline
 sys.setrecursionlimit(10**6)
+
+
 class Node:
     def __init__(self, data):
         self.data = data
-        self.left = self.right = None
+        self.left = None
+        self.right = None
 
-    def insert(self,data):
+    def insert(self, data):
         if data > self.data:
             if self.right:
                 self.right.insert(data)

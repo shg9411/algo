@@ -1,88 +1,81 @@
 package DP;
 
-import java.io.*;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class Main {
 
-	private static boolean[] isCut;
-	private static int[] visitedOrder;
-	private static ArrayList<Integer>[] array;
-	private static int count = 0;
+	static int arr[][];
+	static int dx[] = { -1, 0, 1, 0 };
+	static int dy[] = { 0, 1, 0, -1, };
+	static boolean visit[][];
+	static int color;
+	static int size;
 
-	private static int dfs(int here, boolean isRoot) {
-		visitedOrder[here] = ++count;
-		int result = visitedOrder[here];
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		size = Integer.parseInt(sc.nextLine());
+		arr = new int[size][size];
+		visit = new boolean[size][size];
+		color = 0;
+		ArrayList<Integer> a = new ArrayList<Integer>();
+		for (int i = 0; i < size; i++) {
+			String s = sc.nextLine();
+			for (int j = 0; j < size; j++) {
+				arr[i][j] = s.charAt(j) - '0';
+			}
+		}
 
-		int child = 0;
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				if (arr[i][j] == 1 && visit[i][j] == false) {
+					color++;
+					visit[i][j] = true;
+					arr[i][j] = color;
+					DFS(i, j);
+				}
+			}
+		}
 
-		for (int next : array[here]) {
-			if (visitedOrder[next] != 0) {
-				result = Math.min(result, visitedOrder[next]);
+		// Ãâ·Â
+		System.out.println(color);
+		int count[] = new int[color + 1];
+		for (int i = 1; i <= color; i++) {
+			for (int j = 0; j < size; j++) {
+				for (int k = 0; k < size; k++) {
+					if (arr[j][k] == i) {
+						count[i]++;
+					}
+				}
+			}
+		}
+		Arrays.sort(count);
+		for (int i = 1; i <= color; i++) {
+			System.out.println(count[i]);
+		}
+
+	}
+
+	private static void DFS(int xx, int yy) {
+		visit[xx][yy] = true;
+		int x = xx;
+		int y = yy;
+		for (int i = 0; i < 4; i++) {
+			int rx = x + dx[i];
+			int ry = y + dy[i];
+			if (rx < 0 || ry < 0 || rx >= size || ry >= size || arr[rx][ry] == 0) {
 				continue;
 			}
-
-			child++;
-			int prev = dfs(next, false);
-
-			if (!isRoot && prev >= visitedOrder[here]) {
-				isCut[here] = true;
+			if (visit[rx][ry] == true) {
+				continue;
+			}
+			if (arr[rx][ry] == 1) {
+				arr[rx][ry] = color;
+				DFS(rx, ry);
 			}
 		}
 
-		if (isRoot) {
-			if (child >= 2) {
-				isCut[here] = true;
-			}
-		}
-		return result;
 	}
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		StringBuilder sb = new StringBuilder();
-		StringTokenizer st = new StringTokenizer(bf.readLine());
-		int v = Integer.parseInt(st.nextToken());
-		int e = Integer.parseInt(st.nextToken());
-
-		visitedOrder = new int[v + 1];
-		isCut = new boolean[v + 1];
-		array = new ArrayList[v + 1];
-		for (int i = 1; i <= v; i++) {
-			array[i] = new ArrayList<>();
-		}
-
-		for (int i = 0; i < e; i++) {
-			st = new StringTokenizer(bf.readLine());
-			int a = Integer.parseInt(st.nextToken());
-			int b = Integer.parseInt(st.nextToken());
-
-			array[a].add(b);
-			array[b].add(a);
-		}
-
-		for (int i = 1; i <= v; i++) {
-			if (visitedOrder[i] == 0) {
-				dfs(i, true);
-			}
-		}
-
-		int cnt = 0;
-		for (int i = 1; i <= v; i++) {
-			if (isCut[i])
-				cnt++;
-		}
-		bw.write(cnt + "\n");
-
-		for (int i = 1; i <= v; i++) {
-			if (isCut[i]) {
-				sb.append(i + " ");
-			}
-		}
-		sb.delete(sb.length() - 1, sb.length());
-		bw.write(sb.toString());
-		bw.flush();
-	}
 }
