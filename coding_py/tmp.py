@@ -1,27 +1,49 @@
-import sys
-sys.setrecursionlimit(10**6)
+l = int(input())
+text = input().rstrip()
 
 
-def solve(a, k):
-    a.insert(0, 0)
-    pivot = a[(len(a)+1)//2 - 1]
-    left, mid, right = [], [], []
-    for i in range(len(a)):
-        if a[i] < pivot:
-            left.append(a[i])
-        elif a[i] > pivot:
-            right.append(a[i])
+modz = 100003
+
+
+def mod(n):
+    if n >= 0:
+        return n % modz
+    return ((-n//modz+1)*modz + n) % modz
+
+
+low = 0
+high = l
+while low+1 < high:
+    mid = (low+high)//2
+    h = 0
+    power = 1
+    found = False
+    catch = []
+    for i in range(l-mid+1):
+        if i == 0:
+            for j in range(mid):
+                h = mod(h+ord(text[mid-1-j])*power)
+                if j < mid-1:
+                    power = mod(power*2)
         else:
-            mid.append(a[i])
+            h = mod(2*(h-ord(text[i-1])*power)+ord(text[i+mid-1]))
 
-    if k < len(left):
-        return solve(left, k)
-    elif k < len(left) + len(mid):
-        return mid[0]
+        if catch:
+            for c in catch:
+                same = True
+                for j in range(mid):
+                    if text[i+j] != text[c+j]:
+                        same = False
+                        break
+                if same:
+                    found = True
+                    break
+        if found:
+            break
+        else:
+            catch.append(i)
+    if found:
+        low = mid
     else:
-        return solve(right, k - len(left) - len(mid))
-
-
-a = [5, 4, 3]
-k = 3
-print(solve(a, k))
+        high = mid
+print(low)
