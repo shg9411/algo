@@ -9,5 +9,5 @@ for i in range(1, n+1):
         a, b, c = map(int, str(i))
         if a-b == b-c:
             res += 1
-            print(i)
+            
 print(res)
