@@ -1,32 +1,56 @@
 package DP;
-import java.util.Scanner;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class Main {
-	public static void main(String[] args) {
-		Scanner sc =new Scanner(System.in);
-		int N = sc.nextInt();
-		int cnt = N;
-		if(N<=100) {
-		for(int i =0; i<N; i++) {
-			int num = sc.nextInt();
-			
-			if(num>0 &&num<=1000) {
-			
-				if(num==1) {
-				cnt-=1;	
-				}else if(num>2 && num%2==0) {
-						cnt-=1;
-					}else if(num>3 &&num%3==0) {
-						cnt-=1;
-					}else if(num>5 && num%5==0) {
-						cnt-=1;
-					}else if(num>7 && num%7==0) {
-						cnt-=1;
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int n = Integer.parseInt(br.readLine());
+		String[] array = new String[n];
+		for (int i = 0; i < array.length; i++) {
+
+			array[i] = br.readLine();
+		}
+		Arrays.sort(array, new Comparator<String>() {
+			@Override
+			public int compare(String s1, String s2) {
+				if (s1.length() < s2.length()) {
+					return -1;
+				} else if (s1.length() > s2.length()) {
+					return 1;
+				} else {
+					String tmp1 = s1;
+					s1 = s1.replaceAll("[^0-9]", "");
+					int[] arr1 = new int[s1.length()];
+					int result1 = 0;
+					for (int i = 0; i < arr1.length; i++) {
+						result1 += (s1.charAt(i) - '0');
+					}
+					String tmp2 = s2;
+					s2 = s2.replaceAll("[^0-9]", "");
+					int[] arr2 = new int[s2.length()];
+					int result2 = 0;
+					for (int i = 0; i < arr2.length; i++) {
+						result2 += (s2.charAt(i) - '0');
+					}
+					if (result1 > result2) {
+						return 1;
+					} else if (result1 < result2) {
+						return -1;
+					} else {
+						return tmp1.compareTo(tmp2);
 					}
 				}
-			
-			
-			}System.out.println(cnt);
+			}
+		});
+		for (int i = 0; i < array.length; i++) {
+			System.out.println(array[i]);
 		}
 	}
+
 }
