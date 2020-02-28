@@ -23,7 +23,6 @@ for i in range(8):
                     min_pos = i
 
 total = 0
-print(final)
 for i in range(5):
     total += score[final[i]]
     final[i] += 1
