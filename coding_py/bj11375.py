@@ -24,7 +24,7 @@ for i in range(1, n+1):
 
 res = 0
 for i in range(1, n+1):
-    check = [False for _ in range(n+1)]
+    check = [False for _ in range(m+1)]
     if matching(i):
         res += 1
 
