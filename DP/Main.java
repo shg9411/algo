@@ -1,25 +1,53 @@
 package DP;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
 
 	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		String str = scanner.nextLine();
-		String[] minusArr = str.split("\\-");
-		int result = Integer.parseInt(minusArr[0]);
-
-		for (int i = 1; i < minusArr.length; i++) {
-			String[] plusArr = minusArr[i].split("\\+");
-			int sum = 0;
-
-			for (int j = 0; j < plusArr.length; j++) {
-				sum += Integer.parseInt(plusArr[j]);
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+			int n = Integer.parseInt(st.nextToken());
+			int m = Integer.parseInt(st.nextToken());
+			String[] personA = new String[n];
+			String[] personB = new String[m];
+			ArrayList<String> result = new ArrayList<String>();
+			for(int i=0;i<personA.length;i++) {
+				personA[i] = br.readLine();
 			}
-			result -= sum;
+			for(int i=0;i<personB.length;i++) {
+				personB[i] = br.readLine();
+			}
+			Arrays.sort(personA);
+			Arrays.sort(personB);
+			for(int i=0;i<personA.length;i++) {
+				int index = binarySearch(personB, personA[i], 0 , personB.length);
+				if(index != -1)
+					result.add(personB[index]);
+			}
+			System.out.println(result.size());
+			for(int i=0;i<result.size();i++) {
+				System.out.println(result.get(i));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
-		System.out.println(result);
-		scanner.close();
+	}
+	
+	private static int binarySearch(String[] temp, String target, int low, int high) {
+		if(low > high) return -1;
+		int mid = (low + high) / 2;
+		if(temp[mid].equals(target)) { 
+			return mid;
+		}else if ((int)temp[mid].toCharArray()[0] > (int)target.toCharArray()[0]) { 
+			return binarySearch(temp, target, low, mid-1);
+		}else {
+			return binarySearch(temp, target, mid+1, high);
+		}
 	}
 }
