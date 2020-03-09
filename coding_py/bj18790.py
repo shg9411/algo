@@ -5,10 +5,11 @@ input = sys.stdin.readline
 n = int(input())
 num = sorted(list(map(int, input().split())), reverse=True)
 tmp = []
+total = 0
 
 
 def dfs(i):
-    total = sum(tmp)
+    global total
     if len(tmp) == n:
         if total % n == 0:
             print(' '.join(map(str, tmp)))
@@ -20,8 +21,10 @@ def dfs(i):
             return
     for idx in range(i, 2*n-1):
         tmp.append(num[idx])
+        total += num[idx]
         dfs(idx+1)
         tmp.pop()
+        total -= num[idx]
 
 
 dfs(0)
