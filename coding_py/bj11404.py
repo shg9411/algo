@@ -11,7 +11,7 @@ for i in range(1, n+1):
         if i == j:
             dist[i][j] = 0
         else:
-            dist[i][j] = 100001
+            dist[i][j] = sys.maxsize
 
 for _ in range(m):
     x, y, cost = map(int, input().split())
@@ -26,5 +26,5 @@ for k in range(1, n+1):
 
 for i in range(1, len(dist)):
     for j in range(1,n+1):
-        print(dist[i][j] if dist[i][j]!=100001 else 0, end = ' ')
+        print(dist[i][j] if dist[i][j]!=sys.maxsize else 0, end = ' ')
     print()
