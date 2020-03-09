@@ -25,10 +25,16 @@ public class Main {
 			}
 			Arrays.sort(personA);
 			Arrays.sort(personB);
-			for(int i=0;i<personA.length;i++) {
-				int index = binarySearch(personB, personA[i], 0 , personB.length);
-				if(index != -1)
-					result.add(personB[index]);
+			int length = (personA.length < personB.length) ? personA.length : personB.length;
+			for(int i=0;i<length;i++) {
+				int index = 0;
+				if(personA.length < personB.length) {
+					index = binarySearch(personB, personA[i], 0 , personB.length);
+					if(index != -1) result.add(personB[index]);
+				}else {
+					index = binarySearch(personA, personB[i], 0 , personA.length);
+					if(index != -1) result.add(personA[index]);
+				}
 			}
 			System.out.println(result.size());
 			for(int i=0;i<result.size();i++) {
