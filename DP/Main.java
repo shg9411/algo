@@ -1,25 +1,41 @@
 package DP;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main {
-	
-	static void dfs(ArrayList<Integer> ar, int x, int y) {
-		if(x==3&&y==4) {
-			for(int i : ar) {
-				System.out.print(i+" ");
+	static HashMap<String, String[]> map = new HashMap<String, String[]>();
+	static int ans = 1;
+
+	public static void main(String args[]) {
+		Scanner sc = new Scanner(System.in);
+
+		int n = sc.nextInt();
+		long ln = 0;
+		String str = "";
+		String[] strArr;
+		for (int i = 0; i < n; i++) {
+			str = sc.next();
+			ln = sc.nextLong();
+			strArr = new String[ln];
+			for (int j = 0; j < ln; j++) {
+				strArr[j] = sc.next();
 			}
-			System.out.println();
+			map.put(str, strArr);
 		}
+		String target = sc.next();
+		solution(map.get(target));
+		System.out.println(ans);
+
 	}
 
-	public static void main(String[] args) {
-		ArrayList<Integer> ar = new ArrayList<Integer>();
-		ar.add(0);
-		ar.add(3);
-		ar.remove(ar.size()-1);
-		int[] i = {3,4};
-		System.out.println(i.length);
-		dfs(ar,3,4);
+	public static void solution(String[] arr) {
+		for (int i = 0; i < arr.length; i++) {
+			ans++;
+			if (!map.containsKey(arr[i])) {
+				continue;
+			}
+			solution(map.get(arr[i]));
+		}
 	}
 }
