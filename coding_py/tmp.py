@@ -1,31 +1,20 @@
-from collections import deque
+nx = [0, 1]
+ny = [1, 0]
+
+arr = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4,
+                                                                                                                                            5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
 
 
-def solution(bridge_length, weight, truck_weights):
-    answer = 0
-    bridge = deque()
-    truck_weights = deque(truck_weights)
-    total = 0
-    while truck_weights:
-        if len(bridge) < bridge_length and total+truck_weights[0] <= weight:
-            current = truck_weights.popleft()
-            total += current
-            bridge.append([current, 0])
-        for truck in bridge:
-            truck[1] += 1
-        while bridge:
-            tmp = bridge[0]
-            if tmp[1] == bridge_length:
-                bridge.popleft()
-                total -= tmp[0]
-            else:
-                break
-        answer += 1
-    if bridge:
-        answer += (bridge_length - bridge[-1][1])
-    return answer+1
+def dfs(x, y, res):
+    if x == len(arr)-1 and y == len(arr[0])-1:
+        print(res)
+        return
+
+    for i in range(2):
+        tmpx = x+nx[i]
+        tmpy = y+ny[i]
+        if tmpx < len(arr) and tmpy < len(arr[0]):
+            dfs(tmpx, tmpy, res+str(arr[tmpx][tmpy])+' ')
 
 
-n, w, l = map(int, input().split())
-truck = list(map(int, input().split()))
-print(solution(w, l, truck))
+dfs(0, 0, res=str(arr[0][0])+' ')
