@@ -3,6 +3,24 @@ arr에 담긴 물건들에 대해서
 k개 이상을 선택하여
 t원 이하의 가격을 만들 수 있는 경우의 수를 출력
 '''
+''' 2번째 방법
+selected 배열을 없앰
+
+def solution(arr, k, t):
+    arr.sort()
+
+    def dfs(idx, cnt, val):
+        global res
+        if val > t:
+            return
+        if cnt >= k:
+            res += 1
+        for i in range(idx, len(arr)):
+            dfs(i+1, cnt+1, val+arr[i])
+
+    dfs(0, 0, 0)
+    return res
+'''
 answer = 0
 
 
@@ -36,7 +54,7 @@ def solution(arr, k, t):
     return answer
 
 
-arr1 = [1, 3, 12, 0, 1]
+arr1 = [0, 0, 0, 0, 0]
 k1 = 3
 t1 = 10
 
