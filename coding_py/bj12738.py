@@ -2,7 +2,7 @@ import bisect
 
 
 def lis(arr):
-    lis_arr = [0]
+    lis_arr = [-1000000001]
 
     for n in arr:
         if lis_arr[-1] < n:
