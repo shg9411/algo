@@ -2,15 +2,15 @@ import bisect
 
 
 def lis(arr):
-    lis_arr = [-1000000001]
+    lis_arr = [arr[0]]
 
-    for n in arr:
+    for n in arr[1:]:
         if lis_arr[-1] < n:
             lis_arr.append(n)
         else:
             where = bisect.bisect_left(lis_arr, n)
             lis_arr[where] = n
-    return len(lis_arr)-1
+    return len(lis_arr)
 
 
 input()
