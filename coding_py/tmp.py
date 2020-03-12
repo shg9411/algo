@@ -1,8 +1,13 @@
+import sys
 import heapq
-n = int(input())
+input = sys.stdin.readline
 
-tmp = [-i for i in range(2, n+1)]
-heapq.heapify(tmp)
-for i in range(n-1):
-    print(-tmp[i],end=' ')
-print(1)
+
+n, l = map(int, input().split())
+que = [10**9+1 for _ in range(l)]
+num = list(map(int, input().split()))
+
+for i in num:
+    que.pop()
+    heapq.heappush(que, i)
+    print(que[0])
