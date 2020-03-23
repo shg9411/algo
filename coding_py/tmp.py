@@ -1,34 +1,18 @@
 import sys
 input = sys.stdin.readline
 
-
-def getCount(name, tmp):
-    for char in name:
-        if char == 'L':
-            tmp[0] += 1
-        elif char == 'O':
-            tmp[1] += 1
-        elif char == 'V':
-            tmp[2] += 1
-        elif char == 'E':
-            tmp[3] += 1
-    return tmp
-
-
-boy = input()
 n = int(input())
-tmp = [0, 0, 0, 0]
-arr = getCount(boy, tmp)
-qqqqq = [input().rstrip() for _ in range(n)]
-qqqqq.sort()
-val = 0
-res = qqqqq[0]
-for name in qqqqq:
-    tmp2 = arr[:]
-    girl = getCount(name, tmp2)
-    tmpVal = ((girl[0]+girl[1])*(girl[0]+girl[2])*(girl[0]+girl[3])
-              * (girl[1]+girl[2])*(girl[1]+girl[3])*(girl[2]+girl[3])) % 100
-    if tmpVal > val:
-        val = tmpVal
-        res = name
+if n == 1:
+    print(int(input()))
+    exit()
+num = [0]+list(map(int, input().split()))
+dp = [[-1000, -1000] for _ in range(n)]
+dp[0] = [0, 0]
+dp[1] = [num[1], num[1]]
+res = max(dp[1][0], dp[1][1])
+
+for i in range(2, n):
+    dp[i][0] = max(dp[i-1][0]+num[i], num[i])
+    dp[i][1] = max(dp[i-2][0]+num[i], dp[i-1][1]+num[i])
+    res = max(res, dp[i][0], dp[i][1])
 print(res)
