@@ -1,18 +1,25 @@
-import sys
-input = sys.stdin.readline
+import bisect
 
-n = int(input())
-if n == 1:
-    print(int(input()))
-    exit()
-num = [0]+list(map(int, input().split()))
-dp = [[-1000, -1000] for _ in range(n)]
-dp[0] = [0, 0]
-dp[1] = [num[1], num[1]]
-res = max(dp[1][0], dp[1][1])
-
-for i in range(2, n):
-    dp[i][0] = max(dp[i-1][0]+num[i], num[i])
-    dp[i][1] = max(dp[i-2][0]+num[i], dp[i-1][1]+num[i])
-    res = max(res, dp[i][0], dp[i][1])
-print(res)
+N = int(input())
+arr = [int(input()) for _ in range(N)]
+ans = 0
+for i in range(N):
+    lis, lds = [arr[i]], [arr[i]]
+    for j in range(i+1, N):
+        if lis[-1] < arr[j]:
+            lis.append(arr[j])
+        else:
+            tmp = bisect.bisect_left(lis, arr[j])
+            if tmp == 0 and arr[j] < lis[0]:
+                continue
+            lis[tmp] = arr[j]
+    for j in range(i+1, N):
+        if lds[-1] > arr[j]:
+            lds.append(arr[j])
+        else:
+            tmp = bisect.bisect_right(lds, arr[j])
+            if tmp == 0 and arr[j] > lds[0]:
+                continue
+            lds[tmp] = arr[j]
+    ans = max(ans, len(lis) + len(lds) - 1)
+print(ans)
