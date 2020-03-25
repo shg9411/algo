@@ -1,25 +1,37 @@
+import sys
 import bisect
+input = sys.stdin.readline
+n = int(input())
+arr = [int(input()) for _ in range(n)]
 
-N = int(input())
-arr = [int(input()) for _ in range(N)]
-ans = 0
-for i in range(N):
-    lis, lds = [arr[i]], [arr[i]]
-    for j in range(i+1, N):
-        if lis[-1] < arr[j]:
-            lis.append(arr[j])
+
+def lds(i):
+    lis_arr = [-arr[i]]
+
+    for n in arr[i+1:]:
+        n = -n
+        if lis_arr[-1] < n:
+            lis_arr.append(n)
         else:
-            tmp = bisect.bisect_left(lis, arr[j])
-            if tmp == 0 and arr[j] < lis[0]:
-                continue
-            lis[tmp] = arr[j]
-    for j in range(i+1, N):
-        if lds[-1] > arr[j]:
-            lds.append(arr[j])
+            where = bisect.bisect_left(lis_arr, n)
+            lis_arr[where] = n
+    return len(lis_arr)
+
+
+def lis(i):
+    lis_arr = [arr[i]]
+
+    for n in arr[i+1:]:
+        if lis_arr[-1] < n:
+            lis_arr.append(n)
         else:
-            tmp = bisect.bisect_right(lds, arr[j])
-            if tmp == 0 and arr[j] > lds[0]:
-                continue
-            lds[tmp] = arr[j]
-    ans = max(ans, len(lis) + len(lds) - 1)
-print(ans)
+            where = bisect.bisect_left(lis_arr, n)
+            lis_arr[where] = n
+    return len(lis_arr)
+
+
+res = 0
+for i in range(n):
+    print(i, lis(i), lds(i))
+    res = max(res, lis(i)+lds(i)-1)
+print(res)
