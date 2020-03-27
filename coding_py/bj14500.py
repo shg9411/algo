@@ -60,7 +60,6 @@ for i in range(n):
         visited[i][j] = True
         dfs(i, j, 1, paper[i][j])
         fy(i, j)
-        paper[i][j] = -1
         visited[i][j] = False
 
 print(maxV)
