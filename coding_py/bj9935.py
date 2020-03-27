@@ -1,3 +1,5 @@
+import sys
+input = sys.stdin.readline
 string = input().rstrip()
 bomb = input().rstrip()
 tmp = list(bomb)
