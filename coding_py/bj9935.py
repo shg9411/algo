@@ -1,27 +1,12 @@
-import sys
-target = input()
-tl = len(target)
-bomb = input()
+string = input().rstrip()
+bomb = input().rstrip()
+tmp = list(bomb)
 bl = len(bomb)
-
-check = []
-cl = 0
-i = 0
-while i < tl:
-    check.append(target[i])
-    cl += 1
-    i += 1
-    if cl >= bl:
-        delete = True
-        for j in range(-1, -bl-1, -1):
-            if check[j] != bomb[j]:
-                delete = False
-                break
-        if delete:
-            a = 0
-            while a < bl:
-                check.pop()
-                cl -= 1
-                a += 1
-
-print(''.join(check) if cl else 'FRULA')
+stack = []
+for char in string:
+    stack.append(char)
+    if char == bomb[-1]:
+        if stack[-bl:] == tmp:
+            for _ in range(bl):
+                stack.pop()
+print(''.join(stack) if stack else "FRULA")
