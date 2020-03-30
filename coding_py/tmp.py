@@ -1,22 +1,17 @@
-import sys
-input = sys.stdin.readline
+input = __import__('sys').stdin.readline
+n = int(input())
+a = [int(input()) for _ in range(n)]
+L = [*range(-1, n - 1), -1]
+R = [*range(1, n + 1), n]
+d = [0] * (n + 1)
 
-before = input().rstrip()
-after = input().rstrip()
-bl = len(before)
-al = len(after)
-length = min(al, bl)
-idx = -1
-for i in range(length):
-    idx = i
-    if after[i] != before[i]:
-        break
-
-length -= idx
-diff = length
-for i in range(length):
-    if after[al-i-1] != before[bl-i-1]:
-        diff = i
-        break
-
-print(al - diff - idx)
+for t in reversed(a):
+	l = L[t]
+	r = R[t]
+	d[t] = (l, r)
+	L[r] = l
+	R[l] = r
+for t in a:
+	l, r = d[t]
+	d[t] = max(d[l], d[r]) + 1
+print(sum(d))
