@@ -1,7 +1,9 @@
 import sys
 input = sys.stdin.readline
 
-a = [0 for _ in range(100001)]
+n = int(input())
+
+a = [0 for _ in range(n+1)]
 
 
 def get(x):
@@ -13,12 +15,11 @@ def get(x):
 
 
 def update(x):
-    while x <= 100000:
+    while x <= n:
         a[x] += 1
         x += (x & -x)
 
 
-n = int(input())
 tmp = []
 for _ in range(n):
     word = input().rstrip()

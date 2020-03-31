@@ -26,5 +26,5 @@ for i in range(1, n):
 
 print(round(sum(num)/n))
 print(num[n//2])
-print(sorted(manyNum)[1] if len(manyNum) > 1 else temp)
+print(sorted(manyNum)[1] if len(manyNum) > 1 else manyNum[0])
 print(max(num)-min(num))

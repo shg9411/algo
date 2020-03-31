@@ -1,11 +1,14 @@
 import sys
 import bisect
 input = sys.stdin.readline
+
 t = int(input())
 tmp = []
+
 for _ in range(t):
     a, b = map(int, input().split())
     tmp.append([a, b])
+
 tmp.sort()
 lis = []
 
@@ -20,4 +23,5 @@ for val in lis:
     else:
         idx = bisect.bisect_left(res, val)
         res[idx] = val
+        
 print(t-len(res))
