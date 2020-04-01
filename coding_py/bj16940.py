@@ -12,31 +12,28 @@ for _ in range(n-1):
     edge[f].append(t)
     edge[t].append(f)
 
+
+check = list(map(int, input().split()))
+if check[0] != 1:
+    print(0)
+    exit()
+
 q = []
 q.append(1)
 visited[1] = True
-
-res = [[1]]
-
+idx = 1
 while q:
-    tmpq = []
-    while q:
-        tmp = q.pop(0)
-        visited[tmp] = True
-        for val in edge[tmp]:
-            if not visited[val]:
-                tmpq.append(val)
-    q = tmpq[:]
-    res.append(tmpq)
-
-check = list(map(int, input().split()))
-ok = True
-num = 0
-while res:
-    tmp = res.pop(0)
-    if sorted(check[num:num+len(tmp)])!=sorted(tmp):
-        ok = False
-        break
-    num += len(tmp)
-
-print(1 if ok else 0)
+    here = q.pop(0)
+    visited[here] = True
+    tmp = set()
+    for val in edge[here]:
+        if not visited[val]:
+            tmp.add(val)
+            visited[val] = True
+    for i in range(idx, idx+len(tmp)):
+        if check[i] not in tmp:
+            print(0)
+            exit()
+        q.append(check[i])
+    idx += len(tmp)
+print(1)
