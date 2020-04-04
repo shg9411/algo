@@ -25,6 +25,6 @@ while q:
     if a+1 <= n and not visited[a+1]:
         q.append([a+1, b+1])
         visited[a+1] = True
-    if a-1 <= n and not visited[a-1]:
+    if a-1 >= 1 and not visited[a-1]:
         q.append([a-1, b+1])
         visited[a-1] = True
