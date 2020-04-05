@@ -13,7 +13,8 @@ for _ in range(m):
         if cmd[0] == 'add':
             s.add(n)
         elif cmd[0] == 'remove':
-            s.remove(n)
+            if n in s:
+                s.remove(n)
         elif cmd[0] == 'check':
             print(1 if n in s else 0)
         elif cmd[0] == 'toggle':
