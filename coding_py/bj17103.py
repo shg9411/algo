@@ -13,7 +13,7 @@ for i in range(1, MAX+1):
 for _ in range(T):    
     N = int(sys.stdin.readline())
     result = 0
-    for i in range(1, prime_count):
+    for i in range(prime_count):
         if primes[i] <= N - primes[i]:
             if check[N-primes[i]] == True:
                 result += 1
