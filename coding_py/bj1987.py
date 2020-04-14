@@ -1,21 +1,27 @@
-
-def dfs(selected, v, k):
-    global max_count
-    for di, dj in [(0, -1), (0, 1), (-1, 0), (1, 0)]:
-        i = v[0] + di
-        j = v[1] + dj
-        if 0 <= i <= r-1 and 0 <= j <= c-1 and not(selected[ord(alpha[i][j])-65]):
-            selected[ord(alpha[i][j])-65] = True
-            dfs(selected, [i, j], k + 1)
-            selected[ord(alpha[i][j])-65] = False
-    if k > max_count:
-        max_count = k
+import sys
+input = sys.stdin.readline
 
 
-r, c = map(int, input().split())
-max_count = 1
-alpha = [input() for _ in range(r)]
-sel = [False] * 26
-sel[ord(alpha[0][0])-65] = True
-dfs(sel, [0, 0], 1)
-print(max_count)
+def dfs(i, j, cnt):
+    global result
+    for k in range(4):
+        i_tem = i + dx[k]
+        j_tem = j + dy[k]
+        if -1 < i_tem < R and -1 < j_tem < C and not bank[ord(data[i_tem][j_tem])-65]:
+            bank[ord(data[i_tem][j_tem])-65] = True
+            result = max(result, cnt+1)
+            dfs(i_tem, j_tem, cnt+1)
+            bank[ord(data[i_tem][j_tem])-65] = False
+
+
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+
+R, C = map(int, input().split())
+data = [input().rstrip() for _ in range(R)]
+result = 1
+bank = [False for _ in range(26)]
+bank[ord(data[0][0])-65] = True
+dfs(0, 0, 1)
+print(result)
