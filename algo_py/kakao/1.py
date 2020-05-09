@@ -1,75 +1,62 @@
-def partition(num, cnt):
-    if cnt == 1:
-        return [[num]]
-    else:
-        ret = []
-        for i in range(1, num-cnt+2):
-            for j in partition(num-i, cnt-1):
-                temp = [i]+j
-                ret.append(temp)
-        return ret
-
-
-def same_list(lst):
-    ret = []
-    size = len(lst)
-    for start in range(size):
-        temp = lst[start:size]
-        temp += lst[:start]
-        ret.append(temp)
-    return ret
-
-
-def calc_dis(lst, n):
-    ret = []
-    for cur in lst:
-        temp = 0
-        for i in range(len(cur)-1):
-            if cur[i] > cur[i+1]:
-                temp += n-cur[i]+cur[i+1]
+def solution(numbers, hand):
+    answer = ''
+    left = [1, 4, 7]
+    right = [3, 6, 9]
+    a = [[2], [1, 3, 5], [4, 6, 8], [7, 9, 0], ['*', '#']]
+    b = [[5], [2, 4, 6, 8], [1, 3, 7, 9, 0], ['*', '#']]
+    c = [[8], [5, 7, 9, 0], [2, 4, 6, '*', '#'], [1, 3]]
+    d = [[0], [8, '*', '#'], [5, 7, 9], [2, 4, 6], [1, 3]]
+    beforeL = '*'
+    beforeR = '#'
+    for num in numbers:
+        if num in left:
+            answer += 'L'
+            beforeL = num
+        elif num in right:
+            answer += 'R'
+            beforeR = num
+        else:
+            if num == 2:
+                for idx, tmp in enumerate(a):
+                    if beforeL in tmp:
+                        ldist = idx+1
+                    if beforeR in tmp:
+                        rdist = idx+1
+            elif num == 5:
+                for idx, tmp in enumerate(b):
+                    if beforeL in tmp:
+                        ldist = idx+1
+                    if beforeR in tmp:
+                        rdist = idx+1
+            elif num == 8:
+                for idx, tmp in enumerate(c):
+                    if beforeL in tmp:
+                        ldist = idx+1
+                    if beforeR in tmp:
+                        rdist = idx+1
             else:
-                temp += cur[i+1]-cur[i]
-        ret.append(temp)
-    return ret
+                for idx, tmp in enumerate(d):
+                    if beforeL in tmp:
+                        ldist = idx+1
+                    if beforeR in tmp:
+                        rdist = idx+1
+            if ldist < rdist:
+                beforeL = num
+                answer += 'L'
+            elif ldist > rdist:
+                beforeR = num
+                answer += 'R'
+            else:
+                if hand == 'right':
+                    beforeR = num
+                    answer += 'R'
+                else:
+                    beforeL = num
+                    answer += 'L'
+    return answer
 
 
-def solution(n, weak, dist):
-    answer = 0
-    dist = sorted(dist, reverse=True)
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+hand = 'right'
 
-    for i in range(len(dist)):
-
-        member = dist[:i+1]
-
-        prev = partition(len(weak), i+1)
-        part_list = []
-
-        while len(prev) != 0:
-            cur = prev.pop()
-            lst = same_list(cur)
-            for idx, val in enumerate(prev):
-                if val in lst:
-                    del(prev[idx])
-            part_list.append(cur)
-
-        for part in part_list:
-            for idx in range(len(weak)):
-                weak_partition = []
-                cnt = 0
-                for cur in part:
-                    temp = []
-                    for j in range(cur):
-                        temp.append(weak[(idx+cnt) % len(weak)])
-                        cnt += 1
-                    weak_partition.append(temp)
-
-                dis_list = sorted(calc_dis(weak_partition, n), reverse=True)
-                flag = True
-                for j in range(len(dis_list)):
-                    if member[j] < dis_list[j]:
-                        flag = False
-                        break
-
-                if flag:
-                    return i+1
-    return -1
+print(solution(numbers, hand))
