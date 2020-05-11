@@ -1,16 +1,22 @@
 
 def solution(arr):
-    tmp = [[] for _ in range(max(arr)+1)]
+    answer = 1
+    tmp = dict()
+    arr.sort()
     for i in arr:
-        x = 1
-        while i > 2:
-            if i % 2 != 0:
+        cnt = 1
+        while 1:
+            if i in tmp:
+                cnt += tmp[i].pop()
+                if tmp[i] == []:
+                    tmp.pop(i)
+                i *= 2
+            else:
+                tmp[i] = [cnt]
                 break
-            i = i//2
-            x += 1
-        tmp[i].append(x)
-    return tmp
+    answer = sorted(tmp.items(), key=lambda x: x[1])[-1][1]
+    return answer
 
 
-weights = [2,3,4,5,6]
+weights = [2,2,2,2,3,3,5,6]
 print(solution(weights))

@@ -1,0 +1,6 @@
+a, b, c = sorted(map(int, input().split()))
+tmp = input()
+tmp = tmp.replace('A', str(a)+' ')
+tmp = tmp.replace('B', str(b)+' ')
+tmp = tmp.replace('C', str(c)+' ')
+print(tmp.rstrip())
