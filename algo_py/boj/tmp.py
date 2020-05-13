@@ -1,21 +1,27 @@
-n = int(input())
+a = input()
+aa = a.upper()  # 대문자로 만듦
+aa = list(aa)
+aa.sort()  # 알파벳순
+li = []
+l = []
+
+pp = list(set(aa))  # 1.pp를 새로 선언해 중복값 제거
 
 
-for i in range(1, n+1):
+for j in range(len(aa)):
+    qw = aa.count(aa[j])  # 알파벳 개수 구함
 
-    a = list(map(int, input().split()))
-    sum = 0
-    avg = 0
+    l.append(qw)
 
-    count = 0
-    for j in range(1, len(a)):
-        sum += a[j]
+mmm = max(l)
+ind = l.index(mmm)
 
-    avg = sum/(len(a)-1)
+yy = list(set(l))  # 2.yy 선언해 중복값제거
 
-    for p in range(1, len(a)):
 
-        if int(a[p]) > avg:
-            count += 1
+hh = l.count(mmm)
 
-    print("%.3f%%" % (count/a[0]*100))
+if mmm < hh:
+    print("?")
+else:
+    print(aa[ind])
