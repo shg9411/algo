@@ -1,27 +1,50 @@
-a = input()
-aa = a.upper()  # 대문자로 만듦
-aa = list(aa)
-aa.sort()  # 알파벳순
-li = []
-l = []
+import sys
+while True:
+    string1 = list(sys.stdin.readline().rstrip())
+    if string1[0] == '.':
+        break
+    string = []
+    for letter in string1:
+        if '(' == letter or ')' == letter or '[' == letter or ']' == letter or '.' == letter:
+            string.append(letter)
+    if len(string) == 1:
+        print('yes')
+        continue
+    i = 0
+    while len(string) != 1:
+        if string[i] == '(' and string[i+1] == ')':
+            j = i
+            string.pop(i+1)
+            string.pop(i)
+            if len(string) == 1:
+                print('yes')
+                break
+            elif i != 0:
+                i = j-1
+                continue
+            elif i == 0:
+                continue
 
-pp = list(set(aa))  # 1.pp를 새로 선언해 중복값 제거
+        elif string[i] == '[' and string[i+1] == ']':
+            j = i
+            string.pop(i+1)
+            string.pop(i)
+            if len(string) == 1:
+                print('yes')
+                break
+            elif i != 0:
+                i = j-1
+                continue
+            elif i == 0:
+                continue
 
-
-for j in range(len(aa)):
-    qw = aa.count(aa[j])  # 알파벳 개수 구함
-
-    l.append(qw)
-
-mmm = max(l)
-ind = l.index(mmm)
-
-yy = list(set(l))  # 2.yy 선언해 중복값제거
-
-
-hh = l.count(mmm)
-
-if mmm < hh:
-    print("?")
-else:
-    print(aa[ind])
+        elif string[i] == '(' and string[i+1] == ']':
+            print('no')
+            break
+        elif string[i] == '[' and string[i+1] == ')':
+            print('no')
+            break
+        elif string[i] == ')' or string[i] == ']':
+            print('no')
+            break
+        i += 1
