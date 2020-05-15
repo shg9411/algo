@@ -2,7 +2,7 @@ a, b = map(int, input().split())
 
 
 def cnt(num):
-    #num += 1
+    num += 1
     tmp = num
     t = 1
     res = 0
