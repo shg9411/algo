@@ -2,23 +2,20 @@ import sys
 input = sys.stdin.readline
 
 
-def find(x):
-    if x == parent[x]:
-        return x
-    parent[x] = find(parent[x])
-    return parent[x]
+def main():
+    def find(x):
+        if x == parent[x]:
+            return x
+        parent[x] = find(parent[x])
+        return parent[x]
 
-
-def union(x, y):
-    x = find(x)
-    y = find(y)
-    if A[x] <= A[y]:
-        parent[y] = x
-    else:
-        parent[x] = y
-
-
-if __name__ == '__main__':
+    def union(x, y):
+        x = find(x)
+        y = find(y)
+        if A[x] <= A[y]:
+            parent[y] = x
+        else:
+            parent[x] = y
     N, M, k = map(int, input().split())
     parent = [i for i in range(N+1)]
     A = [0]+list(map(int, input().split()))
@@ -33,3 +30,7 @@ if __name__ == '__main__':
             friends.add(idx)
             res += A[idx]
     print(res if res <= k else "Oh no")
+
+
+if __name__ == '__main__':
+    main()
