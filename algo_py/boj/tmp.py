@@ -1,4 +1,5 @@
-from collections import deque
+import queue
+
 
 n, m, v = map(int, input().split())
 
@@ -29,18 +30,18 @@ print()
 
 
 def bfs(start):
-    q = deque()
-    q.append(start)
+    q = queue.SimpleQueue()
+    q.put(start)
     che[start] = True
 
-    while q:
-        now = q.popleft()
+    while not q.empty():
+        now = q.get()
         print(now, end=' ')
 
         for i in a[now]:
             if not che[i]:
                 che[i] = True
-                q.append(i)
+                q.put(i)
 
 
 che = [False]*(n+1)
