@@ -1,50 +1,35 @@
-import sys
-while True:
-    string1 = list(sys.stdin.readline().rstrip())
-    if string1[0] == '.':
-        break
-    string = []
-    for letter in string1:
-        if '(' == letter or ')' == letter or '[' == letter or ']' == letter or '.' == letter:
-            string.append(letter)
-    if len(string) == 1:
-        print('yes')
-        continue
-    i = 0
-    while len(string) != 1:
-        if string[i] == '(' and string[i+1] == ')':
-            j = i
-            string.pop(i+1)
-            string.pop(i)
-            if len(string) == 1:
-                print('yes')
-                break
-            elif i != 0:
-                i = j-1
-                continue
-            elif i == 0:
-                continue
+N = int(input())
+M = input()
+M = list(map(int, M.split()))
+M.sort()
 
-        elif string[i] == '[' and string[i+1] == ']':
-            j = i
-            string.pop(i+1)
-            string.pop(i)
-            if len(string) == 1:
-                print('yes')
-                break
-            elif i != 0:
-                i = j-1
-                continue
-            elif i == 0:
-                continue
+box = []
 
-        elif string[i] == '(' and string[i+1] == ']':
-            print('no')
-            break
-        elif string[i] == '[' and string[i+1] == ')':
-            print('no')
-            break
-        elif string[i] == ')' or string[i] == ']':
-            print('no')
-            break
-        i += 1
+for i in range(N):
+    box.append(M[i])
+
+budget = int(input())
+
+if sum(box) <= budget:
+    print(max(box))
+else:
+    start = 0
+    limit = M[len(M)-1]
+    mid = (start + limit) // 2
+    while sum(box) != budget and mid != start and mid != limit:
+        for i in range(N):
+            if M[i] < mid:
+                box[i] = M[i]
+            else:
+                box[i] = mid
+        if sum(box) < budget:
+            start = mid
+            mid = (start + limit) // 2
+        else:
+            limit = mid
+            mid = (start + limit) // 2
+    print(box)
+    if sum(box) > budget:
+        print(max(box)-1)
+    else:
+        print(max(box))
