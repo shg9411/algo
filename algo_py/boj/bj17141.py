@@ -1,5 +1,4 @@
 import sys
-import copy
 from collections import deque
 from itertools import combinations
 
@@ -21,7 +20,7 @@ if __name__ == '__main__':
 
     res = 987654321
     for comb in combinations(range(len(virus)), M):
-        tmpArea = copy.deepcopy(area)
+        tmpArea = [area[i][:] for i in range(N)]
         tmpLife = life
         q = deque()
         for idx in comb:

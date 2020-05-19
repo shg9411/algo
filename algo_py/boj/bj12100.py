@@ -1,4 +1,3 @@
-import copy
 import sys
 from collections import deque
 sys.setrecursionlimit(10**9)
@@ -92,11 +91,11 @@ def dfs(cnt):
     if cnt == 5:
         getVal()
         return
-    origin = copy.deepcopy(board)
+    origin = [board[i][:] for i in range(N)]
     for idx in range(4):
         move(idx)
         dfs(cnt+1)
-        board = copy.deepcopy(origin)
+        board = [origin[i][:] for i in range(N)]
 
 
 def main():
