@@ -11,9 +11,9 @@ def compare(a, b):
 
 K, N = map(int, input().split())
 num = sorted([input().rstrip() for _ in range(K)],
-             key=functools.cmp_to_key(compare))
-for i in range(N-K):
-    num.append(num[-1])
+             key=functools.cmp_to_key(compare), reverse=True)
+
+num.extend([num[0] for _ in range(N-K)])
 num.sort(key=functools.cmp_to_key(
-    lambda x, y: 1 if int(x+y) > int(y+x) else -1))
-print(''.join(num[::-1]))
+    lambda x, y: 1 if int(x+y) < int(y+x) else -1))
+print(''.join(num))
