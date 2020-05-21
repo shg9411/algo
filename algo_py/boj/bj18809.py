@@ -1,18 +1,12 @@
 from itertools import combinations
 from collections import deque
 
-N, M, G, R = map(int, input().split())
-garden = []
-spoil = []
 
-
-def bfs(green, red):
+def bfs(gq, rq):
     tmpGarden = [garden[i][:] for i in range(N)]
     cnt = 0
-    gq = deque(green)
     for i, j in gq:
         tmpGarden[i][j] = 0
-    rq = deque(red)
     for i, j in rq:
         tmpGarden[i][j] = 0
     val = 2
@@ -67,17 +61,22 @@ def bfs(green, red):
     return cnt
 
 
-for i in range(N):
-    garden.append(list(map(int, input().split())))
-    for j in range(M):
-        if garden[i][j] == 2:
-            spoil.append([i, j])
-            garden[i][j] = 1
-res = 0
-for comb in combinations(range(len(spoil)), G+R):
-    comb = set(comb)
-    for g in combinations(comb, G):
-        green = [spoil[i] for i in g]
-        red = [spoil[i] for i in comb if i not in g]
-        res = max(res, bfs(green, red))
-print(res)
+if __name__ == '__main__':
+    N, M, G, R = map(int, input().split())
+    garden = []
+    spoil = []
+    for i in range(N):
+        garden.append(list(map(int, input().split())))
+        for j in range(M):
+            if garden[i][j] == 2:
+                spoil.append((i, j))
+                garden[i][j] = 1
+    res = 0
+    for comb in combinations(range(len(spoil)), G+R):
+        comb = set(comb)
+        for g in combinations(comb, G):
+            g = set(g)
+            green = deque(spoil[i] for i in g)
+            red = deque(spoil[i] for i in comb-g)
+            res = max(res, bfs(green, red))
+    print(res)
