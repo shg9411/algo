@@ -1,45 +1,64 @@
 import bisect
-import copy
+from collections import deque
 
 
-def lis(arr):
-    lis_arr = [arr[0]]
-    res = [0]
-    for n in arr[1:]:
-        if lis_arr[-1] < n:
-            lis_arr.append(n)
-            res.append(len(lis_arr)-1)
-        else:
-            where = bisect.bisect_left(lis_arr, n)
-            lis_arr[where] = n
-            res.append(where)
-
-    i = len(lis_arr)
-    tmp = [[] for _ in range(i)]
-    for idx, x in enumerate(res):
-        tmp[x].append([arr[idx], idx])
-    for line in tmp:
-        line.sort()
-
-    def dfs(idx, jdx, arr):
-        if len(arr) == i:
-            xx = copy.deepcopy(arr)
-            res_arr.append(xx)
-            return
-        for x in range(jdx, len(tmp[idx])):
-            if not arr or (tmp[idx][x][0] > arr[-1][0] and tmp[idx][x][1] > arr[-1][1]):
-                arr.append(tmp[idx][x])
-                dfs(idx+1, 0, arr)
-                arr.pop()
-    res_arr = []
-    dfs(0, 0, [])
-    res_arr.sort()
-    if len(res_arr) >= k:
-        for x in res_arr[k-1]:
-            print(x[0], end=' ')
-    else:
-        print(-1)
+class st:
+    def __init__(self):
+        self.size = 0
+        self.left = []
+        self.right = []
 
 
-n, k = map(int, input().split())
-lis(list(map(int, input().split())))
+N, K = map(int, input().split())
+dp = [1 for _ in range(N+1)]
+arr = [1]
+tmp = [st() for _ in range(N+1)]
+large = 1
+q = deque()
+arr += list(map(int, input().split()))
+for i in range(2, N+1):
+    for j in range(1, i):
+        if arr[j] < arr[i]:
+            dp[i] = max(dp[i], dp[j]+1)
+    for j in range(1, i):
+        if arr[j] < arr[i] and dp[j]+1 == dp[i]:
+            tmp[arr[i]].left.append(arr[j])
+            tmp[arr[j]].right.append(arr[i])
+        large = max(large, dp[i])
+check = [0 for _ in range(N+1)]
+for i in range(1, N+1):
+    if large == dp[i]:
+        tmp[arr[i]].size += 1
+        q.append(arr[i])
+
+l = large
+while large > 1:
+    large -= 1
+    for i in range(len(q)):
+        num = q.popleft()
+        for j in range(len(tmp[num].left)):
+            number = tmp[num].left[j]
+            tmp[number].size += tmp[num].size
+            if check[number] == 0:
+                check[number] = 1
+                q.append(number)
+sum = 0
+while q:
+    val = q.popleft()
+    tmp[0].right.append(val)
+    sum += tmp[val].size
+if sum < K:
+    print(-1)
+else:
+    start = 0
+    while large <= l:
+        large += 1
+        tmp[start].right.sort()
+        for i in range(len(tmp[start].right)):
+            num = tmp[start].right[i]
+            if K > tmp[num].size:
+                K -= tmp[num].size
+            else:
+                print(num, end=' ')
+                start = num
+                break
