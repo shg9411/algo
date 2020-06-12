@@ -1,22 +1,24 @@
 import sys
 sys.setrecursionlimit(10**9)
 input = sys.stdin.readline
+
 sn = cnt = 0
 
+
 def dfs(u):
-    global sn
     global cnt
-    cnt+=1
+    global sn
+    cnt += 1
     dfsn[u] = cnt
     stack.append(u)
 
     res = dfsn[u]
     for v in adj[u]:
-        if dfsn[v]==0:
-            res = min(res,dfs(v))
+        if dfsn[v] == 0:
+            res = min(res, dfs(v))
         elif not finished[v]:
-            res = min(res,dfsn[v])
-    
+            res = min(res, dfsn[v])
+
     if res == dfsn[u]:
         tmpScc = []
         while 1:
@@ -24,15 +26,15 @@ def dfs(u):
             tmpScc.append(tmp)
             finished[tmp] = True
             sccn[tmp] = sn
-            if tmp==u:
+            if tmp == u:
                 break
-        tmpScc.sort()
         ans.append(tmpScc)
-        sn+=1
+        sn += 1
     return res
 
 
-if __name__ == '__main__':
+T = int(input())
+for _ in range(T):
     V, E = map(int, input().split())
     adj = [[] for _ in range(V+1)]
     dfsn = [0 for _ in range(V+1)]
@@ -40,13 +42,17 @@ if __name__ == '__main__':
     finished = [False for _ in range(V+1)]
     ans = []
     stack = []
+    sn = cnt = 0
     for _ in range(E):
-        u,v = map(int,input().split())
+        u, v = map(int, input().split())
         adj[u].append(v)
-    for i in range(1,V+1):
-        if dfsn[i]==0:
+    for i in range(1, V+1):
+        if dfsn[i] == 0:
             dfs(i)
-    ans.sort()
-    print(sn)
-    for scc in ans:
-        sys.stdout.write(' '.join(map(str,scc))+' -1\n')
+
+    indegree = [0 for _ in range(len(ans))]
+    for u in range(1, V+1):
+        for v in adj[u]:
+            if sccn[u] != sccn[v]:
+                indegree[sccn[v]] += 1
+    print(indegree.count(0))
