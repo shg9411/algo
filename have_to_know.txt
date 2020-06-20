@@ -1,4 +1,0 @@
-배포 자동화
-무중단 배포
-
-django postgresql 연동
