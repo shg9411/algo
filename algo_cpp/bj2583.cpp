@@ -1,4 +1,4 @@
-#include <iostream>
+//#include <iostream>
 #include <vector>
 #include <queue>
 #include <algorithm>
@@ -46,12 +46,14 @@ void bfs(int i, int j) {
 }
 
 int main(void) {
-	cin.tie(0);
-	ios_base::sync_with_stdio(0);
+	//cin.tie(0);
+	//ios_base::sync_with_stdio(0);
 	int K,a,b,c,d;
-	cin >> M >> N >> K;
+	scanf("%d %d %d", &M, &N, &K);
+	//cin >> M >> N >> K;
 	for (int i = 0; i < K; i++) {
-		cin >> a >> b >> c >> d;
+		scanf("%d %d %d %d", &a, &b, &c, &d);
+		//cin >> a >> b >> c >> d;
 		for (int j = b; j < d; j++) {
 			for (int k = a; k < c; k++) {
 				paper[j][k] = 1;
@@ -67,9 +69,11 @@ int main(void) {
 		}
 	}
 	sort(res.begin(), res.end());
-	cout << res.size() << '\n';
+	printf("%d\n", res.size());
+	//cout << res.size() << '\n';
 	for (int r : res)
-		cout << r << ' ';
+		printf("%d ", r);
+	//cout << r << ' ';
 
 	return 0;
 }
