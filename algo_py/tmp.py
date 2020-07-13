@@ -1,27 +1,18 @@
-N = int(input())
-cycle =0
-N_Orig = N
+def getMostVisited(n, sprints):
+    tmp = [0 for _ in range(n+1)]
+    ans = [0 for _ in range(n+1)]
+    for i in range(len(sprints)-1):
+        x, y = sprints[i], sprints[i+1]
+        if x > y:
+            x, y = y, x
+        tmp[x] += 1
+        if y < n:
+            tmp[y+1] -= 1
+    cur = 0
+    for i in range(1, n+1):
+        cur += tmp[i]
+        ans[i] = cur
+    return ans.index(max(ans))
 
-while True:  
-    print(N)
-    if N>10: 
-        N = str(N) 
-        N_0 = int(N[1])*10 
-        N_1 = int(N[0])+int(N[1]) 
-        if N_1 > 10 :
-            N_1 = int(str(N_1)[1])
-        N = N_0 + N_1 
-    
-  
-    else : 
-        N = str(N) 
-        N_0 = 0
-        N_1 = int(N[0]) 
-        N = N_0 + N_1 
-    
-    cycle += 1
 
-    if N_Orig==N:
-        break
-
-print(cycle)    
+print(getMostVisited(10,[2,4,1,3]))
