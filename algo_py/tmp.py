@@ -1,18 +1,12 @@
-def getMostVisited(n, sprints):
-    tmp = [0 for _ in range(n+1)]
-    ans = [0 for _ in range(n+1)]
-    for i in range(len(sprints)-1):
-        x, y = sprints[i], sprints[i+1]
-        if x > y:
-            x, y = y, x
-        tmp[x] += 1
-        if y < n:
-            tmp[y+1] -= 1
-    cur = 0
-    for i in range(1, n+1):
-        cur += tmp[i]
-        ans[i] = cur
-    return ans.index(max(ans))
+n=int(input())
+a=[0]
+p=[[0,0]]
+for i in range(1,n+1):
+    a.append(int(input()))
+p.append([a[1],0])
+p.append([a[1]+a[2],a[2]])
 
+for i in range(3,n+1):
+    p.append([a[i]+p[i-1][1],max(a[i]+p[i-2][0],a[i]+p[i-2][1])])
 
-print(getMostVisited(10,[2,4,1,3]))
+print(max(p[n]))
