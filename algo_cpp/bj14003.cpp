@@ -6,7 +6,7 @@ vector<int> v(1000000);
 vector<int> lis, res = { 0 };
 int main(void) {
 	cin.tie(0); ios_base::sync_with_stdio(0);
-	int n,tmp;
+	int n;
 	cin >> n;
 	for (int i = 0; i < n; i++) 
 		cin >> v[i];
