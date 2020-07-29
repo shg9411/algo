@@ -1,25 +1,38 @@
 #include <vector>
-#include <iostream>
+#include <cstdio>
+inline void scan(int& x)
+{
+	int c = getchar_unlocked();
+	x = 0;
+	int neg = 0;
+	for (; ((c < 48 || c>57) && c != '-'); c = getchar_unlocked());
+	if (c == '-') {
+		neg = 1;
+		c = getchar_unlocked();
+	}
+	for (; c > 47 && c < 58; c = getchar_unlocked()) {
+		x = (x << 1) + (x << 3) + c - 48;
+	}
+	if (neg)
+		x = -x;
+}
 using namespace std;
 
-vector<int> v(1000000);
-vector<int> lis, res = { 0 };
+vector<int> lis;
+
 int main(void) {
-	cin.tie(0); ios_base::sync_with_stdio(0);
-	int n;
-	cin >> n;
-	for (int i = 0; i < n; i++) 
-		cin >> v[i];
-	lis.push_back(v[0]);
-	for (int i = 1; i < n; i++) {
-		if (lis.back() < v[i]) {
-			lis.push_back(v[i]);
-		}
-		else {
-			int where = lower_bound(lis.begin(), lis.end(), v[i])-lis.begin();
-			lis[where] = v[i];
-		}
+	int n, tmp;
+	scan(n);
+	scan(tmp);
+	lis.push_back(tmp);
+	for (int i = 0; i < n - 1; i++) {
+		scan(tmp);
+		auto it = lower_bound(lis.begin(), lis.end(), tmp);
+		if (it == lis.end())
+			lis.push_back(tmp);
+		else
+			*it = tmp;
 	}
-	cout << lis.size() << "\n";
+	printf("%d\n", lis.size());
 	return 0;
 }
