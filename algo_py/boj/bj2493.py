@@ -8,7 +8,5 @@ for idx,val in enumerate(high):
             res[idx] = tmp[-1]+1
             break
         tmp.pop()
-    if not tmp:
-        res[idx] = 0
     tmp.append(idx)
 print(' '.join(map(str,res)))
