@@ -1,8 +1,20 @@
-import sys
-input = sys.stdin.readline
-input()
-tmp = list(map(int, input().split()))
-x = dict()
-for idx, num in enumerate(sorted(list(set(tmp)))):
-    x[num] = str(idx)
-sys.stdout.write(' '.join(x[num] for num in tmp))
+graph = {0: [1, 2], 1: [0, 2], 2: [1, 0], 3: [4, 5], 4: [3, 5], 5: [4, 3]}
+
+def dfs(graph, start) :
+    vis = []
+    stack = [start]
+    
+    while stack :
+        n = stack.pop()
+        if n not in vis :
+            vis.append(n)
+            print(n)
+            G = graph[n]
+            V = list(set(vis))
+            for item in G :
+                if V.count(item) >= 1:
+                    G.remove(item)
+            stack.append(G)
+    return vis
+
+dfs(graph, 3)
