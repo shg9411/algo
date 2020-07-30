@@ -1,20 +1,18 @@
-graph = {0: [1, 2], 1: [0, 2], 2: [1, 0], 3: [4, 5], 4: [3, 5], 5: [4, 3]}
+import sys
 
-def dfs(graph, start) :
-    vis = []
-    stack = [start]
-    
-    while stack :
-        n = stack.pop()
-        if n not in vis :
-            vis.append(n)
-            print(n)
-            G = graph[n]
-            V = list(set(vis))
-            for item in G :
-                if V.count(item) >= 1:
-                    G.remove(item)
-            stack.append(G)
-    return vis
+a, b= map(str,sys.stdin.readline().split())
+a_letter=list(a)
+b_letter=list(b)
 
-dfs(graph, 3)
+count_1 = 0
+count_2 = 0
+for i in range(len(a_letter)):
+    # print(i,a_letter[i],b_letter[i])
+    if (a_letter[i]!=b_letter[i]):
+        count_1 += 1
+for i in range(-len(a_letter),0):
+    # print(i,a_letter[i],b_letter[i])
+    if (a_letter[i]!=b_letter[i]):
+        count_2 += 1
+
+print(count_1<count_2 and count_1 or count_2)

@@ -1,21 +1,37 @@
-#include <iostream>
 #include <queue>
 #include <vector>
+#include <cstdio>
 using namespace std;
 #define MAX 200001
+
+inline void scan(int& x)
+{
+	int c = getchar_unlocked();
+	x = 0;
+	int neg = 0;
+	for (; ((c < 48 || c>57) && c != '-'); c = getchar_unlocked());
+	if (c == '-') {
+		neg = 1;
+		c = getchar_unlocked();
+	}
+	for (; c > 47 && c < 58; c = getchar_unlocked()) {
+		x = (x << 1) + (x << 3) + c - 48;
+	}
+	if (neg)
+		x = -x;
+}
 
 int n, m, res[MAX], rumor[MAX];
 vector<int> v[MAX];
 queue<int> q;
 
 int main(void) {
-	cin.tie(0); ios_base::sync_with_stdio(0);
 	int t, p;
-	cin >> n;
+    scan(n);
 	for (int i = 1; i <= n; i++) {
 		res[i] = -1;
 		while (true) {
-			cin >> t;
+			scan(t);
 			if (t) {
 				v[i].push_back(t);
 			}
@@ -23,9 +39,9 @@ int main(void) {
 				break;
 		}
 	}
-	cin >> m;
+	scan(m);
 	for (int i = 0; i < m; i++) {
-		cin >> t;
+		scan(t);
 		q.push(t);
 		res[t] = 0;
 	}
@@ -42,6 +58,6 @@ int main(void) {
 		}
 	}
 	for (int i = 1; i <= n; i++)
-		cout << res[i] << ' ';
+		printf("%d ",res[i]);
 	return 0;
 }
