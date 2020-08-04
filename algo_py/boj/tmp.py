@@ -1,7 +1,6 @@
 import sys
 from collections import deque
 input = sys.stdin.readline
-
 n, m = map(int, input().split())
 miro = [list(map(int, list(input().rstrip()))) for _ in range(n)]
 cnt = 0
