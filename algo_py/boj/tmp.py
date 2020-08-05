@@ -1,25 +1,37 @@
 import sys
 input = sys.stdin.readline
+
 n = int(input())
-ant = dict()
+
+node = [[] for _ in range(n+1)]
+
+info = list(map(int, input().split()))
+for idx, parent in enumerate(info):
+    node[parent+1].append(idx)
 
 
-def printAll(cur, cnt):
-    tmp = cur
-    cur = sorted(cur.items())
-    for c in cur:
-        print('--'*cnt, c[0], sep='')
-        printAll(tmp[c[0]], cnt+1)
+def cutChildren(n):
+    if node[n+1] == []:
+        node[n+1]=[-1]
+        return
+    for c in node[n+1]:
+        cutChildren(c)
+    node[n+1] = [-1]
 
+#print(node)
+cut = int(input())
+if cut==node[0]:
+    print(0)
+    exit()
 
-for _ in range(n):
-    x = input().split()[1:]
-    cur = ant
-    for info in x:
-        if info in cur:
-            pass
-        else:
-            cur[info] = dict()
-        cur = cur[info]
+for n in node:
+    if cut in n:
+        n.remove(cut)
 
-printAll(ant, 0)
+cutChildren(cut)
+#print(node)
+count = 0
+for n in node[1:]:
+    if n==[]:
+        count+=1
+print(count)
