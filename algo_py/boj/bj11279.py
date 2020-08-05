@@ -1,16 +1,10 @@
 import sys
 import heapq
-input = sys.stdin.readline
-n = int(input())
 q = []
 res = []
-for _ in range(n):
-    a = int(input())
-    if a != 0:
-        heapq.heappush(q, -a)
+for i in map(int, sys.stdin.read().splitlines()[1:]):
+    if i:
+        heapq.heappush(q, -i)
     else:
-        try:
-            res.append(-heapq.heappop(q))
-        except:
-            res.append(0)
-print('\n'.join(str(i) for i in res))
+        res.append(-heapq.heappop(q) if q else 0)
+print('\n'.join(map(str, res)))
