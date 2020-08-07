@@ -18,6 +18,8 @@ pq = [(0, x)]
 
 while pq:
     d1, v1 = heapq.heappop(pq)
+    if d1 == k:
+        break
     for v2, d2 in edge[v1].items():
         if dist[v1]+d2 < dist[v2]:
             dist[v2] = dist[v1]+d2
@@ -26,5 +28,5 @@ while pq:
 res = []
 for i, v in enumerate(dist):
     if v == k:
-        res.append(str(i))
-print('\n'.join(res) if res else -1)
+        res.append(i)
+print('\n'.join(map(str, res)) if res else -1)
