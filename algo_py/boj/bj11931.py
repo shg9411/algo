@@ -1,5 +1,1 @@
-import sys
-input = sys.stdin.readline
-n = int(input())
-for num in sorted([int(input()) for _ in range(n)], reverse=True):
-    print(num)
+__import__('sys').stdout.write('\n'.join(map(str, sorted(map(int, __import__('sys').stdin.read().splitlines()[1:]), reverse=True))))
