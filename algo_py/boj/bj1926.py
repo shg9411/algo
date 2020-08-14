@@ -14,44 +14,40 @@ def bfs(i, j):
     while q:
         x, y = q.popleft()
         tmpx = x-1
-        tmpy = y
-        if 0 <= tmpx < n and 0 <= tmpy < m:
-            if paper[tmpx][tmpy]:
-                paper[tmpx][tmpy] = 0
-                q.append([tmpx, tmpy])
+        if 0 <= tmpx:
+            if paper[tmpx][y]:
+                paper[tmpx][y] = 0
+                q.append([tmpx, y])
                 cnt += 1
-        tmpx = x
         tmpy = y-1
-        if 0 <= tmpx < n and 0 <= tmpy < m:
-            if paper[tmpx][tmpy]:
-                paper[tmpx][tmpy] = 0
-                q.append([tmpx, tmpy])
+        if 0 <= tmpy:
+            if paper[x][tmpy]:
+                paper[x][tmpy] = 0
+                q.append([x, tmpy])
                 cnt += 1
         tmpx = x+1
-        tmpy = y
-        if 0 <= tmpx < n and 0 <= tmpy < m:
-            if paper[tmpx][tmpy]:
-                paper[tmpx][tmpy] = 0
-                q.append([tmpx, tmpy])
+        if tmpx < n:
+            if paper[tmpx][y]:
+                paper[tmpx][y] = 0
+                q.append([tmpx, y])
                 cnt += 1
-        tmpx = x
         tmpy = y+1
-        if 0 <= tmpx < n and 0 <= tmpy < m:
-            if paper[tmpx][tmpy]:
-                paper[tmpx][tmpy] = 0
-                q.append([tmpx, tmpy])
+        if tmpy < m:
+            if paper[x][tmpy]:
+                paper[x][tmpy] = 0
+                q.append([x, tmpy])
                 cnt += 1
     return cnt
 
 
-ans = 0
+ans = []
 many = 0
 for i in range(n):
     for j in range(m):
         if paper[i][j]:
             paper[i][j] = 0
-            ans = max(bfs(i, j), ans)
+            ans.append(bfs(i, j))
             many += 1
 
 print(many)
-print(ans)
+print(max(ans) if ans else 0)
