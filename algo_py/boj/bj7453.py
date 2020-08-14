@@ -1,6 +1,6 @@
+from collections import defaultdict
 import sys
 input = sys.stdin.readline
-
 n = int(input())
 A = []
 B = []
@@ -12,25 +12,14 @@ for _ in range(n):
     B.append(b)
     C.append(c)
     D.append(d)
-AB = dict()
+AB = defaultdict(int)
 CD = dict()
 for i in range(n):
     for j in range(n):
         ab = A[i]+B[j]
-        cd = C[i]+D[j]
-        try:
-            AB[ab] += 1
-        except:
-            AB[ab] = 1
-        try:
-            CD[cd] += 1
-        except:
-            CD[cd] = 1
-
+        AB[ab] += 1
 ans = 0
-for idx, val in enumerate(AB):
-    try:
-        ans += AB[val]*CD[-val]
-    except:
-        continue
+for i in range(n):
+    for j in range(n):
+        ans += AB[-C[i]-D[j]]
 print(ans)

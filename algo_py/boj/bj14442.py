@@ -1,18 +1,18 @@
-# pypy3
+#pypy3
 import sys
 from collections import deque
 input = sys.stdin.readline
 n, m, k = map(int, input().split())
 load = [input().rstrip() for _ in range(n)]
-visited = [[[k+1 for _ in range(2)] for _ in range(m)] for _ in range(n)]
+visited = [[k+1 for _ in range(m)] for _ in range(n)]
 nm = [(-1, 0), (0, -1), (1, 0), (0, 1)]
-visited[0][0][0] = 0
-q = deque([[0, 0, 0, 0]])
+visited[0][0] = 0
+q = deque([[0, 0, 0]])
 res = 1
 while q:
     qlen = len(q)
     for _ in range(qlen):
-        x, y, s, c = q.popleft()
+        x, y, c = q.popleft()
         if x == n-1 and y == m-1:
             print(res)
             exit()
