@@ -1,17 +1,5 @@
-import sys
-import operator
-input = sys.stdin.readline
-
-n = int(input())
-
 card = dict()
-
-for _ in range(n):
-    tmp = int(input())
-    if tmp not in card:
-        card[tmp] = 1
-    else:
-        card.update({tmp: card[tmp]+1})
-
-k = sorted(sorted(list(zip(card.keys(), card.values())),key = operator.itemgetter(0)),key = operator.itemgetter(1), reverse=True)
-print(k[0][0])
+for tmp in map(int, __import__('sys').stdin.read().split()[1:]):
+    if tmp not in card:card[tmp] = 1
+    else:card[tmp] += 1
+print(sorted(card.items(), key=lambda a: (-a[1], a[0]))[0][0])
