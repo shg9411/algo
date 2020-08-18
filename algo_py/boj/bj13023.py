@@ -1,29 +1,25 @@
 import sys
 input = sys.stdin.readline
 
+N, M = map(int, input().split())
+adj = [[] for _ in range(N)]
 
-def dfs(idx, cnt):
-    if cnt == 5:
-        print(1)
-        exit()
-    for f in adj[idx]:
-        if visited[f]:
-            continue
-        visited[f] = True
-        dfs(f, cnt+1)
-        visited[f] = False
+for _ in range(M):
+    a, b = map(int, input().split())
+    adj[a].append(b)
+    adj[b].append(a)
 
-
-if __name__ == '__main__':
-    N, M = map(int, input().split())
-    adj = [[] for _ in range(N+1)]
-    for _ in range(M):
-        a, b = map(int, input().split())
-        adj[a].append(b)
-        adj[b].append(a)
-    visited = [False for _ in range(N+1)]
-    for i in range(1, N+1):
-        visited[i] = True
-        dfs(i, 1)
-        visited[i] = False
-    print(0)
+for a in range(N):
+    for b in adj[a]:
+        for c in adj[b]:
+            if c == a:
+                continue
+            for d in adj[c]:
+                if d==a or d==b:
+                    continue
+                for e in adj[d]:
+                    if e==a or e==b or e==c:
+                        continue
+                    print(1)
+                    exit()
+print(0)
