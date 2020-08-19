@@ -1,21 +1,19 @@
 import sys
 from collections import deque
-input = sys.stdin.readline
-
-n = int(input())
 q = deque()
-
-for _ in range(n):
-    tmp = input().split()
-    if tmp[0]=='push':
-        q.append(int(tmp[1]))
-    elif tmp[0]=='front':
-        print(q[0] if q else -1)
-    elif tmp[0]=='pop':
-        print(q.popleft() if q else -1)
-    elif tmp[0]=='size':
-        print(len(q))
-    elif tmp[0]=='empty':
-        print(0 if q else 1)
-    elif tmp[0]=='back':
-        print(q[-1] if q else -1)
+res = []
+for tmp in sys.stdin.read().splitlines():
+    tmp = tmp.split()
+    if tmp[0][-1]=='h':
+        q.append(tmp[1])
+    elif tmp[0][0]=='f':
+        res.append(q[0] if q else '-1')
+    elif tmp[0][-1]=='p':
+        res.append(q.popleft() if q else '-1')
+    elif tmp[0][0]=='s':
+        res.append(str(len(q)))
+    elif tmp[0][0]=='e':
+        res.append('0' if q else '1')
+    elif tmp[0][0]=='b':
+        res.append(q[-1] if q else '-1')
+print('\n'.join(res))     
