@@ -1,41 +1,23 @@
 import sys
-sys.setrecursionlimit(10**6)
 input = sys.stdin.readline
+cur = (1 << 26)-1
+n, m = map(int, input().split())
+word = [0 for _ in range(n)]
+for i in range(n):
+    w = input().rstrip()
+    for char in w:
+        idx = ord(char)-97
+        word[i] |= 1 << idx
 
-n = int(input())
-tree = [dict() for _ in range(n+1)]
-for _ in range(n-1):
-    u, v, w = map(int, input().split())
-    tree[u][v] = w
-    tree[v][u] = w
-
-
-def dfs(u, w, v=0):
-    global tmpu, tmpval
-    dist[u] = w
-
-    if dist[u] > tmpval:
-        tmpval, tmpu = dist[u], u
-
-    for vertex, weight in tree[u].items():
-        if v:
-            if vertex == v:
-                continue
-        if 0 > dist[vertex]:
-            dfs(vertex, w+weight)
-
-
-dist = [-1 for _ in range(n+1)]
-tmpu, tmpval = 0, 0
-dfs(1, 0)
-dist = [-1 for _ in range(n+1)]
-a = tmpu
-dfs(tmpu, 0)
-b = tmpu
-x = 0
-tmpu, tmpval = 0, 0
-dfs(tmpu, 0, a)
-ta = tmpval
-dfs(tmpu, 0, b)
-res = max(ta, tmpval)
-print(res)
+for _ in range(m):
+    query = input().split()
+    cnt = 0
+    idx = ord(query[1])-97
+    if query[0] == '1':
+        cur &= ~(1 << idx)
+    else:
+        cur |= 1 << idx
+    for w in word:
+        if (cur & w) == w:
+            cnt += 1
+    print(cnt)
