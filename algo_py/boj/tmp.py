@@ -1,23 +1,38 @@
 import sys
 input = sys.stdin.readline
-cur = (1 << 26)-1
-n, m = map(int, input().split())
-word = [0 for _ in range(n)]
-for i in range(n):
-    w = input().rstrip()
-    for char in w:
-        idx = ord(char)-97
-        word[i] |= 1 << idx
-
+h, w, m = map(int, input().split())
+row = [0 for _ in range(h)]
+col = [0 for _ in range(w)]
+info = dict()
+tmpx = 0
+tmpy = 0
 for _ in range(m):
-    query = input().split()
-    cnt = 0
-    idx = ord(query[1])-97
-    if query[0] == '1':
-        cur &= ~(1 << idx)
-    else:
-        cur |= 1 << idx
-    for w in word:
-        if (cur & w) == w:
-            cnt += 1
-    print(cnt)
+    x, y = map(int, input().split())
+    x -= 1
+    y -= 1
+    if x not in info:
+        info[x] = set()
+    info[x].add(y)
+    row[x] += 1
+    if row[x] > tmpx:
+        tmpx = row[x]
+    col[y] += 1
+    if col[y] > tmpy:
+        tmpy = col[y]
+
+xset = []
+yset = []
+for idx, v in enumerate(row):
+    if tmpx == v:
+        xset.append(idx)
+for idx, v in enumerate(col):
+    if tmpy == v:
+        yset.append(idx)
+res = 0
+for x in xset:
+    for y in yset:
+        tmp = row[x]+col[y]
+        if x in info and y in info[x]:
+            tmp -= 1
+        res = max(res, tmp)
+print(res)
