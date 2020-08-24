@@ -3,36 +3,38 @@ from collections import deque
 input = sys.stdin.readline
 
 m, n = map(int, input().split())
-nm = [(-1, 0), (0, -1), (1, 0), (0, 1)]
-q = deque()
-box = []
+tomato = []
+ripen = deque()
 for i in range(n):
-    line = list(map(int, input().split()))
-    box.append(line)
+    tomato.append(list(input().split()))
     for j in range(m):
-        if line[j] == 1:
-            q.append((i, j))
-
+        if tomato[i][j] == '1':
+            ripen.append((i, j))
 day = -1
-
-while q:
-    tmpq = deque()
-    for _ in range(len(q)):
-        tmp = q.popleft()
-        x = tmp[0]
-        y = tmp[1]
-        for move in nm:
-            nx = x+move[0]
-            ny = y+move[1]
-            if 0 <= nx < n and 0 <= ny < m and box[nx][ny] == 0:
-                box[nx][ny] = 1
-                tmpq.append((nx, ny))
-    q = tmpq
+while ripen:
+    length = len(ripen)
+    for _ in range(length):
+        x, y = ripen.popleft()
+        if x > 0:
+            if tomato[x-1][y] == '0':
+                tomato[x-1][y] = '1'
+                ripen.append((x-1, y))
+        if y > 0:
+            if tomato[x][y-1] == '0':
+                tomato[x][y-1] = '1'
+                ripen.append((x, y-1))
+        if x < n-1:
+            if tomato[x+1][y] == '0':
+                tomato[x+1][y] = '1'
+                ripen.append((x+1, y))
+        if y < m-1:
+            if tomato[x][y+1] == '0':
+                tomato[x][y+1] = '1'
+                ripen.append((x, y+1))
     day += 1
 
-for line in box:
-    if 0 in line:
+for line in tomato:
+    if '0' in line:
         print(-1)
         exit()
-
 print(day)
