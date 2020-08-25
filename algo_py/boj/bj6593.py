@@ -23,56 +23,52 @@ while 1:
     can = False
     while q:
         cnt += 1
-        for _ in range(len(q)):
+        lenq = len(q)
+        for _ in range(lenq):
             k, i, j = q.popleft()
-            tmpx = i-1
-            if 0 <= tmpx:
-                if building[k][tmpx][j] == 'E':
+            if 0 <= i-1:
+                if building[k][i-1][j] == 'E':
                     can = True
                     break
-                if building[k][tmpx][j] == '.' and not visited[k][tmpx][j]:
-                    visited[k][tmpx][j] = True
-                    q.append([k, tmpx, j])
-            tmpx += 2
-            if tmpx < R:
-                if building[k][tmpx][j] == 'E':
+                if building[k][i-1][j] == '.' and not visited[k][i-1][j]:
+                    visited[k][i-1][j] = True
+                    q.append([k, i-1, j])
+
+            if i+1 < R:
+                if building[k][i+1][j] == 'E':
                     can = True
                     break
-                if building[k][tmpx][j] == '.' and not visited[k][tmpx][j]:
-                    visited[k][tmpx][j] = True
-                    q.append([k, tmpx, j])
-            tmpy = j-1
-            if 0 <= tmpy:
-                if building[k][i][tmpy] == 'E':
+                if building[k][i+1][j] == '.' and not visited[k][i+1][j]:
+                    visited[k][i+1][j] = True
+                    q.append([k, i+1, j])
+            if 0 <= j-1:
+                if building[k][i][j-1] == 'E':
                     can = True
                     break
-                if building[k][i][tmpy] == '.' and not visited[k][i][tmpy]:
-                    visited[k][i][tmpy] = True
-                    q.append([k, i, tmpy])
-            tmpy += 2
-            if tmpy < C:
-                if building[k][i][tmpy] == 'E':
+                if building[k][i][j-1] == '.' and not visited[k][i][j-1]:
+                    visited[k][i][j-1] = True
+                    q.append([k, i, j-1])
+            if j+1 < C:
+                if building[k][i][j+1] == 'E':
                     can = True
                     break
-                if building[k][i][tmpy] == '.' and not visited[k][i][tmpy]:
-                    visited[k][i][tmpy] = True
-                    q.append([k, i, tmpy])
-            tmpz = k-1
-            if 0 <= tmpz:
-                if building[tmpz][i][j] == 'E':
+                if building[k][i][j+1] == '.' and not visited[k][i][j+1]:
+                    visited[k][i][j+1] = True
+                    q.append([k, i, j+1])
+            if 0 <= k-1:
+                if building[k-1][i][j] == 'E':
                     can = True
                     break
-                if building[tmpz][i][j] == '.' and not visited[tmpz][i][j]:
-                    visited[tmpz][i][j] = True
-                    q.append([tmpz, i, j])
-            tmpz += 2
-            if tmpz < L:
-                if building[tmpz][i][j] == 'E':
+                if building[k-1][i][j] == '.' and not visited[k-1][i][j]:
+                    visited[k-1][i][j] = True
+                    q.append([k-1, i, j])
+            if k+1 < L:
+                if building[k+1][i][j] == 'E':
                     can = True
                     break
-                if building[tmpz][i][j] == '.' and not visited[tmpz][i][j]:
-                    visited[tmpz][i][j] = True
-                    q.append([tmpz, i, j])
+                if building[k+1][i][j] == '.' and not visited[k+1][i][j]:
+                    visited[k+1][i][j] = True
+                    q.append([k+1, i, j])
         if can:
             break
     print("Escaped in {} minute(s).".format(cnt) if can else "Trapped!")
