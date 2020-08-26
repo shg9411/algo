@@ -1,24 +1,28 @@
-n, m = map(int, input().split())
-dp = [[0 for _ in range(m)] for _ in range(n+1)]
-ans = [[0 for _ in range(m)] for _ in range(n+1)]
-get = [[0 for _ in range(m)]]
-for _ in range(n):
-    get.append(list(map(int, input().split()))[1:])
+import sys
+sys = sys.stdin.readline
 
-for i in range(m):
-    for j in range(1, n+1):
-        for k in range(j+1):
-            if dp[j][i] < dp[j-k][i-1]+get[k][i]:
-                dp[j][i] = dp[j-k][i-1]+get[k][i]
-                ans[j][i] = k
-
-print(dp[n][m-1])
-res = []
-cost = n
-cur = m-1
-while cur >= 0:
-    c = ans[cost][cur]
-    res.append(c)
-    cost -= c
-    cur -= 1
-print(*res[::-1])
+while 1:
+    n, a, b = map(int, input().split())
+    if not n and not a and not b:
+        break
+    ballon = []
+    for _ in range(n):
+        ballon.append(list(map(int, input().split())))
+    ballon.sort(key=lambda a: (-abs(a[1]-a[2]), -a[0]))
+    res = 0
+    for x in ballon:
+        if x[1] >= x[2]:
+            tmp = min(x[0], b)
+            b -= tmp
+            res += x[2]*tmp
+        elif x[2] > x[1]:
+            tmp = min(x[0], a)
+            a -= tmp
+            res += x[1]*tmp
+        extra = x[0]-tmp
+        if extra:
+            if a:
+                res += extra*x[1]
+            else:
+                res += extra*x[2]
+    print(res)
