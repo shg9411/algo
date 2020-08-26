@@ -11,7 +11,8 @@ def bfs(gq, rq):
         tmpGarden[i][j] = 0
     val = 2
     while gq and rq:
-        for _ in range(len(gq)):
+        gl = len(gq)
+        for _ in range(gl):
             x, y = gq.popleft()
             if tmpGarden[x][y] < 0:
                 continue
@@ -27,7 +28,8 @@ def bfs(gq, rq):
             if y < M-1 and tmpGarden[x][y+1] == 1:
                 tmpGarden[x][y+1] = val
                 gq.append([x, y+1])
-        for _ in range(len(rq)):
+        rl = len(rq)
+        for _ in range(rl):
             x, y = rq.popleft()
             if x > 0:
                 if tmpGarden[x-1][y] == 1:
