@@ -1,3 +1,6 @@
+''' TLE with python3 and pypy3
+    AC with c++'''
+
 import sys
 import math
 input = sys.stdin.readline
