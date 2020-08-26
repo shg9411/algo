@@ -1,11 +1,9 @@
-#멍청한 인간ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
-#sys = sys.stdin.readline 이러고있네
 import sys
 input = sys.stdin.readline
 
 while True:
     n, a, b = map(int, input().split())
-    if 0== n == a == b:
+    if 0 == n == a == b:
         break
     ballon = []
     for _ in range(n):
