@@ -1,3 +1,4 @@
+#pypy3
 import sys
 from collections import deque
 input = sys.stdin.readline
@@ -10,23 +11,23 @@ c = [[0 for _ in range(maxv)] for _ in range(maxv)]
 d = [[0 for _ in range(maxv)] for _ in range(maxv)]
 f = [[0 for _ in range(maxv)] for _ in range(maxv)]
 adj = [[] for _ in range(maxv)]
-for i, cnt in enumerate(map(int, input().split())):
-    c[m+i][E] = cnt
-    adj[m+i].append(E)
-    adj[E].append(m+i)
-for i, cnt in enumerate(map(int, input().split())):
-    c[S][i] = cnt
+for i in range(m):
+    c[i+n][E] = 1
+    adj[i+n].append(E)
+    adj[E].append(i+n)
+for i in range(n):
+    c[S][i] = 1
     adj[S].append(i)
     adj[i].append(S)
-for i in range(m):
-    for j, val in enumerate(map(int, input().split())):
-        c[i][j+m] = val
-        if val:
-            adj[i].append(m+j)
-            adj[m+j].append(i)
-for i in range(m):
-    for j, val in enumerate(map(int, input().split())):
-        d[i][j+m], d[j+m][i] = val, -val
+    tmp = list(map(int, input().split()))
+    idx = 1
+    while idx < tmp[0]*2:
+        j, val = tmp[idx], tmp[idx+1]
+        d[i][n+j-1], d[n+j-1][i] = val, -val
+        c[i][n+j-1] = 1
+        adj[i].append(n+j-1)
+        adj[n+j-1].append(i)
+        idx += 2
 res = 0
 cnt = 0
 while True:
@@ -54,12 +55,12 @@ while True:
     while i != S:
         flow = min(flow, c[prev[i]][i]-f[prev[i]][i])
         i = prev[i]
-    cnt += flow
     i = E
     while i != S:
         res += flow*d[prev[i]][i]
         f[prev[i]][i] += flow
         f[i][prev[i]] -= flow
         i = prev[i]
+    cnt += 1
 print(cnt)
 print(res)

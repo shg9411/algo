@@ -20,15 +20,12 @@ for i, cnt in enumerate(map(int, input().split())):
     adj[i].append(S)
 for i in range(m):
     for j, val in enumerate(map(int, input().split())):
-        c[i][j+m] = val
-        if val:
-            adj[i].append(m+j)
-            adj[m+j].append(i)
-for i in range(m):
-    for j, val in enumerate(map(int, input().split())):
         d[i][j+m], d[j+m][i] = val, -val
+        c[i][j+m] = INF
+        adj[i].append(m+j)
+        adj[m+j].append(i)
+
 res = 0
-cnt = 0
 while True:
     prev = [-1 for _ in range(maxv)]
     dist = [INF for _ in range(maxv)]
@@ -54,12 +51,10 @@ while True:
     while i != S:
         flow = min(flow, c[prev[i]][i]-f[prev[i]][i])
         i = prev[i]
-    cnt += flow
     i = E
     while i != S:
         res += flow*d[prev[i]][i]
         f[prev[i]][i] += flow
         f[i][prev[i]] -= flow
         i = prev[i]
-print(cnt)
 print(res)
