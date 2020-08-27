@@ -21,12 +21,12 @@ void update(int node, int s, int e, int l, int r, int op, int h) {
 		base[l] = tree[node].first;
 		return;
 	}
-	int mid = (s + e) / 2;
-	u_rage(node * 2, 1, tree[node].first);u_rage(node * 2, 2, tree[node].second);
-    u_rage(node * 2 + 1, 1, tree[node].first);u_rage(node * 2 + 1, 2, tree[node].second);
+	int mid = (s + e)>>1;
+	u_rage(node<<1, 1, tree[node].first);u_rage(node<<1, 2, tree[node].second);
+    u_rage(node<<1|1, 1, tree[node].first);u_rage(node<<1|1, 2, tree[node].second);
 	tree[node] = { 0,MAXH };
-	update(node * 2, s, mid, l, r, op, h);
-	update(node * 2 + 1, mid + 1, e, l, r, op, h);
+	update(node<<1, s, mid, l, r, op, h);
+	update(node<<1|1, mid + 1, e, l, r, op, h);
     return;
 }
 
