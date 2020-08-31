@@ -36,7 +36,6 @@ def solution(T, R, k):
             if num[a] == 1:
                 q.append(a)
             num[a] -= 1
-    return
 
 
 T = [5, 8, 3, 7, 10, 5, 4]

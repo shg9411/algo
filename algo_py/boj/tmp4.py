@@ -4,11 +4,11 @@ def solution(n, m, p):
     if n < m:
         return -1
 
-    if p==2:
+    if p == 2:
         return 11
-    if p==3:
+    if p == 3:
         return 11
-    if p==4:
+    if p == 4:
         2*n-3
 
 

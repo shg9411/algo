@@ -11,6 +11,7 @@ cards의 각 숫자가 적힌 카드는 무한히 많다고 가정합니다. 예
 num을 만들 방법이 존재하지 않는다면 -1을 return 하세요.
 '''
 
+
 def solution(num, cards):
     answer = [10001 for _ in range(num+1)]
     for card in cards:
@@ -22,6 +23,6 @@ def solution(num, cards):
     return answer[-1] if answer[-1] < 10001 else -1
 
 
-num = 1
-cards = [1, 2, 3]
+num = 15
+cards = [1,5,12]
 print(solution(num, cards))
