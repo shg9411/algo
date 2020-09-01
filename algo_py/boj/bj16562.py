@@ -24,6 +24,7 @@ def main():
         union(v, w)
     friends = set()
     res = 0
+    print(parent)
     for i in range(1, N+1):
         idx = find(i)
         if idx not in friends:

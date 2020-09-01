@@ -33,7 +33,7 @@ def select(count, idx):
         calc()
         return
     for i in range(idx, n):
-        #if not selected[i]:
+        # if not selected[i]:
         selected[i] = True
         select(count+1, i+1)
         selected[i] = False

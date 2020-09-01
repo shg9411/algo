@@ -1,4 +1,6 @@
+import sys
 from collections import deque
+input = sys.stdin.readline
 
 
 def solve():
@@ -36,7 +38,8 @@ def solve():
             if x[i][j] == '1':
                 bfs(i, j)
     print(len(res))
-    print('\n'.join(map(str,sorted(res))))
+    print('\n'.join(map(str, sorted(res))))
+
 
 if __name__ == '__main__':
     solve()
