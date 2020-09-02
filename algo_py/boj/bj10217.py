@@ -12,14 +12,14 @@ def solve():
     dist = [[sys.maxsize for _ in range(M+1)] for _ in range(N+1)]
     dist[1][0] = 0
     for j in range(M+1):
-        for i in range(1,N+1):
-            if dist[i][j]==sys.maxsize:
+        for i in range(1, N+1):
+            if dist[i][j] == sys.maxsize:
                 continue
             time = dist[i][j]
-            for nv,nc,nd in adj[i]:
+            for nv, nc, nd in adj[i]:
                 if nc+j > M:
                     continue
-                if dist[nv][nc+j]>time+nd:
+                if dist[nv][nc+j] > time+nd:
                     dist[nv][nc+j] = time+nd
     res = min(dist[N])
     if res == sys.maxsize:
