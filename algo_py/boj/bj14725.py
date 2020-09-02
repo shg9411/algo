@@ -16,9 +16,7 @@ for _ in range(n):
     x = input().split()[1:]
     cur = ant
     for info in x:
-        if info in cur:
-            pass
-        else:
+        if info not in cur:
             cur[info] = dict()
         cur = cur[info]
 

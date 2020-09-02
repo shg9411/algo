@@ -1,6 +1,5 @@
 #include<cstdio>
 #include<vector>
-#include<cstring>
 using namespace std;
 
 int house[201];
@@ -27,13 +26,14 @@ int main(void)
 	for (int i = 1; i <= n; i++) {
 		int s, tmp;
 		scanf("%d", &s);
+        cow[i].resize(s);
 		for (int j = 0; j < s; j++) {
-			scanf("%d", &tmp);
-			cow[i].push_back(tmp);
+			scanf("%d", &cow[i][j]);
 		}
 	}
 	for (int i = 1; i <= n; i++) {
-		memset(check, 0, sizeof(check));
+		for (int i = 1; i <= m; i++)
+			check[i] = 0;
 		if (dfs(i))
 			res += 1;
 	}
