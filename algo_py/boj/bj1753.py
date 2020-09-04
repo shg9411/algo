@@ -1,33 +1,32 @@
 import sys
-from heapq import heappush, heappop
-r = sys.stdin.readline
-INF = 1e9
+import heapq
+input =sys.stdin.readline
+INF = sys.maxsize
 
+V, E = map(int, sys.stdin.readline().split())
+K = int(sys.stdin.readline())
 
-def dijkstra(v, k, g):
-    dist = [INF] * v
-    dist[k - 1] = 0
-    q = []
-    heappush(q, [0, k-1])
-
-    while q:
-        cost, pos = heappop(q)
-
-        for p, c in g[pos]:
-            c += cost
-            if c < dist[p]:
-                dist[p] = c
-                heappush(q, [c, p])
-
-    return dist
-
-
-V, E = map(int, r().split())
-K = int(r())
-graph = [[] for _ in range(V)]
+adj = [[] for _ in range(V + 1)]
 for _ in range(E):
-    u, v, w = map(int, r().split())
-    graph[u-1].append([v-1, w])
+    u, v, w = map(int, input().split())
+    adj[u].append((v, w))
 
-for d in dijkstra(V, K, graph):
-    print(d if d != INF else "INF")
+dist = [INF for _ in range(V + 1)]
+dist[K] = 0
+q = [(0, K)]
+
+while q:
+    c, p = heapq.heappop(q)
+    if c > dist[p]:
+        continue
+    for v, w in adj[p]:
+        if dist[v] <= c+w:
+            continue
+        dist[v] = c+w
+        heapq.heappush(q, (c+w, v))
+
+for r in dist[1:]:
+    if r < sys.maxsize:
+        print(r)
+    else:
+        print("INF")
