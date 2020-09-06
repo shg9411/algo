@@ -5,7 +5,8 @@ input = sys.stdin.readline
 
 def solve():
     n, m = map(int, input().split())
-    edge = [set() for _ in range(n+1)]
+
+    edge = [[] for _ in range(n+1)]
     visited = set()
     count = 0
 
@@ -21,8 +22,8 @@ def solve():
 
     for _ in range(m):
         u, v = map(int, input().split())
-        edge[u].add(v)
-        edge[v].add(u)
+        edge[u].append(v)
+        edge[v].append(u)
 
     for i in range(1, n+1):
         if i not in visited:
