@@ -1,35 +1,23 @@
-import sys
-sys.setrecursionlimit(10**6)
-input = sys.stdin.readline
+# 랜선 자르기
 
+k, m = list(map(int, input().split()))
+array = []
+for _ in range(k):
+    array.append(int(input()))
 
-def solve():
-    n, m = map(int, input().split())
+start = 1
+end = max(array)
 
-    edge = [[] for _ in range(n+1)]
-    visited = set()
-    count = 0
-
-    def dfs(idx):
-        visited.add(idx)
-        if len(visited) == n:
-            print(count)
-            exit()
-        for num in edge[idx]:
-            if num in visited:
-                continue
-            dfs(num)
-
-    for _ in range(m):
-        u, v = map(int, input().split())
-        edge[u].append(v)
-        edge[v].append(u)
-
-    for i in range(1, n+1):
-        if i not in visited:
-            count += 1
-            dfs(i)
-
-
-if __name__ == '__main__':
-    solve()
+result = 0
+while (start <= end):
+    total = 0
+    mid = (start+end) // 2
+    for x in array:
+        if x > mid:
+            total += x//mid
+    if total < m:  # 랜선이 필요량보다 적은 경우 (mid 를 작게 해서 잘게 잘라야함)
+        end = mid - 1
+    else:
+        result = mid
+        start = mid + 1
+print(result)
