@@ -2,45 +2,55 @@ import sys
 from collections import deque
 input = sys.stdin.readline
 
-M, N, H = map(int, input().split())
-t = [[[] for _ in range(N)] for _ in range(H)]
-ripen = deque()
-for i in range(H):
-    for j in range(N):
-        tmp = list(input().split())
-        t[i][j] = tmp
-        for k in range(M):
-            if tmp[k] == '1':
-                ripen.append((i, j, k))
 
-cnt = -1
-while ripen:
-    length = len(ripen)
-    for _ in range(length):
-        k, i, j = ripen.popleft()
-        if 0 < i and t[k][i-1][j] == '0':
-            t[k][i-1][j] = '1'
-            ripen.append((k, i-1, j))
-        if i+1 < N and t[k][i+1][j] == '0':
-            t[k][i+1][j] = '1'
-            ripen.append((k, i+1, j))
-        if 0 < j and t[k][i][j-1] == '0':
-            t[k][i][j-1] = '1'
-            ripen.append((k, i, j-1))
-        if j+1 < M and t[k][i][j+1] == '0':
-            t[k][i][j+1] = '1'
-            ripen.append((k, i, j+1))
-        if 0 < k and t[k-1][i][j] == '0':
-            t[k-1][i][j] = '1'
-            ripen.append((k-1, i, j))
-        if k+1 < H and t[k+1][i][j] == '0':
-            t[k+1][i][j] = '1'
-            ripen.append((k+1, i, j))
-    cnt += 1
+def solve():
+    m, n, h = map(int, input().split())
+    tomato = [[] for _ in range(h)]
+    haveto = 0
+    tmt = deque()
+    for k in range(h):
+        for i in range(n):
+            tomato[k].append(input().split())
+            for j in range(m):
+                if tomato[k][i][j] == '0':
+                    haveto += 1
+                elif tomato[k][i][j] == '1':
+                    tmt.append((k, i, j))
+    res = 0
+    while tmt and haveto:
+        l = len(tmt)
+        for _ in range(l):
+            hh, x, y = tmt.popleft()
+            if x > 0 and tomato[hh][x-1][y] == '0':
+                tomato[hh][x-1][y] = 1
+                tmt.append((hh, x-1, y))
+                haveto -= 1
+            if y > 0 and tomato[hh][x][y-1] == '0':
+                tomato[hh][x][y-1] = 1
+                tmt.append((hh, x, y-1))
+                haveto -= 1
+            if x < n-1 and tomato[hh][x+1][y] == '0':
+                tomato[hh][x+1][y] = 1
+                tmt.append((hh, x+1, y))
+                haveto -= 1
+            if y < m-1 and tomato[hh][x][y+1] == '0':
+                tomato[hh][x][y+1] = 1
+                tmt.append((hh, x, y+1))
+                haveto -= 1
+            if hh > 0 and tomato[hh-1][x][y] == '0':
+                tomato[hh-1][x][y] = 1
+                tmt.append((hh-1, x, y))
+                haveto -= 1
+            if hh < h-1 and tomato[hh+1][x][y] == '0':
+                tomato[hh+1][x][y] = 1
+                tmt.append((hh+1, x, y))
+                haveto -= 1
+        res += 1
+    if haveto:
+        print(-1)
+    else:
+        print(res)
 
-for tt in t:
-    for ttt in tt:
-        if '0' in ttt:
-            print(-1)
-            exit()
-print(cnt)
+
+if __name__ == '__main__':
+    solve()
