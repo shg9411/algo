@@ -27,5 +27,5 @@ def solution(new_id):
     return ans
 
 
-print(solution("abcdefghijklmn.p"))
+print(solution("."))
 # ok
