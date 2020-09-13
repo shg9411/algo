@@ -1,8 +1,4 @@
-import sys
-input = sys.stdin.readline
 n, m, q = map(int, input().split())
-for _ in range(q):
-    input()
 alpha = 'abcdefghijklmnopqrstuvwxyz'[:n]
 ans = ''
 idx = 0
