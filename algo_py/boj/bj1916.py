@@ -11,25 +11,25 @@ def solve():
 
     for _ in range(m):
         s, e, c = map(int, input().split())
-        if (tc:=adj[s].get(e)):
-            adj[s][e]=min(tc, c)
+        if (tc := adj[s].get(e)):
+            adj[s][e] = min(tc, c)
         else:
-            adj[s][e]=c
+            adj[s][e] = c
 
-    start, end=map(int, input().split())
+    start, end = map(int, input().split())
 
     def dijkstra():
-        dist=[sys.maxsize for _ in range(n+1)]
-        dist[start]=0
-        hq=[(0, start)]
+        dist = [sys.maxsize for _ in range(n+1)]
+        dist[start] = 0
+        hq = [(0, start)]
         while hq:
-            cost, now=heappop(hq)
+            cost, now = heappop(hq)
             if dist[now] < cost:
                 continue
             for nxt, ncost in adj[now].items():
                 ncost += cost
                 if dist[nxt] > ncost:
-                    dist[nxt]=ncost
+                    dist[nxt] = ncost
                     heappush(hq, (ncost, nxt))
         print(dist[end])
     dijkstra()
