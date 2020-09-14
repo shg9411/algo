@@ -1,34 +1,19 @@
-import sys
-input = sys.stdin.readline
-print(2<<20, 2<<21,2<<20<<1)
-fenwik = [0 for _ in range((2 << 20) << 1)]
-
-
-def update(node, value):
-    node += 2 << 20
-    while node:
-        fenwik[node] += value
-        node >>= 1
-
-
-def query(node):
-    i = 1
-    while i < (2 << 20):
-        fenwik[i] -= 1
-        if fenwik[i << 1] >= node:
-            i = i << 1
+n, m = map(int, input().split())
+tree = sorted(map(int, input().split()))
+l = 1
+r = tree[-1]
+res = 0
+while l <= r:
+    mid = (l+r)//2
+    cnt = 0
+    for t in tree[::-1]:
+        if t > mid:
+            cnt += t-mid
         else:
-            node -= fenwik[i << 1]
-            i = i << 1 | 1
-    fenwik[i] -= 1
-    return i-2 << 20
-
-
-n = int(input())
-
-for _ in range(n):
-    a, *b = map(int, input().split())
-    if a == 1:
-        print(query(b[0]))
+            break
+    if cnt >= m:
+        l = mid+1
+        res = max(res, mid)
     else:
-        update(b[0], b[1])
+        r = mid-1
+print(res)
