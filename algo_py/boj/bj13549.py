@@ -1,23 +1,35 @@
 from collections import deque
-N, K = map(int, input().split())
-visited = [100001 for _ in range(100001)]
-subin = deque([N])
-visited[N] = 0
-while subin:
-    tmp = subin.popleft()
-    cur = visited[tmp]
-    if tmp == K:
-        print(cur)
-        exit()
-    if tmp > 0:
-        if visited[tmp-1] > visited[tmp]+1:
-            visited[tmp-1] = cur+1
-            subin.append(tmp-1)
-    if tmp < 100000:
-        if visited[tmp+1] > visited[tmp]+1:
-            visited[tmp+1] = cur+1
-            subin.append(tmp+1)
-    if tmp*2 <= 100000:
-        if visited[tmp*2] > visited[tmp]:
-            visited[tmp*2] = cur
-            subin.append(tmp*2)
+
+
+def solve():
+    n, k = map(int, input().split())
+    if k <= n:
+        print(n-k)
+    else:
+        MAX = 100001
+        dist = [MAX for _ in range(MAX)]
+        dist[k] = 0
+        q = deque([k])
+        while q:
+            t = q.popleft()
+            if t == n:
+                break
+            c = dist[t]
+            x = t >> 1
+            if not t % 2 and dist[x] > c:
+                dist[x] = c
+                q.appendleft(x)
+            c += 1
+            x = t-1
+            if x >= 0 and dist[x] > c:
+                dist[x] = c
+                q.append(x)
+            x = t+1
+            if x < MAX and dist[x] > c:
+                dist[x] = c
+                q.append(x)
+        print(dist[n])
+
+
+if __name__ == "__main__":
+    solve()
