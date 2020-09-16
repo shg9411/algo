@@ -1,31 +1,48 @@
-n, m, v = map(int, input().split())
-
-matrix = [[0] * (n+1) for _ in range(n+1)]
-for _ in range(m):
-    link = list(map(int, input().split()))
-    matrix[link[0]][link[1]] = 1
-    matrix[link[1]][link[0]] = 1
+import sys
+input = sys.stdin.readline
 
 
-def dfs(current, row, foot):
-    foot += [current]
-    for search in range(len(row[current])):
-        if row[current][search] and search not in foot:
-            foot = dfs(search, row, foot)
-    return foot
+def solve():
+    n, m, v = map(int, input().split())
+    edge = [[] for _ in range(n+1)]
+    for _ in range(m):
+        u, uu = map(int, input().split())
+        edge[u].append(uu)
+        edge[uu].append(u)
+
+    for i in range(1, n+1):
+        edge[i].sort()
+
+    visit = [0 for _ in range(n+1)]
+
+    def dfs(v):
+        visit[v] = 1
+        dfsRes.append(v)
+        for e in edge[v]:
+            if not visit[e]:
+                visit[e] = 1
+                dfs(e)
+
+    def bfs(v):
+        visit = [0 for _ in range(n+1)]
+        visit[v] = 1
+        bfsRes.append(v)
+        q = [v]
+        while q:
+            tmp = q.pop(0)
+            for e in edge[tmp]:
+                if not visit[e]:
+                    bfsRes.append(e)
+                    q.append(e)
+                    visit[e] = 1
+
+    dfsRes = []
+    bfsRes = []
+    dfs(v)
+    bfs(v)
+    print(*dfsRes)
+    print(*bfsRes)
 
 
-def bfs(start):
-    queue = [start]
-    foot = [start]
-    while queue:
-        current = queue.pop(0)
-        for search in range(len(matrix[current])):
-            if matrix[current][search] and search not in foot:
-                foot += [search]
-                queue += [search]
-    return foot
-
-
-print(*dfs(v, matrix, []))
-print(*bfs(v))
+if __name__ == "__main__":
+    solve()

@@ -1,34 +1,31 @@
-a = [list(map(int, input().split())) for _ in range(9)]
-b, n = [0]*81, 0
-row = [[False]*10 for _ in range(9)]
-col = [[False]*10 for _ in range(9)]
-squ = [[False]*10 for _ in range(9)]
+if __name__ == '__main__':
+    m = [list(map(int, input().split()))for _ in range(9)]
+    x = [[0]*10 for _ in range(9)]
+    y = [[0]*10 for _ in range(9)]
+    sq = [[0]*10 for _ in range(9)]
+    get = [[i//3*3+j//3 for j in range(9)]for i in range(9)]
+    todo = []
+    for i in range(9):
+        for j in range(9):
+            if m[i][j] == 0:
+                todo.append((i, j))
+            else:
+                x[i][m[i][j]] = 1
+                y[j][m[i][j]] = 1
+                sq[get[i][j]][m[i][j]] = 1
 
-def s(i, j):
-    return i//3*3 + j//3
+    def solve(c):
+        if len(todo) == c:
+            for i in range(9):
+                print(*m[i])
+            exit()
+        i, j = todo[c]
+        for can in range(1, 10):
+            if x[i][can] or y[j][can] or sq[get[i][j]][can]:
+                continue
+            m[i][j] = can
+            x[i][can] = y[j][can] = sq[get[i][j]][can] = 1
+            solve(c+1)
+            x[i][can] = y[j][can] = sq[get[i][j]][can] = 0
 
-def solve(idx):
-    if idx == n:
-        for i in range(9):
-            print(' '.join(map(str, a[i])))
-        exit(0)
-    x, y = b[idx]//9, b[idx]%9
-    for i in range(1, 10):
-        if not (row[x][i] or col[y][i] or squ[s(x,y)][i]):
-            row[x][i] = col[y][i] = squ[s(x,y)][i] = True
-            a[x][y] = i
-            solve(idx+1)
-            a[x][y] = 0
-            row[x][i] = col[y][i] = squ[s(x,y)][i] = False
-
-for i in range(9):
-    for j in range(9):
-        k = a[i][j]
-        if k:
-            row[i][k] = True
-            col[j][k] = True
-            squ[s(i,j)][k] = True
-        else:
-            b[n] = i*9 + j
-            n += 1
-solve(0)
+    solve(0)

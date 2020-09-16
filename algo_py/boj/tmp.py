@@ -1,65 +1,51 @@
-import sys
 from collections import deque
+import sys
 input = sys.stdin.readline
-INF = 1e9
-n, m = map(int, input().split())
-maxv = n+m+2
-S = maxv-2
-E = maxv-1
-c = [[0 for _ in range(maxv)] for _ in range(maxv)]
-d = [[0 for _ in range(maxv)] for _ in range(maxv)]
-f = [[0 for _ in range(maxv)] for _ in range(maxv)]
-adj = [[] for _ in range(maxv)]
-for i in range(m):
-    c[i+n][E] = 1
-    adj[i+n].append(E)
-    adj[E].append(i+n)
-for i in range(n):
-    c[S][i] = 1
-    adj[S].append(i)
-    adj[i].append(S)
-    tmp = list(map(int, input().split()))
-    idx = 1
-    while idx < tmp[0]*2:
-        j, val = tmp[idx], tmp[idx+1]
-        d[i][n+j-1], d[n+j-1][i] = val, -val
-        c[i][n+j-1] = 1
-        adj[i].append(n+j-1)
-        adj[n+j-1].append(i)
-        idx += 2
-res = 0
-cnt = 0
-while True:
-    prev = [-1 for _ in range(maxv)]
-    dist = [INF for _ in range(maxv)]
-    atQ = [False for _ in range(maxv)]
-    q = deque()
-    dist[S] = 0
-    atQ[S] = True
-    q.append(S)
-    while q:
-        cur = q.popleft()
-        atQ[cur] = False
-        for nxt in adj[cur]:
-            if c[cur][nxt] - f[cur][nxt] > 0 and dist[nxt] > dist[cur] + d[cur][nxt]:
-                dist[nxt] = dist[cur]+d[cur][nxt]
-                prev[nxt] = cur
-                if not atQ[nxt]:
-                    q.append(nxt)
-                    atQ[nxt] = True
-    if prev[E] == -1:
-        break
-    flow = INF
-    i = E
-    while i != S:
-        flow = min(flow, c[prev[i]][i]-f[prev[i]][i])
-        i = prev[i]
-    i = E
-    while i != S:
-        res += flow*d[prev[i]][i]
-        f[prev[i]][i] += flow
-        f[i][prev[i]] -= flow
-        i = prev[i]
-    cnt += 1
-print(cnt)
-print(res)
+q = deque()
+
+n, m, h = map(int, input().split())
+graph = [[list(map(int, sys.stdin.readline().split()))
+          for _ in range(m)] for _ in range(h)]
+dist = [[[0] * n for _ in range(m)] for _ in range(h)]
+isnone = True
+
+for z in range(h):
+    for y in range(m):
+        for x in range(n):
+            if graph[z][y][x] == 1:
+                q.append((z, y, x))
+                isnone = False
+
+if isnone:
+    print(-1)
+    sys.exit(0)
+
+dx = [1, -1, 0, 0, 0, 0]
+dy = [0, 0, 1, -1, 0, 0]
+dz = [0, 0, 0, 0, 1, -1]
+
+while q:
+    a, b, c = q.popleft()
+
+    for i in range(6):
+        x = c + dx[i]
+        y = b + dy[i]
+        z = a + dz[i]
+        if 0 <= x < n and 0 <= y < m and 0 <= z < h:
+            if graph[z][y][x] == 0:
+                q.append((z, y, x))
+                graph[z][y][x] = 1
+                dist[z][y][x] = dist[a][b][c] + 1
+
+day = 0
+for z in range(h):
+    for y in range(m):
+        for x in range(n):
+            if dist[z][y][x] > day:
+                day = dist[z][y][x]
+
+            elif graph[z][y][x] == 0:
+                print(-1)
+                sys.exit(0)
+
+print(day)

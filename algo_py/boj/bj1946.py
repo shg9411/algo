@@ -1,29 +1,22 @@
 import sys
+input = sys.stdin.readline
 
-def _1946():
-    T = int(input())
-    for i in range(T):
-        N = int(input())
-        arr = []
-        for j in range(N):
-            a, b = map(int, sys.stdin.readline().split())
-            arr.append((a, b))
 
-        arr.sort()
-        cnt = 0
-        aMax = 100001
-        bMax = 100001
-        for i in arr:
-            if i[0] < aMax and i[1] > bMax:
-                cnt += 1
-                aMax = i[0]
-            elif i[0] > aMax and i[1] < bMax:
-                cnt += 1
-                bMax = i[1]
-            elif i[0] < aMax and i[1] < bMax:
-                cnt += 1
-                aMax = i[0]
-                bMax = i[1]
-        print(cnt)
-
-_1946()
+for _ in range(int(input())):
+    people = []
+    count = 0
+    for _ in range(int(input())):
+        people.append(list(map(int, input().split())))
+    people.sort()
+    x = y = len(people)+1
+    for p in people:
+        ok = False
+        if p[0] < x:
+            x = p[0]
+            ok = True
+        if p[1] < y:
+            y = p[1]
+            ok = True
+        if ok:
+            count += 1
+    print(count)

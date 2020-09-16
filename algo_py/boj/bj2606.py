@@ -1,27 +1,31 @@
 import sys
-from collections import deque
 input = sys.stdin.readline
 
-c = int(input())
+
+def find(x):
+    if x == parent[x]:
+        return x
+    parent[x] = find(parent[x])
+    return parent[x]
+
+
+def union(x, y):
+    x = find(x)
+    y = find(y)
+    if x < y:
+        parent[y] = x
+    else:
+        parent[x] = y
+
+
+f = int(input())
 t = int(input())
-v = [deque([]) for _ in range(c+1)]
-
+parent = [i for i in range(f+1)]
 for _ in range(t):
-    a, b = map(int, input().split())
-    v[a].append(b)
-    v[b].append(a)
-
-res = 0
-visited = [False for _ in range(c+1)]
-q = deque([1])
-visited[1] = True
-while q:
-    tmp = q.popleft()
-    res += 1
-    for _ in range(len(v[tmp])):
-        x = v[tmp].popleft()
-        if not visited[x]:
-            q.append(x)
-            visited[x] = True
-
-print(res-1)
+    a, b = map(int,input().split())
+    union(a, b)
+cnt = 0
+for i in range(1,f+1):
+    if find(i)==1:
+        cnt+=1
+print(cnt-1)

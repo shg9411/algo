@@ -1,7 +1,9 @@
 n = int(input())
-ar = list(map(int, input().split()))
-s = []
+many = list(map(int, input().split()))
+
+res = []
+
 for i in range(n-1, -1, -1):
-    s.insert(ar[i], i+1)
-for tmp in s:
-    print(tmp, end = ' ')
+    res.insert(many[i],i+1)
+
+print(' '.join(map(str,res)))

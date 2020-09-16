@@ -1,14 +1,9 @@
-n = list(map(int, input()))
-result = []
-if 0 not in set(n):
+n = list(map(int,list(input())))
+
+if sum(n)%3!=0 or 0 not in n:
     print(-1)
-else:
-    n.remove(0)
-    if sum(n) % 3 != 0:
-        print(-1)
-    else:
-        n.sort(reverse=True)
-        for x in n:
-            result.append(x)
-        result.append(0)
-        print(''.join(map(str,result)))
+    exit()
+
+n.sort(reverse=True)
+
+print(''.join(map(str,n)))

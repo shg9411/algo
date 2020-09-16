@@ -4,7 +4,6 @@ input = sys.stdin.readline
 
 
 def init(arr, tree, node, s, e):
-    #print(node, s, e)
     if s == e:
         tree[node] = arr[s]
         return tree[node]
@@ -40,7 +39,6 @@ n, m, k = map(int, input().split())
 arr = [int(input()) for _ in range(n)]
 tree = [0 for _ in range(2**(math.ceil(math.log2(n)+1)))]
 init(arr, tree, 1, 0, n-1)
-#print(tree)
 
 for _ in range(m+k):
     a, b, c = map(int, input().split())
@@ -48,6 +46,5 @@ for _ in range(m+k):
         diff = c-arr[b-1]
         arr[b-1] = c
         update(tree, 1, 0, n-1, b-1, diff)
-        #print(tree)
     else:
         print(getValue(tree, 1, 0, n-1, b-1, c-1))

@@ -1,75 +1,42 @@
-import sys
-K = int(input())
-signs = list(input().split())
-initial = list(range(10))
-visited = [0 for _ in range(11)]
-min_res = []
-max_res = []
+import itertools
 
-def dfs(last, visited, count):
-    global found
-    if count == K+1 and not found:
-        # print(visited)
-        res_list = [0 for _ in range(K+1)]
-        for i in range(11):
-            if visited[i]:
-                res_list[visited[i]-1] = i
-        found = True
-        print(*res_list, sep="")
+k = int(input())
+sign = input().split()
+num = [i for i in range(9, -1, -1)]
+selected = []
+
+
+def dfs(idx, count):
+    global find
+    if count == k+1 and not find:
+        print(''.join(map(str,selected)))
+        find = True
         return
-
-    if not found:
-        sign = signs[count-1]
-        if sign == "<":
-            for num in range(last+1, 10):
-                if not visited[num]:
-                    visited[num] = count + 1
-                    dfs(num, visited, count + 1)
-                    visited[num] = 0
-
+    if not find:
+        signal = sign[count-1]
+        if signal == '>':
+            for i in range(idx+1, 10):
+                if num[i] not in selected:
+                    selected.append(num[i])
+                    dfs(i, count+1)
+                    selected.pop()
         else:
-            for num in range(0, last):
-                if not visited[num]:
-                    visited[num] = count + 1
-                    dfs(num, visited, count + 1)
-                    visited[num] = 0
-
-def reverse_dfs(last, visited, count):
-    global found
-    if count == K+1 and not found:
-        res_list = [0 for _ in range(K+1)]
-        for i in range(11):
-            if visited[i]:
-                res_list[visited[i]-1] = i
-        found = True
-        print(*res_list, sep="")
-        return
-
-    if not found:
-        sign = signs[count-1]
-        if sign == "<":
-            for num in range(9, last, -1):
-                if not visited[num]:
-                    visited[num] = count + 1
-                    reverse_dfs(num, visited, count + 1)
-                    visited[num] = 0
-
-        else:
-            for num in range(last-1, -1, -1):
-                if not visited[num]:
-                    visited[num] = count + 1
-                    reverse_dfs(num, visited, count + 1)
-                    visited[num] = 0
+            for i in range(idx-1, -1, -1):
+                if num[i] not in selected:
+                    selected.append(num[i])
+                    dfs(i, count+1)
+                    selected.pop()
 
 
-found = False
-for i in range(9,-1,-1):
-    visited[i] = 1
-    reverse_dfs(i, visited, 1)
-    visited[i] = 0
-
-found = False
+find = False
 for i in range(10):
-    visited[i] = 1
-    dfs(i, visited, 1)
-    visited[i] = 0
+    selected.append(num[i])
+    dfs(i, 1)
+    selected.pop()
+
+selected = []
+find = False
+for i in range(9, -1, -1):
+    selected.append(num[i])
+    dfs(i, 1)
+    selected.pop()
