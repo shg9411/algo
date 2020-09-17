@@ -1,71 +1,35 @@
 import sys
+import bisect
+input = sys.stdin.readline
 
 
-def work():
-    a = int(input())
-    list_index = []
-    list_stack = []
-    list_show = []
-    f = 0
-    r = 0
+def getdist(a, b):
+    return (a[0]-b[0])**2+(a[1]-b[1])**2
 
-    for i in range(0, a):
-        y = str(sys.stdin.readline())
-        ant = y.rstrip()
-        list_index.append(ant)
 
-    index = 0
-    while 1:
-        if 'push' in list_index[index]:  # 명령에 push 가 있으면
-            list_stack.append((list_index[index]).split(" ")[1])
-            r += 1
-
-            index += 1
-        elif 'front' in list_index[index]:
-            if not list_stack:
-                list_show.append(-1)
-                index += 1
-            else:
-                list_show.append(int(list_stack[f]))
-                index += 1
-        elif list_index[index] == "back":
-            if len(list_stack) != 0:
-                list_show.append(int(list_stack[-1]))
-                index += 1
-            else:
-                list_show.append(-1)
-                index += 1
-        elif list_index[index] == "size":
-            if f + 1 > r:
-                list_show.append(0)
-                index += 1
-            else:
-                list_show.append(len(list_stack))
-                index += 1
-        elif list_index[index] == "empty":
-            if f + 1 > r:
-                list_show.append(1)
-                index += 1
-            else:
-                list_show.append(0)
-                index += 1
-        elif list_index[index] == "pop":
-            if f + 1 <= r:
-                list_show.append(int(list_stack[f]))
-                f += 1
-                index += 1
-            elif f + 1 > r:
-                list_show.append(-1)
-                index += 1
+n = int(input())
+p = sorted([list(map(int, input().split())) for _ in range(n)])
+dist = getdist(p[0], p[1])
+candi = [p[0], p[1]]
+start = 0
+for i in range(2, n):
+    tmp = p[i]
+    while start < i:
+        xx = p[start]
+        x = tmp[0]-xx[0]
+        if x*x > dist:
+            candi.remove(xx)
+            start += 1
         else:
-            pass
-
-        if index == a:
-            for i in list_show:
-                print(i)
-            quit()
-
-    quit()
-
-
-work()
+            break
+    d = int(dist**0.5)+1
+    lp = [-100000, tmp[1]-d]
+    mp = [100000, tmp[1]+d]
+    lower = bisect.bisect_left(candi, lp)
+    upper = bisect.bisect_right(candi, mp)
+    for qqq in range(lower, upper):
+        xxx = getdist(tmp, candi[qqq])
+        if xxx < dist:
+            dist = xxx
+    bisect.insort(candi, tmp)
+print(dist)
