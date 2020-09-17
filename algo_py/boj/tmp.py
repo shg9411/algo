@@ -1,43 +1,71 @@
 import sys
-from collections import deque
-from pprint import pprint as pp
-
-input: () = lambda: sys.stdin.readline().strip()
-#sys.stdin = open('inputs/boj/7576_input')
 
 
-def solution(graph, queue):
-    dir = [(-1, 0), (1, 0), (0, 1), (0, -1)]
-    # 혹시 모를 visited 행렬 구현
-    visited = [[0 for _ in range(m)] for _ in range(n)]
+def work():
+    a = int(input())
+    list_index = []
+    list_stack = []
+    list_show = []
+    f = 0
+    r = 0
 
-    while queue:
-        r, c = queue.popleft()
-        for dr, dc in dir:
-            nr, nc = r + dr, c + dc
-            if 0 <= nr < n and 0 <= nc < m and graph[nr][nc] == 0:
-                graph[nr][nc] = graph[r][c] + 1
-                visited[nr][nc] = visited[r][c] + 1
-                queue.append(tuple([nr, nc]))
+    for i in range(0, a):
+        y = str(sys.stdin.readline())
+        ant = y.rstrip()
+        list_index.append(ant)
 
-    if 0 in graph:
-        return -1
-    else:
-        return max(max(visited))
+    index = 0
+    while 1:
+        if 'push' in list_index[index]:  # 명령에 push 가 있으면
+            list_stack.append((list_index[index]).split(" ")[1])
+            r += 1
+
+            index += 1
+        elif 'front' in list_index[index]:
+            if not list_stack:
+                list_show.append(-1)
+                index += 1
+            else:
+                list_show.append(int(list_stack[f]))
+                index += 1
+        elif list_index[index] == "back":
+            if len(list_stack) != 0:
+                list_show.append(int(list_stack[-1]))
+                index += 1
+            else:
+                list_show.append(-1)
+                index += 1
+        elif list_index[index] == "size":
+            if f + 1 > r:
+                list_show.append(0)
+                index += 1
+            else:
+                list_show.append(len(list_stack))
+                index += 1
+        elif list_index[index] == "empty":
+            if f + 1 > r:
+                list_show.append(1)
+                index += 1
+            else:
+                list_show.append(0)
+                index += 1
+        elif list_index[index] == "pop":
+            if f + 1 <= r:
+                list_show.append(int(list_stack[f]))
+                f += 1
+                index += 1
+            elif f + 1 > r:
+                list_show.append(-1)
+                index += 1
+        else:
+            pass
+
+        if index == a:
+            for i in list_show:
+                print(i)
+            quit()
+
+    quit()
 
 
-if __name__ == '__main__':
-    m, n = map(int, input().split())
-    farm = []
-    queue = deque()
-    for i in range(n):
-        line = list(map(int, input().split()))
-        for j in range(m):
-            if line[j] == 1:
-                # 1인 경우에 큐에 넣어준다.
-                queue.append(tuple([i, j]))
-
-        farm.append(line)
-
-    result = solution(farm, queue)
-    print(result)
+work()
