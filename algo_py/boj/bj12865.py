@@ -1,19 +1,21 @@
-import sys
-input = sys.stdin.readline
+import itertools
 
-n, k = map(int, input().split())
 
-val = []
-dp = [[0 for _ in range(k+1)] for _ in range(n)]
+def solve():
+    n, k = map(int, input().split())
+    dp = {0: 0}
+    for _ in range(n):
+        w, v = map(int, input().split())
+        t = []
+    for ck, cv in dp.items():
+        if ck+w <= k:
+            t += (ck+w, cv+v),
+    for tk, tv in t:
+        if tk <= k:
+            if dp.get(tk, 0) < tv:
+                dp[tk] = tv
+    print(max(dp.values()))
 
-for _ in range(n):
-    w, v = map(int, input().split())
-    val.append([w, v])
 
-for i in range(n):
-    for j in range(k+1):
-        dp[i][j] = dp[i-1][j]
-        if j-val[i][0] >= 0:
-            dp[i][j] = max(dp[i][j], dp[i-1][j-val[i][0]]+val[i][1])
-
-print(dp[n-1][k])
+if __name__ == "__main__":
+    solve()
