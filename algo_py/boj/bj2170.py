@@ -7,6 +7,7 @@ for _ in range(n):
     if a > b:
         a, b = b, a
     p.append((a, b))
+p.sort()
 s = p[0][0]
 e = p[0][1]
 c = e-s
