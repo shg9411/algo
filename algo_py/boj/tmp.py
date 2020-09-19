@@ -1,8 +1,4 @@
-f, s, g, u, d = map(int, input().split())
-r = 0
-while r < f and 0 < s and s <= f:
-    if s == g:
-        print(r)
-        exit()
-    s -= d if s > g and s > d or s < g and s+u > f else -u
-print("use the stairs")
+tmp = 2
+if (ttmp:=tmp | 1)==1:
+    print(1)
+print(ttmp)
