@@ -11,15 +11,7 @@ def find(x):
 
 def union(x, y):
     x, y = find(x), find(y)
-    if x == y:
-        return
-    if level[x] < level[y]:
-        parent[x] = y
-    elif level[x] < level[y]:
-        parent[y] = x
-    else:
-        parent[x] = y
-        level[y] += 1
+    parent[y] = x
 
 
 def kruskal():
