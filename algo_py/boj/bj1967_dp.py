@@ -5,16 +5,16 @@ input = sys.stdin.readline
 
 def solve():
     n = int(input())
-    adj = [dict() for _ in range(n+1)]
+    adj = [list() for _ in range(n+1)]
     dp = [0 for _ in range(n+1)]
     md = [0 for _ in range(n+1)]
     for _ in range(n-1):
         x, y, z = map(int, input().split())
-        adj[x][y] = z
+        adj[x].append((y, z))
 
     def dfs(u):
         d = dd = 0
-        for v, c in adj[u].items():
+        for v, c in adj[u]:
             dfs(v)
             if d < (tc := md[v]+c):
                 dd = d
