@@ -1,35 +1,36 @@
 '''
-    python          json
-    
-    dict            object
-    list,tuple      array
-    str             string
-    int,float       number
-    True            true
-    False           false
-    None            null
+when using form
+headers["Content-Type"] = "application/x-www-form-urlencoded"
+
+if needed
+headers["Authorization"] = "Bearer {token}"
 '''
 
-
-import urllib.request
-import urllib.parse
-import json
+import requests
+from requests.structures import CaseInsensitiveDict
 
 
-def GET(param, header=None):
-    if header:
-        req = urllib.request.Request(param, headers=header)
-    else:
-        req = urllib.request.Request(param)
-    data = urllib.request.urlopen(req).read().decode('utf-8')
-    print(data)
+def GET(url, param=None):
+    # r.text, r.json(), etc..
+    headers = CaseInsensitiveDict()
+    headers["Accept"] = "application/json"
+    headers["Content-Type"] = "application/json"
+    headers["Authorization"] = "123"
+    r = requests.get(url, headers=headers, params=param)
+    print(r.status_code)
+    print(r.headers)
+    print(r.text)
 
 
-def POST(param, data):
-    data = urllib.parse.urlencode(data).encode()
-    req = urllib.request.Reuqest(param, data=data)
-    res = urllib.request.urlopen(req).read().decode('utf-8')
+def POST(url, data=None):
+    headers = CaseInsensitiveDict()
+    headers["Accept"] = "application/json"
+    headers["Content-Type"] = "application/json"
+    r = requests.post(url, headers=headers, data=data)
+    print(r.status_code)
+    print(r.headers)
+    print(r.text)
 
 
-url = "http://api.welcome.kakao.com"
-_data = GET(url)
+POST("https://httpbin.org/response-headers?freeform=as")
+GET("https://httpbin.org/response-headers?freeform=d")

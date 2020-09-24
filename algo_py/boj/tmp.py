@@ -1,42 +1,53 @@
 import sys
-sys.setrecursionlimit(10**6)
+sys.setrecursionlimit(10**9)
 input = sys.stdin.readline
 
 
-def dfs(i):
-    visited[i] = True
-    for j in tr[i]:
-        if (idx := matching.get(j, -1)) == -1 or (not visited[idx] and dfs(idx)):
-            r[i] = j
-            matching[j] = i
-            return True
-    return False
+if __name__ == '__main__':
+    def dfs(u):
+        for v in adj[u]:
+            if not visited[v]:
+                visited[v] = True
+                dfs(v)
+        stack.append(u)
 
+    def get(u, v):
+        scc[v].append(u)
+        for n in adj_r[u]:
+            if not visited[n]:
+                visited[n] = True
+                get(n, v)
 
-n = int(input())
-t = []
-tr = []
-for i in range(n):
-    t.append(tuple(map(int, input().split())))
-    a, b, c = t[-1][0]*t[-1][1], t[-1][0]+t[-1][1], t[-1][0]-t[-1][1]
-    tmp = set([a, b, c])
-    tr.append(tmp)
-r = [-sys.maxsize for _ in range(n)]
-matching = dict()
-for i in range(n):
-    visited = [False for _ in range(n)]
-    if not dfs(i):
-        print("impossible")
-        exit()
+    V, E = map(int, input().split())
+    adj = [[] for _ in range(V+1)]
+    adj_r = [[] for _ in range(V+1)]
+    scc = [[] for _ in range(V+1)]
+    stack = []
 
+    res = 0
+    for i in range(E):
+        u, v = map(int, input().split())
+        adj[u].append(v)
+        adj_r[v].append(u)
+    visited = [False for _ in range(V+1)]
+    for i in range(1, V+1):
+        if not visited[i]:
+            visited[i] = True
+            dfs(i)
+    visited = [False for _ in range(V+1)]
 
-for j in range(n):
-    op = ''
-    if t[j][0]+t[j][1] == r[j]:
-        op = '+'
-    elif t[j][0]*t[j][1] == r[j]:
-        op = '*'
-    else:
-        op = '-'
-    print("{} {} {} {} {}".format(
-        t[j][0], op, t[j][1], '=', r[j]))
+    while stack:
+        tmp = stack.pop()
+        if not visited[tmp]:
+            visited[tmp] = True
+            get(tmp, res)
+            res += 1
+    res = []
+    for c in scc:
+        if c:
+            c.sort()
+            res.append(c)
+    res.sort()
+    print(len(res))
+    for c in res:
+        print(' '.join(map(str, c)), end=' -1\n')
