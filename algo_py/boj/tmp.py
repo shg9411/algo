@@ -1,24 +1,23 @@
-from collections import deque
-maxV = 10**6+1
-x = int(input())
-visited = [maxV for _ in range(x+1)]
-visited[x] = 0
-q = deque()
-q.append(x)
-while q:
-    tmp = q.popleft()
-    val = visited[tmp]
-    if tmp == 1:
-        print(val)
-        break
-    if tmp % 3 == 0:
-        if visited[tmp//3] > val+1:
-            visited[tmp//3] = val+1
-            q.append(tmp//3)
-    if tmp % 2 == 0:
-        if visited[tmp//2] > val+1:
-            visited[tmp//2] = val+1
-            q.append(tmp//2)
-    if visited[tmp-1] > val+1:
-        visited[tmp-1] = val+1
-        q.append(tmp-1)
+def solve():
+    def dfs(u):
+        m = 0
+        for v in adj[u]:
+            m = max(m, t[v] if vi[v] else dfs(v))
+        vi[u] = 1
+        t[u] += m
+        return t[u]
+
+    n, k = map(int, input().split())
+    adj = [[] for _ in range(n+1)]
+    vi = [0 for _ in range(n+1)]
+    t = [0]+list(map(int, input().split()))
+    for _ in range(k):
+        x, y = map(int, input().split())
+        adj[y].append(x)
+    w = int(input())
+    print(dfs(w))
+
+
+if __name__ == "__main__":
+    for _ in range(int(input())):
+        solve()

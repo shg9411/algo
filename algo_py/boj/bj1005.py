@@ -1,49 +1,32 @@
 import sys
-T = int(sys.stdin.readline())
-results = []
+sys.setrecursionlimit(10**9)
+input = sys.stdin.readline
 
-for _ in range(T):
-    N, K = map(int, sys.stdin.readline().split())
-    D = list(map(int, sys.stdin.readline().split()))
-    R = []
-    for _ in range(K):
-        X, Y = map(int, sys.stdin.readline().split())
-        R.append([X, Y])
-    W = int(sys.stdin.readline())
 
-    operating_map = {}
-    for building, time in enumerate(D):
-        operating_map[building+1] = time
+def solve():
+    def dfs(u):
+        m = 0
+        # 선행 작업 중 최대시간 추적
+        for v in adj[u]:
+            m = max(m, t[v] if vi[v] else dfs(v))
+        vi[u] = 1
+        # 건설 시간 + 선행시간 중 최대 시간
+        t[u] += m
+        return t[u]
 
-    rule_map = {}
-    for i in range(N):
-        rule_map[i+1] = set()
-    for rule in R:
-        X = rule[0]
-        Y = rule[1]
-        rule_map[Y].add(X)
+    n, k = map(int, input().split())
+    adj = [[] for _ in range(n+1)]
+    # 방문
+    vi = [0 for _ in range(n+1)]
+    # base 시간
+    t = [0]+list(map(int, input().split()))
+    for _ in range(k):
+        x, y = map(int, input().split())
+        adj[y].append(x)
+    w = int(input())
+    print(dfs(w))
 
-    done = set()
-    time = 0
 
-    while W not in done:
-
-        bases = []
-        for building in rule_map:
-
-            if done.issuperset(rule_map[building]) and building not in done:
-                bases.append(building)
-
-        time_step = min([operating_map[base] for base in bases])
-        time += time_step
-
-        for base in bases:
-            operating_map[base] -= time_step
-
-            if operating_map[base] == 0:
-                done.add(base)
-
-    results.append(time)
-
-for result in results:
-    sys.stdout.write(str(result)+'\n')
+if __name__ == "__main__":
+    for _ in range(int(input())):
+        solve()
