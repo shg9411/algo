@@ -1,4 +1,4 @@
-import heapq
+from heapq import heappush, heappop
 import sys
 input = sys.stdin.readline
 
@@ -10,23 +10,25 @@ def solve():
     for _ in range(int(input())):
         cmd = input().split()
         if cmd[0] == 'I':
-            if (v := int(cmd[1])) in pd:
+            v = int(cmd[1])
+            if v in pd:
                 pd[v] += 1
             else:
                 pd[v] = 1
                 if v >= 0:
-                    heapq.heappush(maxq, -v)
+                    heappush(maxq, -v)
                 else:
-                    heapq.heappush(minq, v)
+                    heappush(minq, v)
         else:
             if not minq and not maxq:
                 continue
             if cmd[1] == '1':
                 if maxq:
-                    if pd[(v := -maxq[0])] > 1:
+                    v = -maxq[0]
+                    if pd[v] > 1:
                         pd[v] -= 1
                     else:
-                        heapq.heappop(maxq)
+                        heappop(maxq)
                         pd.pop(v)
                 else:
                     minq.sort()
@@ -38,10 +40,11 @@ def solve():
                         minq.pop()
             else:
                 if minq:
-                    if pd[(v := minq[0])] > 1:
+                    v = minq[0]
+                    if pd[v] > 1:
                         pd[v] -= 1
                     else:
-                        heapq.heappop(minq)
+                        heappop(minq)
                         pd.pop(v)
                 else:
                     maxq.sort()
