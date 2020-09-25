@@ -1,43 +1,42 @@
-import bisect
+import bisect as b
 import sys
 from collections import deque
-
 input = sys.stdin.readline
 
-def solve():
-    T = int(input())
-    for _ in range(T):
-        k = int(input())
-        pq = deque()
-        pqDict = dict()
-        for _ in range(k):
-            cmd = input().split()
-            val = int(cmd[1])
-            if cmd[0] == 'I':
-                try:
-                    pqDict[val] += 1
-                except:
-                    pqDict[val] = 1
-                    bisect.insort_left(pq, val)
-            else:
-                if not pq:
-                    continue
-                if val == -1:
-                    if pqDict[pq[0]] == 1:
-                        pqDict.pop(pq[0])
-                        pq.popleft()
-                    else:                    
-                        pqDict[pq[0]] -= 1
-                else:
-                    if pqDict[pq[-1]] == 1: 
-                        pqDict.pop(pq[-1])
-                        pq.pop()
-                    else:
-                        pqDict[pq[-1]] -= 1
-        if not pq:
-            print("EMPTY")
-        else:
-            print(pq[-1], pq[0])
 
-if __name__=="__main__":
-    solve()
+def solve():
+    q = deque()
+    pd = dict()
+    for _ in range(int(input())):
+        cmd = input().split()
+        if cmd[0] == 'I':
+            val = int(cmd[1])
+            if val not in pd:
+                b.insort_left(q, val)
+                pd[val] = 1
+            else:
+                pd[val] += 1
+        else:
+            if not q:
+                continue
+            if cmd[1] == '1':
+                if (v := pd[q[-1]]) > 1:
+                    pd[q[-1]] = v-1
+                else:
+                    pd.pop(q[-1])
+                    q.pop()
+            else:
+                if (v := pd[q[0]]) > 1:
+                    pd[q[0]] = v-1
+                else:
+                    pd.pop(q[0])
+                    q.popleft()
+    if q:
+        print(q[-1], q[0])
+    else:
+        print("EMPTY")
+
+
+if __name__ == '__main__':
+    for _ in range(int(input())):
+        solve()

@@ -1,4 +1,4 @@
-import heapq
+from heapq import heappush, heappop
 import sys
 input = sys.stdin.readline
 
@@ -15,9 +15,9 @@ def solve():
             else:
                 pd[v] = 1
                 if v >= 0:
-                    heapq.heappush(maxq, -v)
+                    heappush(maxq, -v)
                 else:
-                    heapq.heappush(minq, v)
+                    heappush(minq, v)
         else:
             if not minq and not maxq:
                 continue
@@ -26,7 +26,7 @@ def solve():
                     if pd[(v := -maxq[0])] > 1:
                         pd[v] -= 1
                     else:
-                        heapq.heappop(maxq)
+                        heappop(maxq)
                         pd.pop(v)
                 else:
                     minq.sort()
@@ -41,7 +41,7 @@ def solve():
                     if pd[(v := minq[0])] > 1:
                         pd[v] -= 1
                     else:
-                        heapq.heappop(minq)
+                        heappop(minq)
                         pd.pop(v)
                 else:
                     maxq.sort()

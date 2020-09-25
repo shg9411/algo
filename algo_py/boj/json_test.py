@@ -31,6 +31,11 @@ def POST(url, data=None):
     headers["Accept"] = "application/json"
     headers["Content-Type"] = "application/json"
     headers["Authorization"] = ""
+    data = dict()
+    data['userId']=1
+    data['id']=3
+    data['title']='33'
+    data['body']='test'
     r = requests.post(url, headers=headers, data=json.dumps(data))
     print(r.status_code)
     # print(r.headers)
@@ -40,5 +45,5 @@ def POST(url, data=None):
         print(r.text)
 
 
-# POST("https://api.github.com/repos/shg9411/json_test")
-GET("https://swapi.dev/api/people/?search=r2")
+POST("https://jsonplaceholder.typicode.com/posts")
+#GET("https://jsonplaceholder.typicode.com/posts")
