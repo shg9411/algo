@@ -1,71 +1,48 @@
-from heapq import heappush, heappop
 import sys
+import heapq
 input = sys.stdin.readline
 
 
-def solve():
-    minq = []
-    maxq = []
-    pd = dict()
-    for _ in range(int(input())):
-        cmd = input().split()
-        if cmd[0] == 'I':
-            v = int(cmd[1])
-            if v in pd:
-                pd[v] += 1
-            else:
-                pd[v] = 1
-                if v >= 0:
-                    heappush(maxq, -v)
-                else:
-                    heappush(minq, v)
-        else:
-            if not minq and not maxq:
+def s():
+    def g(s, e):
+        d = [sys.maxsize for _ in range(n+1)]
+        t = []
+        d[s] = 0
+        index = [0 for _ in range(n+1)]
+        q = []
+        heapq.heappush(q, [0, s])
+        while q:
+            cost, post = heapq.heappop(q)
+            if cost > d[post]:
                 continue
-            if cmd[1] == '1':
-                if maxq:
-                    v = -maxq[0]
-                    if pd[v] > 1:
-                        pd[v] -= 1
-                    else:
-                        heappop(maxq)
-                        pd.pop(v)
-                else:
-                    minq.sort()
-                    v = minq[-1]
-                    if pd[v] > 1:
-                        pd[v] -= 1
-                    else:
-                        pd.pop(v)
-                        minq.pop()
-            else:
-                if minq:
-                    v = minq[0]
-                    if pd[v] > 1:
-                        pd[v] -= 1
-                    else:
-                        heappop(minq)
-                        pd.pop(v)
-                else:
-                    maxq.sort()
-                    v = -maxq[-1]
-                    if pd[v] > 1:
-                        pd[v] -= 1
-                    else:
-                        pd.pop(v)
-                        maxq.pop()
-    if minq and maxq:
-        print(-maxq[0], minq[0])
-    elif minq:
-        minq.sort()
-        print(minq[-1], minq[0])
-    elif maxq:
-        maxq.sort()
-        print(-maxq[0], -maxq[-1])
-    else:
-        print("EMPTY")
+            for p, c in adj[post].items():
+                c += cost
+                if c < d[p]:
+                    d[p] = c
+                    index[p] = post
+                    heapq.heappush(q, [c, p])
+        r = []
+        t = e
+        while t:
+            r.append(t)
+            t = index[t]
+        return d[e], r[::-1]
+
+    n = int(input())
+    m = int(input())
+    adj = [dict() for _ in range(n+1)]
+    for _ in range(m):
+        x, y, c = map(int, input().split())
+        if adj[x].get(y):
+            adj[x][y] = min(c, adj[x].get(y))
+        else:
+            adj[x][y] = c
+
+    s, e = map(int, input().split())
+    m, r = g(s, e)
+    print(m, len(r), sep='\n')
+    print(*r)
 
 
 if __name__ == '__main__':
-    for _ in range(int(input())):
-        solve()
+    s()

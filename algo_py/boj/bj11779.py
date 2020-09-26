@@ -4,41 +4,45 @@ input = sys.stdin.readline
 
 
 def solve():
+    def dijkstra(s, e):
+        d = [sys.maxsize for _ in range(n+1)]
+        t = []
+        d[s] = 0
+        i = [0 for _ in range(n+1)]
+        q = []
+        heapq.heappush(q, [0, s])
+        while q:
+            co, po = heapq.heappop(q)
+            if co > d[po]:
+                continue
+            for p, c in a[po].items():
+                c += co
+                if c < d[p]:
+                    d[p] = c
+                    i[p] = po
+                    heapq.heappush(q, [c, p])
+        r = []
+        t = e
+        while t:
+            r.append(t)
+            t = i[t]
+        return d[e], r[::-1]
+
     n = int(input())
     m = int(input())
-    adj = [dict() for _ in range(n+1)]
+    a = [dict() for _ in range(n+1)]
     for _ in range(m):
         x, y, c = map(int, input().split())
-        if (v := adj[x].get(y)):
-            adj[x][y] = min(c, v)
+        if a[x].get(y):
+            a[x][y] = min(c, a[x].get(y))
         else:
-            adj[x][y] = c
+            a[x][y] = c
+
     s, e = map(int, input().split())
-    dist = [sys.maxsize for _ in range(n+1)]
-    tmp = []
-    dist[s] = 0
-    index = [0 for _ in range(n+1)]
-    q = [(0, s)]
-    while q:
-        cost, post = heapq.heappop(q)
-        if cost > dist[post]:
-            continue
-        for p, c in adj[post].items():
-            c += cost
-            if c < dist[p]:
-                dist[p] = c
-                index[p] = post
-                heapq.heappush(q, (c, p))
-    res = []
-    tmp = e
-    while tmp:
-        res.append(tmp)
-        tmp = index[tmp]
-    money = dist[e]
-    res = res[::-1]
-    print(money)
-    print(len(res))
-    print(*res)
+    m, r = dijkstra(s, e)
+    print(m)
+    print(len(r))
+    print(*r)
 
 
 if __name__ == '__main__':

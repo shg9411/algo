@@ -2,73 +2,84 @@ import sys
 from collections import deque
 input = sys.stdin.readline
 
-while 1:
-    L, R, C = map(int, input().split())
-    if L == R == C == 0:
-        break
-    building = [[] for _ in range(L)]
-    visited = [[[False for _ in range(C)] for _ in range(R)] for _ in range(L)]
-    S = [-1, -1, -1]
-    for i in range(L):
-        for j in range(R):
-            building[i].append(list(input().rstrip()))
-            for k in range(C):
-                if building[i][j][k] == 'S':
-                    S = [i, j, k]
-                    visited[i][j][k] = True
-        input()
 
-    q = deque([S])
-    cnt = 0
-    can = False
-    while q:
-        cnt += 1
-        lenq = len(q)
-        for _ in range(lenq):
-            k, i, j = q.popleft()
-            if 0 <= i-1:
-                if building[k][i-1][j] == 'E':
-                    can = True
-                    break
-                if building[k][i-1][j] == '.' and not visited[k][i-1][j]:
-                    visited[k][i-1][j] = True
-                    q.append([k, i-1, j])
-
-            if i+1 < R:
-                if building[k][i+1][j] == 'E':
-                    can = True
-                    break
-                if building[k][i+1][j] == '.' and not visited[k][i+1][j]:
-                    visited[k][i+1][j] = True
-                    q.append([k, i+1, j])
-            if 0 <= j-1:
-                if building[k][i][j-1] == 'E':
-                    can = True
-                    break
-                if building[k][i][j-1] == '.' and not visited[k][i][j-1]:
-                    visited[k][i][j-1] = True
-                    q.append([k, i, j-1])
-            if j+1 < C:
-                if building[k][i][j+1] == 'E':
-                    can = True
-                    break
-                if building[k][i][j+1] == '.' and not visited[k][i][j+1]:
-                    visited[k][i][j+1] = True
-                    q.append([k, i, j+1])
-            if 0 <= k-1:
-                if building[k-1][i][j] == 'E':
-                    can = True
-                    break
-                if building[k-1][i][j] == '.' and not visited[k-1][i][j]:
-                    visited[k-1][i][j] = True
-                    q.append([k-1, i, j])
-            if k+1 < L:
-                if building[k+1][i][j] == 'E':
-                    can = True
-                    break
-                if building[k+1][i][j] == '.' and not visited[k+1][i][j]:
-                    visited[k+1][i][j] = True
-                    q.append([k+1, i, j])
-        if can:
+def solve():
+    while 1:
+        L, R, C = map(int, input().split())
+        if L == R == C == 0:
             break
-    print("Escaped in {} minute(s).".format(cnt) if can else "Trapped!")
+        bd = [[] for _ in range(L)]
+        v = [[[False for _ in range(C)]
+              for _ in range(R)] for _ in range(L)]
+        S = [-1, -1, -1]
+        for i in range(L):
+            for j in range(R):
+                bd[i].append(list(input().rstrip()))
+                for k in range(C):
+                    if bd[i][j][k] == 'S':
+                        S = [i, j, k]
+                        v[i][j][k] = True
+            input()
+        q = deque([S])
+        cnt = 0
+        can = False
+        while q:
+            cnt += 1
+            l = len(q)
+            for _ in range(l):
+                k, i, j = q.popleft()
+                X = i-1
+                if 0 <= X:
+                    if bd[k][X][j] == 'E':
+                        can = True
+                        break
+                    if bd[k][X][j] == '.' and not v[k][X][j]:
+                        v[k][X][j] = True
+                        q.append([k, X, j])
+                X += 2
+                if X < R:
+                    if bd[k][X][j] == 'E':
+                        can = True
+                        break
+                    if bd[k][X][j] == '.' and not v[k][X][j]:
+                        v[k][X][j] = True
+                        q.append([k, X, j])
+                Y = j-1
+                if 0 <= Y:
+                    if bd[k][i][Y] == 'E':
+                        can = True
+                        break
+                    if bd[k][i][Y] == '.' and not v[k][i][Y]:
+                        v[k][i][Y] = True
+                        q.append([k, i, Y])
+                Y += 2
+                if Y < C:
+                    if bd[k][i][Y] == 'E':
+                        can = True
+                        break
+                    if bd[k][i][Y] == '.' and not v[k][i][Y]:
+                        v[k][i][Y] = True
+                        q.append([k, i, Y])
+                Z = k-1
+                if 0 <= Z:
+                    if bd[Z][i][j] == 'E':
+                        can = True
+                        break
+                    if bd[Z][i][j] == '.' and not v[Z][i][j]:
+                        v[Z][i][j] = True
+                        q.append([Z, i, j])
+                Z += 2
+                if Z < L:
+                    if bd[Z][i][j] == 'E':
+                        can = True
+                        break
+                    if bd[Z][i][j] == '.' and not v[Z][i][j]:
+                        v[Z][i][j] = True
+                        q.append([Z, i, j])
+            if can:
+                break
+        print("Escaped in {} minute(s).".format(cnt) if can else "Trapped!")
+
+
+if __name__ == '__main__':
+    solve()
