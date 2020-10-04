@@ -1,5 +1,4 @@
 import sys
-import heapq
 input = sys.stdin.readline
 
 
@@ -15,8 +14,7 @@ def union(x, y):
 
 def kruskal():
     cnt = res = 0
-    while hq:
-        c, a, b = heapq.heappop(hq)
+    for c,a,b in q:
         if find(a) == find(b):
             continue
         cnt += 1
@@ -29,10 +27,11 @@ def kruskal():
 
 N, M = map(int, input().split())
 parent = [i for i in range(N+1)]
-hq = []
+q = []
 
 for _ in range(M):
     A, B, C = map(int, input().split())
-    heapq.heappush(hq, (C, A, B))
+    q.append((C,A,B))
+q.sort()
 
 print(kruskal())
