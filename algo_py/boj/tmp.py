@@ -8,7 +8,6 @@ strlen = [2]+[0]*4
 for i in range(1, 5):
     d[i] = 2*a[i]
     strlen[i] = 4
-    print(d[i], strlen[i])
 A, B = map(int, input().split())
 res = 0
 r = B-A+1
@@ -16,5 +15,4 @@ for i in range(5):
     tres = c(B, a[i], d[i])-c(A-1, a[i], d[i])
     res += (strlen[i]*tres)
     r -= tres
-print(res,r)
 print(res+r*3)
