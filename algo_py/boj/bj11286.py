@@ -7,11 +7,11 @@ def solve():
     res = []
     for _ in range(n):
         a = int(input())
-        if a != 0:
-            heapq.heappush(q, (abs(a), a))
+        if a:
+            heapq.heappush(q, (abs(a), str(a)))
         else:
-            res.append(heapq.heappop(q)[1] if q else 0)
-    print('\n'.join(str(i) for i in res))
+            res.append(heapq.heappop(q)[1] if q else '0')
+    print('\n'.join(res))
 
 if __name__=='__main__':
     solve()

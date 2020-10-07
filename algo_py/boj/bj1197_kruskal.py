@@ -2,34 +2,32 @@ import sys
 input = sys.stdin.readline
 
 
-def find(x):
-    if parent[x] == x:
+def f(x):
+    if p[x] == x:
         return x
-    parent[x] = find(parent[x])
-    return parent[x]
+    p[x] = f(p[x])
+    return p[x]
 
 
-def union(x, y):
-    x, y = find(x), find(y)
-    parent[y] = x
+def u(x, y):
+    p[f(y)] = f(x)
 
 
-def kruskal():
-    cnt = res = 0
-    for a, b, c in hq:
-        if find(a) == find(b):
+def k():
+    cnt = r = 0
+    for a, b, c in q:
+        if f(a) == f(b):
             continue
         cnt += 1
-        res += c
-        union(a, b)
+        r += c
+        u(a, b)
         if cnt == V-1:
-            return res
+            return r
 
 
 if __name__ == '__main__':
     V, E = map(int, input().split())
-    parent = [i for i in range(V+1)]
-    level = [0 for _ in range(V+1)]
-    hq = sorted([tuple(map(int, input().split()))
-                 for _ in range(E)], key=lambda x: x[2])
-    print(kruskal())
+    p = [i for i in range(V+1)]
+    q = sorted([tuple(map(int, input().split()))
+                for _ in range(E)], key=lambda x: x[2])
+    print(k())
