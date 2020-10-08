@@ -7,7 +7,6 @@ for _ in range(int(input())):
 x, y = n[0]
 for a, b in n[1:]:
     x = math.gcd(a, x)
-    y = b*y//math.gcd(b, y)
-#t = math.gcd(x, y)
-#print(x//t, y//t)
-print(x,y)
+    y = b//math.gcd(b, y)*y
+t = math.gcd(x, y)
+print(x//t, y//t)
