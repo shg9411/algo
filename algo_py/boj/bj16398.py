@@ -28,11 +28,10 @@ def kruskal():
 
 if __name__ == '__main__':
     n = int(input())
+    if n == 1:
+        print(0)
+        exit()
     parent = [i for i in range(n)]
-    q = []
-    for i in range(n):
-        for j, w in enumerate(map(int, input().split())):
-            if i != j:
-                q.append((i, j, w))
-    q.sort(key=lambda x: x[2])
+    q = sorted([(i, j, w) for i in range(n) for j, w in enumerate(
+        map(int, input().split()[i+1:]), start=i+1)], key=lambda x: x[2])
     print(kruskal())
