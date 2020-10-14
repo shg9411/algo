@@ -2,6 +2,7 @@ def merge_sort(list):
     if len(list) <= 1:
         return list
     mid = len(list) // 2
+    print(mid)
     leftList = list[:mid]
     rightList = list[mid:]
     leftList = merge_sort(leftList)
@@ -94,6 +95,5 @@ for i in range(l):
     while i+k < l and j+k < l and s[i+k] == s[j+k]:
         k += 1
     lcp[pos[i]] = k
-print(' '.join([str(i+1) for i in arr]))
-print('x ',end='')
-print(' '.join([str(v) for v in lcp[:-1]]))
+#print(lcp)
+print(max(lcp[:-1]))
