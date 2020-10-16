@@ -1,59 +1,65 @@
-import sys
 from collections import deque
-input = sys.stdin.readline
+nm = [(-1, 0), (0, -1), (1, 0), (0, 1)]
 
-def bfs(x,y,checked):
-    changed = [(x,y)]
-    total = people[x][y]
-    q = deque()
-    q.append((x,y))
-    while q:
-        i,j = q.popleft()
-        cur = people[i][j]
-        if i > 0:
-            if not visited[i-1][j] and L<=abs(cur-people[i-1][j])<=R:
-                visited[i-1][j] = True
-                q.append((i-1,j))
-                changed.append((i-1,j))
-                total+=people[i-1][j]
-        if j > 0:
-            if not visited[i][j-1] and L<=abs(cur-people[i][j-1])<=R:
-                visited[i][j-1] = True
-                q.append((i,j-1))
-                changed.append((i,j-1))
-                total+=people[i][j-1]
-        if i < N-1:
-            if not visited[i+1][j] and L<=abs(cur-people[i+1][j])<=R:
-                visited[i+1][j] = True
-                q.append((i+1,j))
-                changed.append((i+1,j))
-                total+=people[i+1][j]
-        if j < N-1:
-            if not visited[i][j+1] and L<=abs(cur-people[i][j+1])<=R:
-                visited[i][j+1] = True
-                q.append((i,j+1))
-                changed.append((i,j+1))
-                total+=people[i][j+1]
-    if len(changed)>1:
-        val = total//len(changed)
-        for x,y in changed:
-            people[x][y] = val
-        return True
-    return checked
 
-N,L,R = map(int,input().split())
-people = [list(map(int,input().split())) for _ in range(N)]
-cnt = 0
-while 1:
-    visited = [[False for _ in range(N)] for _ in range(N)]
-    checked = False
-    for i in range(N):
-        for j in range(N):
-            if not visited[i][j]:
-                visited[i][j] = True
-                checked = bfs(i,j,checked)
-    if checked:
-        cnt+=1
+def bfs(x, y):
+    t = [(x, y)]
+    tq = deque([(x, y)])
+    s = m[x][y]
+    v[x][y] = 1
+    while tq:
+        x, y = tq.popleft()
+        for _x, _y in nm:
+            tx = x+_x
+            ty = y+_y
+            if 0 <= tx < n and 0 <= ty < n and not v[tx][ty]:
+                diff = abs(m[x][y]-m[tx][ty])
+                if l <= diff <= r:
+                    v[tx][ty] = 1
+                    s += m[tx][ty]
+                    tq.append((tx, ty))
+                    t.append((tx, ty))
+    if (size := len(t)) > 1:
+        num = s//size
+        for i in range(size):
+            x, y = t[i]
+            m[x][y] = num
+            q.append((x, y))
+        return 0
     else:
-        break
+        return 1
+
+
+def c(x, y):
+    for _x, _y in nm:
+        tx = x+_x
+        ty = y+_y
+        if 0 <= tx < n and 0 <= ty < n:
+            diff = abs(m[tx][ty]-m[x][y])
+            if l <= diff <= r:
+                return 0
+    return 1
+
+
+n, l, r = map(int, input().split())
+m = [[] for _ in range(n)]
+cnt = 0
+q = deque()
+for i in range(n):
+    m[i] = list(map(int, input().split()))
+    for j in range(n):
+        q.append((i, j))
+f = 0
+while not f:
+    v = [[0]*n for _ in range(n)]
+    f = 1
+    sz = len(q)
+    for _ in range(sz):
+        x, y = q.popleft()
+        if v[x][y] or c(x, y):
+            continue
+        if not bfs(x, y):
+            f = 0
+    if not f:
+        cnt += 1
 print(cnt)
