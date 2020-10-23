@@ -1,3 +1,4 @@
+import heapq
 import sys
 input = sys.stdin.readline
 
@@ -7,19 +8,15 @@ graph = [[] for _ in range(n+1)]
 
 
 def topologicalSort(graph, number):
-    que = []
-
-    for i in range(1, n+1):
-        if number[i] == 0:
-            que.append(i)
+    que = [i for i,v in enumerate(number[1:],start=1) if v==0]
 
     for i in range(n):
-        tmp = que.pop(0)
+        tmp = heapq.heappop(que)
         print(tmp, end=' ')
         for p in graph[tmp]:
             number[p] -= 1
             if number[p] == 0:
-                que.append(p)
+                heapq.heappush(que, p)
 
 
 if __name__ == '__main__':

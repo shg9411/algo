@@ -1,46 +1,57 @@
-#include <iostream>
+#include <cstdio>
+#include <vector>
 #include <queue>
-#define INF 987654321
+#define MAX 1e9
+
 using namespace std;
 
-vector<pair<int, int>> adj[1001];
-int dist[1001];
+inline void scan(int& x)
+{
+	int c = getchar_unlocked();
+	x = 0;
+	int neg = 0;
+	for (; ((c < 48 || c>57) && c != '-'); c = getchar_unlocked());
+	if (c == '-') {
+		neg = 1;
+		c = getchar_unlocked();
+	}
+	for (; c > 47 && c < 58; c = getchar_unlocked()) {
+		x = (x << 1) + (x << 3) + c - 48;
+	}
+	if (neg)
+		x = -x;
+}
 
-void dijkstra(int s, int e) {
-	priority_queue<pair<int, int>> pq;
+int N, M, u, v, w, dist[1001], s, e;
+vector<pair<int, int>> adj[1001];
+priority_queue<pair<int, int>> pq;
+
+int main(void) {
+	scan(N); scan(M);
+	for (int i = 0; i < M; i++) {
+		scan(u); scan(v); scan(w);
+		adj[u].push_back({ v,w });
+	}
+	scan(s); scan(e);
+	for (int i = 1; i <= N; i++)
+		dist[i] = MAX;
 	dist[s] = 0;
 	pq.push({ 0,s });
 	while (!pq.empty()) {
-		int cost, cur;
+		int cost, now;
 		cost = -pq.top().first;
-		cur = pq.top().second;
+		now = pq.top().second;
 		pq.pop();
-		if (dist[cur] < cost)
+		if (dist[now] < cost)
 			continue;
-		for (auto& n : adj[cur]) {
-			int tmpCost = cost + n.second;
-			if (tmpCost < dist[n.first]) {
-				dist[n.first] = tmpCost;
-				pq.push({ -tmpCost ,n.first });
+		for (auto it : adj[now]) {
+			int tmp = it.second + cost;
+			if (dist[it.first] > tmp) {
+				dist[it.first] = tmp;
+				pq.push({ -tmp,it.first });
 			}
 		}
-
 	}
-	cout << dist[e];
-}
-
-int main(void) {
-	cin.tie(0); ios_base::sync_with_stdio(0);
-	int n, m,s,e;
-	cin >> n >> m;
-	for (int i = 0; i < m; i++) {
-		int u, v, c;
-		cin >> u >> v >> c;
-		adj[u].push_back({ v,c });
-	}
-	cin >> s >> e;
-	for (int i = 1; i <= n; i++)
-		dist[i] = INF;
-	dijkstra(s, e);
+	printf("%d", dist[e]);
 	return 0;
 }
