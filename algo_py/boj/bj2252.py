@@ -2,14 +2,15 @@ import heapq
 import sys
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
-number = [0 for _ in range(n+1)]
-graph = [[] for _ in range(n+1)]
-
-
-def topologicalSort(graph, number):
+def topologicalSort():
+    n, m = map(int, input().split())
+    number = [0 for _ in range(n+1)]
+    graph = [[] for _ in range(n+1)]
+    for _ in range(m):
+        a, b = map(int, input().split())
+        graph[a].append(b)
+        number[b] += 1
     que = [i for i,v in enumerate(number[1:],start=1) if v==0]
-
     for i in range(n):
         tmp = heapq.heappop(que)
         print(tmp, end=' ')
@@ -20,9 +21,4 @@ def topologicalSort(graph, number):
 
 
 if __name__ == '__main__':
-    for _ in range(m):
-        a, b = map(int, input().split())
-        graph[a].append(b)
-        number[b] += 1
-
-    topologicalSort(graph, number)
+    topologicalSort()
