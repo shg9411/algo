@@ -1,19 +1,30 @@
-n = int(input())
-count = 0
-for _ in range(n):
-    alpha = set()
-    text = input()
-    alpha.add(text[0])
-    f = 1
-    for i in range(1,len(text)):
-        if text[i] == text[i-1]:
-            continue
+import sys
+from collections import deque
+input = sys.stdin.readline
+
+
+def solve():
+    p = list(input().rstrip())
+    n = int(input())
+    res = input().rstrip()[1:-1].split(',')
+    c = p.count('D')
+    if len(res) < c or res == [''] and c > 0:
+        print('error')
+        return
+    i, j = 0, 0
+    rev = False
+    for cmd in p:
+        if cmd == 'R':
+            rev = not rev
         else:
-            if text[i] not in alpha:
-                alpha.add(text[i])
+            if not rev:
+                i += 1
             else:
-                f = 0
-                break
-    if f:
-        count+=1
-print(count)
+                j += 1
+    print('[', end='')
+    print(','.join(res[i:n-j:-1] if rev else res[i:n-j]), end=']\n')
+
+
+if __name__ == '__main__':
+    for _ in range(int(input())):
+        solve()
