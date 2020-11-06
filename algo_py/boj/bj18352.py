@@ -1,32 +1,35 @@
 import sys
-import heapq
-
+from collections import deque
 input = sys.stdin.readline
-INF = sys.maxsize
 
-n, m, k, x = map(int, input().split())
-edge = [dict() for _ in range(n+1)]
+def main():
+    n, m, k, x = map(int, input().split())
+    edge = [[] for _ in range(n+1)]
+    dist = [0 for _ in range(n+1)]
 
-for _ in range(m):
-    a, b = map(int, input().split())
-    edge[a][b] = 1
+    for _ in range(m):
+        a, b = map(int, input().split())
+        edge[a].append(b)
 
-dist = [INF for _ in range(n+1)]
-dist[x] = 0
-
-pq = [(0, x)]
-
-while pq:
-    d1, v1 = heapq.heappop(pq)
-    if d1 == k:
-        break
-    for v2, d2 in edge[v1].items():
-        if dist[v1]+d2 < dist[v2]:
-            dist[v2] = dist[v1]+d2
-            heapq.heappush(pq, (dist[v2], v2))
-
-res = []
-for i, v in enumerate(dist):
-    if v == k:
-        res.append(i)
-print('\n'.join(map(str, res)) if res else -1)
+    dist[x] = 0
+    q = deque([x])
+    while q:
+        l = len(q)
+        for _ in range(l):
+            tmp = q.popleft()
+            now = dist[tmp]
+            if now == k:
+                res = []
+                for i in range(1, n+1):
+                    if dist[i] == k:
+                        res.append(i)
+                print('\n'.join(map(str, res)))
+                exit()
+            for nxt in edge[tmp]:
+                if dist[nxt]:
+                    continue
+                dist[nxt] = now+1
+                q.append(nxt)
+    print(-1)
+if __name__=='__main__':
+    main()
