@@ -28,13 +28,11 @@ def solve():
             latency[item].append((lastidx, idx))
             latency[item].append((idx, k))
     res = 0
-    wait = dict()
-    waits = 0
     for thing in things:
         if thing in cur:
             pt[thing] = latency[thing].popleft()[1]
-            waits += 1
-            wait[thing] += 1
+            if pt[thing] > pt[q[0].val]:
+                heapq.heapify(q)
         else:
             if len(q) == n:
                 popItem = heapq.heappop(q)
