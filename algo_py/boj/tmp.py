@@ -1,49 +1,30 @@
-import heapq
-from collections import deque
-
-
-def solve():
-    n, k = map(int, input().split())
-    pt = dict()
-
-    class Node(object):
-        def __init__(self, val: int):
-            self.val = val
-            pt[val] = latency[val].popleft()[1]
-
-        def __repr__(self):
-            return '{}({})'.format(self.val, pt[self.val])
-
-        def __lt__(self, other):
-            return pt[self.val] > pt[other.val]
-    cur = set()
-    q = []
-    latency = dict()
-    things = list(map(int, input().split()))
-    for idx, item in enumerate(things):
-        if item not in latency:
-            latency[item] = deque([(idx, k)])
-        else:
-            lastidx, lastv = latency[item].pop()
-            latency[item].append((lastidx, idx))
-            latency[item].append((idx, k))
-    res = 0
-    wait = dict()
-    waits = 0
-    for thing in things:
-        if thing in cur:
-            pt[thing] = latency[thing].popleft()[1]
-            waits += 1
-            wait[thing] += 1
-        else:
-            if len(q) == n:
-                popItem = heapq.heappop(q)
-                cur.remove(popItem.val)
-                res += 1
-            cur.add(thing)
-            heapq.heappush(q, Node(thing))
-    print(res)
+import sys
+sys.setrecursionlimit(10**6)
+input = sys.stdin.readline
 
 
 if __name__ == '__main__':
-    solve()
+    n = int(input())
+    tree = [dict() for _ in range(n+1)]
+    for _ in range(n-1):
+        u, v, w = map(int, input().split())
+        tree[u][v] = w
+        tree[v][u] = w
+
+    def dfs(u, w):
+        global tmpu, tmpval
+        dist[u] = w
+
+        if dist[u] > tmpval:
+            tmpval, tmpu = dist[u], u
+
+        for vertex, weight in tree[u].items():
+            if not dist[vertex]:
+                dfs(vertex, w+weight)
+
+    dist = [0 for _ in range(n+1)]
+    tmpu, tmpval = 0, 0
+    dfs(1, 0)
+    dist = [0 for _ in range(n+1)]
+    dfs(tmpu, 0)
+    print(tmpval)
