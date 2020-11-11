@@ -26,5 +26,4 @@ def solution(n, board):
     for num in range(1, n**2+1):
         cnt, i, j = delNum(num, i, j)
         answer += cnt
-        # print(num,answer)
     return answer
