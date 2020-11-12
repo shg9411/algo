@@ -1,25 +1,19 @@
-
-def solve():
-    n, k = map(int, input().split())
-    doll = list(input().split())
-    i = j = 0
-    res = n+1
-    cnt = 0
-
-    while 1:
-        if cnt == k:
-            res = min(j-i, res)
-            if doll[i] == '1':
-                cnt -= 1
-            i += 1
-        elif j == n:
-            break
-        else:
-            if doll[j] == '1':
-                cnt += 1
-            j += 1
-    print(res if res < n+1 else -1)
+def solution(location, priorities):
+    answer = 0
+    end = False
+    while not end:
+        for i, val in enumerate(priorities):
+            mv = max(priorities)
+            if val == mv:
+                answer += 1
+                if i == location:
+                    end = True
+                    break
+                priorities[i] = 0
+    return answer
 
 
 if __name__ == '__main__':
-    solve()
+    for _ in range(int(input())):
+        print(solution(tuple(map(int, input().split()))[
+                 1], list(map(int, input().split()))))
