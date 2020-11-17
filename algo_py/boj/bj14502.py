@@ -1,49 +1,63 @@
 from collections import deque
-from itertools import combinations
+
+
+def solve():
+    global ans
+    n, m = map(int, input().split())
+    lab = []
+    virus = []
+    res = -3
+    ans = 0
+    for i in range(n):
+        lab.append(list(map(int, input().split())))
+        for j in range(m):
+            if lab[i][j] == 2:
+                virus.append((i, j))
+            elif lab[i][j] == 0:
+                res += 1
+
+    def bfs():
+        tmpV = deque(virus)
+        tr = res
+        while tmpV:
+            i, j = tmpV.popleft()
+            if i > 0 and lab[i-1][j] == 0:
+                tmpV.append((i-1, j))
+                lab[i-1][j] = 3
+                tr -= 1
+            if j > 0 and lab[i][j-1] == 0:
+                tmpV.append((i, j-1))
+                lab[i][j-1] = 3
+                tr -= 1
+            if i < n-1 and lab[i+1][j] == 0:
+                tmpV.append((i+1, j))
+                lab[i+1][j] = 3
+                tr -= 1
+            if j < m-1 and lab[i][j+1] == 0:
+                tmpV.append((i, j+1))
+                lab[i][j+1] = 3
+                tr -= 1
+        for i in range(n*m):
+            x, y = divmod(i, m)
+            if lab[x][y] == 3:
+                lab[x][y] = 0
+        return tr
+
+    def dfs(idx, cnt):
+        global ans
+        if cnt == 3:
+            ans = max(ans, bfs())
+            return
+        for i in range(idx, n*m):
+            x, y = divmod(i, m)
+            if lab[x][y] == 0:
+                lab[x][y] = 1
+                dfs(i+1, cnt+1)
+                lab[x][y] = 0
+
+    dfs(0, 0)
+    print(ans)
+
 
 if __name__ == '__main__':
-    N, M = map(int, input().split())
-    area = []
-    wall = []
-    virus = []
-    safe = N*M-3
-    res = 0
-    for i in range(N):
-        area.append(list(map(int, input().split())))
-        for j in range(M):
-            if area[i][j] == 0:
-                wall.append([i, j])
-                continue
-            safe -= 1
-            if area[i][j] == 2:
-                virus.append([i, j])
-    for comb in combinations(range(len(wall)), 3):
-        life = safe
-        for idx in comb:
-            x, y = wall[idx]
-            area[x][y] = 3
-        q = deque(virus)
-        while q:
-            x, y = q.popleft()
-            if x > 0 and area[x-1][y] == 0:
-                area[x-1][y] = 3
-                q.append([x-1, y])
-                life -= 1
-            if y > 0 and area[x][y-1] == 0:
-                area[x][y-1] = 3
-                q.append([x, y-1])
-                life -= 1
-            if x < N-1 and area[x+1][y] == 0:
-                area[x+1][y] = 3
-                q.append([x+1, y])
-                life -= 1
-            if y < M-1 and area[x][y+1] == 0:
-                area[x][y+1] = 3
-                q.append([x, y+1])
-                life -= 1
-        res = max(res, life)
-        for i in range(N):
-            for j in range(M):
-                if area[i][j] == 3:
-                    area[i][j] = 0
-    print(res)
+    solve()

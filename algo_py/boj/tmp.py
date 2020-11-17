@@ -1,18 +1,63 @@
-import sys
-input = sys.stdin.readline
+from collections import deque
 
-n, m, s = map(int, input().split())
-time = [(0, 0)]
-for _ in range(n):
-    time.append(tuple(map(int, input().split())))
-time.sort()
 
-for i in range(n):
-    if time[i+1][0]-(et := time[i][0]+time[i][1]) >= m:
-        print(et)
-        exit()
-i += 1
-if time[i][0]+time[i][1]+m <= s:
-    print(time[i][0]+time[i][1])
-else:
-    print(-1)
+def solve():
+    global ans
+    n, m = map(int, input().split())
+    lab = []
+    virus = []
+    res = -3
+    ans = 0
+    for i in range(n):
+        lab.append(list(map(int, input().split())))
+        for j in range(m):
+            if lab[i][j] == 2:
+                virus.append((i, j))
+            elif lab[i][j] == 0:
+                res += 1
+
+    def bfs():
+        tmpV = deque(virus)
+        tr = res
+        while tmpV:
+            i, j = tmpV.popleft()
+            if i > 0 and lab[i-1][j] == 0:
+                tmpV.append((i-1, j))
+                lab[i-1][j] = 3
+                tr -= 1
+            if j > 0 and lab[i][j-1] == 0:
+                tmpV.append((i, j-1))
+                lab[i][j-1] = 3
+                tr -= 1
+            if i < n-1 and lab[i+1][j] == 0:
+                tmpV.append((i+1, j))
+                lab[i+1][j] = 3
+                tr -= 1
+            if j < m-1 and lab[i][j+1] == 0:
+                tmpV.append((i, j+1))
+                lab[i][j+1] = 3
+                tr -= 1
+        for i in range(n*m):
+            x, y = divmod(i, m)
+            if lab[x][y] == 3:
+                lab[x][y] = 0
+        return tr
+
+    def dfs(idx, cnt):
+        global ans
+        if cnt == 3:
+            ans = max(ans, bfs())
+            return
+        for i in range(idx, n*m):
+            x, y = divmod(i, m)
+            if lab[x][y] == 0:
+                lab[x][y] = 1
+                dfs(i+1, cnt+1)
+                lab[x][y] = 0
+
+    dfs(0, 0)
+    print(ans)
+
+
+if __name__ == '__main__':
+    solve()
