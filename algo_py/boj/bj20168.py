@@ -12,7 +12,7 @@ def solve():
         adj[v].append((u, w))
 
     res = -1
-    dist = [sys.maxsize]*(n+1)
+    dist = [c+1]*(n+1)
     dist[a] = 0
     q = [(0, 0, a)]
     while q:
@@ -21,7 +21,7 @@ def solve():
             res = r
             break
         for v, w in adj[p]:
-            if (cost+w:=nc) > c:
+            if (nc:=cost+w) > c:
                 continue
             nxt = (max(r, w), nc, v)
             if dist[v] > nxt[0]:
