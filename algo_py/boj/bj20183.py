@@ -21,9 +21,9 @@ def solve():
             res = r
             break
         for v, w in adj[p]:
-            if cost+w > c:
+            if (cost+w:=nc) > c:
                 continue
-            nxt = (max(r, w), cost+w, v)
+            nxt = (max(r, w), nc, v)
             if dist[v] > nxt[0]:
                 dist[v] = nxt[0]
                 heapq.heappush(q, nxt)
