@@ -38,7 +38,7 @@ def solve():
                 lab[i][j+1] = 3
                 tr -= 1
         for i in range(n*m):
-            x, y = divmod(i, m)
+            x, y = i//m, i % m
             if lab[x][y] == 3:
                 lab[x][y] = 0
         return tr
@@ -49,7 +49,7 @@ def solve():
             ans = max(ans, bfs())
             return
         for i in range(idx, n*m):
-            x, y = divmod(i, m)
+            x, y = i//m, i % m
             if lab[x][y] == 0:
                 lab[x][y] = 1
                 dfs(i+1, cnt+1)

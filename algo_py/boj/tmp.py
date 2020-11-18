@@ -1,63 +1,36 @@
-from collections import deque
+import sys
+import heapq
+input = sys.stdin.readline
 
 
-def solve():
-    global ans
-    n, m = map(int, input().split())
-    lab = []
-    virus = []
-    res = -3
-    ans = 0
-    for i in range(n):
-        lab.append(list(map(int, input().split())))
-        for j in range(m):
-            if lab[i][j] == 2:
-                virus.append((i, j))
-            elif lab[i][j] == 0:
-                res += 1
-
-    def bfs():
-        tmpV = deque(virus)
-        tr = res
-        while tmpV:
-            i, j = tmpV.popleft()
-            if i > 0 and lab[i-1][j] == 0:
-                tmpV.append((i-1, j))
-                lab[i-1][j] = 3
-                tr -= 1
-            if j > 0 and lab[i][j-1] == 0:
-                tmpV.append((i, j-1))
-                lab[i][j-1] = 3
-                tr -= 1
-            if i < n-1 and lab[i+1][j] == 0:
-                tmpV.append((i+1, j))
-                lab[i+1][j] = 3
-                tr -= 1
-            if j < m-1 and lab[i][j+1] == 0:
-                tmpV.append((i, j+1))
-                lab[i][j+1] = 3
-                tr -= 1
-        for i in range(n*m):
-            x, y = divmod(i, m)
-            if lab[x][y] == 3:
-                lab[x][y] = 0
-        return tr
-
-    def dfs(idx, cnt):
-        global ans
-        if cnt == 3:
-            ans = max(ans, bfs())
-            return
-        for i in range(idx, n*m):
-            x, y = divmod(i, m)
-            if lab[x][y] == 0:
-                lab[x][y] = 1
-                dfs(i+1, cnt+1)
-                lab[x][y] = 0
-
-    dfs(0, 0)
-    print(ans)
+def dijkstra(s, e, m):
+    dist = [sys.maxsize]*(n+1)
+    dist[s] = 0
+    q = [(0, s)]
+    while q:
+        cost, p = heapq.heappop(q)
+        if cost > dist[p]:
+            continue
+        for v, w in adj[p]:
+            if w <= m and dist[v] > cost+w:
+                dist[v] = cost+w
+                heapq.heappush(q, (dist[v], v))
+    return dist[e] <= c
 
 
-if __name__ == '__main__':
-    solve()
+n, m, a, b, c = map(int, input().split())
+adj = [[] for _ in range(n+1)]
+for _ in range(m):
+    u, v, w = map(int, input().split())
+    adj[u].append((v, w))
+    adj[v].append((u, w))
+
+s = 0
+e = c+1
+while s < e:
+    m = (s+e) // 2
+    if dijkstra(a, b, m):
+        e = m
+    else:
+        s = m+1
+print(s if s <= c else -1)
