@@ -1,31 +1,28 @@
 import sys
-sys.setrecursionlimit(10**6)
 input = sys.stdin.readline
 
-T = int(input())
 
-
-for _ in range(T):
+def solve():
     n = int(input())
-    check = [False for _ in range(n+1)]
-    adj = [0]+list(map(int, input().split()))
-    check[0] = True
-
-    def dfs(i):
-        check[i] = True
-        cycle.append(i)
-        idx = adj[i]
-
-        if check[idx]:
-            if idx in cycle:
-                res += cycle[cycle.index(idx):]
-            return
-        else:
-            dfs(idx)
-
-    res = []
+    nxt = [0]+list(map(int, input().split()))
+    visited = [0]*(n+1)
+    r = 0
     for i in range(1, n+1):
-        if not check[i]:
-            cycle = []
-            dfs(i)
-    print(n-len(res))
+        if visited[i]:
+            continue
+        now = i
+        while not visited[now]:
+            visited[now] = 1
+            now = nxt[now]
+        other = i
+        while other != now:
+            r += 1
+            other = nxt[other]
+    return r
+
+
+if __name__ == '__main__':
+    res = []
+    for _ in range(int(input())):
+        res.append(solve())
+    print('\n'.join(map(str, res)))
