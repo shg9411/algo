@@ -1,4 +1,3 @@
-# 핵심 소스코드의 설명을 주석으로 작성하면 평가에 큰 도움이 됩니다.
 import heapq
 
 
@@ -18,6 +17,4 @@ class Solution:
         return ans
 
 
-s = Solution()
-goods = [5,31,15]
-print(s.solution(goods))
+print(Solution().solution([5,31,15]))
