@@ -11,7 +11,7 @@ class Solution:
                     res += int(cardNumber[i])*2
             else:
                 res += int(cardNumber[i])
-            print(i, res)
+            #print(i, res)
         return "VALID" if res % 10 == 0 else "INVALID"
 
 
