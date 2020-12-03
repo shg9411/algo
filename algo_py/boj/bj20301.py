@@ -9,7 +9,7 @@ rt = [-k+1, k]
 cnt = 0
 i = 0
 for _ in range(n):
-    num.rotate(rt[i])
+    num.rotate(rt[i]%len(num))
     res.append(num.popleft())
     cnt += 1
     if cnt % m == 0:
