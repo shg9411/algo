@@ -1,4 +1,5 @@
 import sys
+sys.setrecursionlimit(10**6)
 input = sys.stdin.readline
 
 
@@ -22,8 +23,7 @@ n, m = map(int, input().split())
 parent = [i for i in range(n+1)]
 for _ in range(m):
     cmd, a, b = map(int, input().split())
-    if cmd==0:
-        union(a,b)
+    if cmd == 0:
+        union(a, b)
     else:
-        print("YES" if find(a)==find(b) else "NO")
-
+        print("YES" if find(a) == find(b) else "NO")
