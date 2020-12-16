@@ -1,5 +1,4 @@
 #include<cstdio>
-#include<cstring>
 #include<vector>
 #define MAX 1001
 using namespace std;
@@ -34,9 +33,14 @@ int main(void)
 		}
 	}
 	for (int i = 1; i <= n; i++) {
-		memset(check, 0, sizeof(check));
+		for (int i = 1; i <= m; i++)
+			check[i] = 0;
 		if (dfs(i))
 			res += 1;
+	}
+	for (int i = 1; i <= n; i++) {
+		for (int i = 1; i <= m; i++)
+			check[i] = 0;
 		if (dfs(i))
 			res += 1;
 	}
