@@ -17,6 +17,6 @@ def solution(N, coffee_times):
     return answer
 
 
-N = 1
+N = 3
 coffee_times = [100, 1, 50, 1, 1]
 print(solution(N, coffee_times))

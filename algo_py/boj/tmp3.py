@@ -8,4 +8,4 @@ def solution(n):
     return -1
 
 
-print(solution(18))
+print(solution())

@@ -21,4 +21,4 @@ def solution(s1, s2):
     return answer
 
 
-print(solution("A", "A"))
+print(solution("ABC", "BCA"))

@@ -1,31 +1,4 @@
 def solve():
-    def m_sort(arr):
-        if len(arr) <= 1:
-            return arr
-        mid = len(arr) // 2
-        l = arr[:mid]
-        r = arr[mid:]
-        l = m_sort(l)
-        r = m_sort(r)
-        return merge(l, r)
-
-    def merge(l, r):
-        res = []
-        while len(l) > 0 or len(r) > 0:
-            if len(l) > 0 and len(r) > 0:
-                if cmp(l[0], r[0]):
-                    res.append(l[0])
-                    l = l[1:]
-                else:
-                    res.append(r[0])
-                    r = r[1:]
-            elif len(l) > 0:
-                res.append(l[0])
-                l = l[1:]
-            elif len(r) > 0:
-                res.append(r[0])
-                r = r[1:]
-        return res
 
     def cmp(i, j):
         if pos[i] != pos[j]:
@@ -67,11 +40,8 @@ def solve():
     s = input()
     l = len(s)
     lcp = [0]*l
-    arr = [-1]*l
-    pos = [-1]*l
-    for i in range(l):
-        arr[i] = i
-        pos[i] = s[i]
+    arr = [i for i in range(l)]
+    pos = [s[i] for i in range(l)]
     d = 1
     while 1:
         arr = quick_sort(arr)
