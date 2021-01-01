@@ -1,16 +1,32 @@
 import sys
-check = '([])'
-while 1:
-    text = sys.stdin.readline()
-    if text == ".\n":
-        break
+input = sys.stdin.readline
+
+
+def solve(t):
     tmp = []
-    for char in text:
-        if char in check:
-            if char == ')' and len(tmp) > 0 and tmp[-1] == '(':
-                tmp.pop()
-            elif char == ']' and len(tmp) > 0 and tmp[-1] == '[':
+    for char in t:
+        if char == ')':
+            if tmp and tmp[-1] == '(':
                 tmp.pop()
             else:
-                tmp.append(char)
-    print('yes' if not tmp else 'no')
+                return False
+        elif char == ']':
+            if tmp and tmp[-1] == '[':
+                tmp.pop()
+            else:
+                return False
+        elif char == '(' or char == '[':
+            tmp.append(char)
+        else:
+            continue
+    return True if not tmp else False
+
+
+if __name__ == '__main__':
+    r = []
+    while 1:
+        t = input()
+        if t == ".\n":
+            print('\n'.join(r))
+            break
+        r.append("yes" if solve(t) else "no")
