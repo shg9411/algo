@@ -4,9 +4,17 @@ import os
 
 def my_sed(from_word, to_word, in_file):
     f = open(in_file, "r")
-    for line in f.readlines():
-        print(line.replace(from_word,to_word))
-    f.close()
+    try:
+        while True:
+            line = f.readline()
+            if line=='':
+                break
+        #for line in f.readlines():
+            print(line.replace(from_word,to_word),end='')
+    except:
+        pass
+    finally:
+        f.close()
 
 
 if __name__ == '__main__':

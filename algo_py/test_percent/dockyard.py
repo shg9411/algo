@@ -10,7 +10,7 @@ def my_calc(file):
     while True:
         try:
             n = int(f.readline())
-            works = list(map(convert, f.readline().split(',')))
+            works = list(map(lambda i: -int(i), f.readline().split(',')))
             heapq.heapify(works)
             for _ in range(n):
                 heapq.heappush(works, min(heapq.heappop(works)+1, 0))

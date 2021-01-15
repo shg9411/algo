@@ -3,16 +3,11 @@ import os
 
 
 def my_find(directory, suffix):
-    try:
-        names = os.listdir(directory)
-        for name in names:
-            full_name = os.path.join(directory, name)
-            if os.path.isdir(full_name):
-                my_find(full_name, suffix)
-            elif full_name.endswith(suffix):
-                print(os.path.abspath(full_name))
-    except:
-        pass
+    for (path, dirr ,files) in os.walk(directory):
+        for file in files:
+            if file.endswith(suffix):
+                print(path,file,sep='')
+    
 
 
 if __name__ == '__main__':
