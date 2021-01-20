@@ -1,5 +1,4 @@
 import sys
-num = []
-for l in sys.stdin:
-    num.extend(map(lambda x: int(x[::-1]), l.split()))
-print('\n'.join(map(str, sorted(num[1:]))))
+input = sys.stdin.readline
+for p in sorted([tuple(map(int, input().split())) for _ in range(int(input()))]):
+    print(*p)
