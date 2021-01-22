@@ -1,4 +1,2 @@
-n,m,*l=map(int,open(0).read().split())
-d={}
-for i,v in enumerate(sorted(l[:n])):d[v]=d.get(v,i)
-print(*[d.get(i,-1) for i in l[n:]],sep='\n')
+print('0.{}{}'.format('0'*((a := int(input()))-len((b := str(5**a)))), b))
+print(1/2**a)

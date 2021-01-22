@@ -1,0 +1,1 @@
+print('{0:.250f}'.format(1/2**int(input())).rstrip('0'))
