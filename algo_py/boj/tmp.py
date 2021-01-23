@@ -1,23 +1,24 @@
-N = int(input())
-ls = sorted((map(int,input().split())))
-M = int(input())
-ls2 = list(map(int,input().split()))
+import sys
 
-def bin_search(a,key):
-    bl = 0
-    br = len(a) - 1
-    while True:
-        bc = (bl+br)//2
-        if a[bc] == key:
-            print(1)
-            break
-        elif bc > key:
-            br = bc - 1
-        else:
-            bl = bc + 1
-        if bl>br:
-            print(0)
-            break
+N = int(sys.stdin.readline())
+count = 0
+lst = []
+room = [0]*100000
 
-for i in ls2:
-    bin_search(ls,i)
+for i in range(N):
+    case = list(map(int, sys.stdin.readline().split()))
+    case.append(case[1]-case[0])
+    lst.append(case)
+
+lst = sorted(lst, key=lambda x: (x[2], -x[1]))
+
+for i in lst:
+
+    if room[int(i[0]):int(i[1])] == [0]*int(i[2]) and int(i[2] != 0):
+        room[int(i[0]):int(i[1])] = [1] * (int(i[2]))
+        count += 1
+
+    if int(i[2]) == 0:
+        count += 1
+
+print(count)
