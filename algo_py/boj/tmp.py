@@ -1,9 +1,22 @@
-import sys
-input = sys.stdin.readline
-n, m = map(int, input().split())
-d = {}
-for _ in range(n):
-    site, pw = input().split()
-    d[site] = pw
-for _ in range(m):
-    print(d[input().rstrip()])
+n = int(input())
+s = []
+op = []
+count = 1
+temp = True
+
+for i in range(n):
+    num = int(input())
+    while count <=num:
+        s.append(count)
+        op.append('+')
+        count +=1
+    if s[-1]==num:
+        s.pop()
+        op.append('-')
+    else:
+        temp=False
+if temp==False:
+    print('No')
+else:
+    for j in op:
+        print(j)
