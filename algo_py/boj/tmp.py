@@ -16,7 +16,7 @@ for i in range(n):
     else:
         temp=False
 if temp==False:
-    print('No')
+    print('NO')
 else:
     for j in op:
         print(j)
