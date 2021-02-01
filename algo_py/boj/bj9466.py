@@ -1,5 +1,7 @@
+import io
+import os
 import sys
-input = sys.stdin.readline
+input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
 
 
 def solve():
@@ -12,12 +14,12 @@ def solve():
             continue
         now = i
         while not visited[now]:
-            visited[now] = 1
-            now = nxt[now]
-        other = i
-        while other != now:
-            r += 1
-            other = nxt[other]
+            visited[now]=1
+            now=nxt[now]
+        other=i
+        while other!=now:
+            r+=1
+            other=nxt[other]
     return r
 
 

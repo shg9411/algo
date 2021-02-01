@@ -1,6 +1,8 @@
+import io
+import os
 import sys
+input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
 sys.setrecursionlimit(10**6)
-input = sys.stdin.readline
 
 
 def find(x):
