@@ -4,7 +4,7 @@ input = sys.stdin.readline
 
 def solve():
     n, m, k = map(int, input().split())
-    land = [[5 for _ in range(n)] for _ in range(n)]
+    land = [[5]*n for _ in range(n)]
     tree = [[{} for _ in range(n)] for _ in range(n)]
     S2D2 = [list(map(int, input().split())) for _ in range(n)]
     for _ in range(m):
@@ -17,52 +17,34 @@ def solve():
                 if not tree[r][c]:
                     land[r][c] += S2D2[r][c]
                     continue
-                tmp = 0
-                more = 0
+                tmp = more = 0
                 for age, count in sorted(tree[r][c].items()):
-                    can = min(land[r][c]//age, count)
-                    if can:
+                    if (can := min(land[r][c]//age, count)):
                         land[r][c] -= age*can
-                        if age+1 not in ng[r][c]:
-                            ng[r][c][age+1] = 0
-                        ng[r][c][age+1] += can
-                        if (age+1) % 5 == 0:
+                        if (nxt := age+1) not in ng[r][c]:
+                            ng[r][c][nxt] = 0
+                        ng[r][c][nxt] += can
+                        if nxt % 5 == 0:
                             tmp += can
-                    more += age//2*(count-can)
+                    more += (age >> 1)*(count-can)
                 land[r][c] += more + S2D2[r][c]
                 if tmp:
                     if r > 0:
-                        if 1 not in ng[r-1][c]:
-                            ng[r-1][c][1] = 0
-                        ng[r-1][c][1] += tmp
+                        ng[r-1][c][1] = ng[r-1][c].get(1, 0) + tmp
                         if c > 0:
-                            if 1 not in ng[r-1][c-1]:
-                                ng[r-1][c-1][1] = 0
-                            ng[r-1][c-1][1] += tmp
+                            ng[r-1][c-1][1] = ng[r-1][c-1].get(1, 0)+tmp
                         if c < n-1:
-                            if 1 not in ng[r-1][c+1]:
-                                ng[r-1][c+1][1] = 0
-                            ng[r-1][c+1][1] += tmp
+                            ng[r-1][c+1][1] = ng[r-1][c+1].get(1, 0)+tmp
                     if r < n-1:
-                        if 1 not in ng[r+1][c]:
-                            ng[r+1][c][1] = 0
-                        ng[r+1][c][1] += tmp
+                        ng[r+1][c][1] = ng[r+1][c].get(1, 0)+tmp
                         if c > 0:
-                            if 1 not in ng[r+1][c-1]:
-                                ng[r+1][c-1][1] = 0
-                            ng[r+1][c-1][1] += tmp
+                            ng[r+1][c-1][1] = ng[r+1][c-1].get(1, 0)+tmp
                         if c < n-1:
-                            if 1 not in ng[r+1][c+1]:
-                                ng[r+1][c+1][1] = 0
-                            ng[r+1][c+1][1] += tmp
+                            ng[r+1][c+1][1] = ng[r+1][c+1].get(1, 0)+tmp
                     if c > 0:
-                        if 1 not in ng[r][c-1]:
-                            ng[r][c-1][1] = 0
-                        ng[r][c-1][1] += tmp
+                        ng[r][c-1][1] = ng[r][c-1].get(1, 0)+tmp
                     if c < n-1:
-                        if 1 not in ng[r][c+1]:
-                            ng[r][c+1][1] = 0
-                        ng[r][c+1][1] += tmp
+                        ng[r][c+1][1] = ng[r][c+1].get(1, 0)+tmp
         tree = ng
     print(sum(sum(tree[i//n][i % n].values()) for i in range(n**2)))
 

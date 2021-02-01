@@ -1,38 +1,62 @@
-import bisect as b
+from heapq import heappush, heappop
 import sys
-from collections import deque
 input = sys.stdin.readline
 
 
 def solve():
-    q = deque()
+    minq = []
+    maxq = []
     pd = dict()
     for _ in range(int(input())):
         cmd = input().split()
         if cmd[0] == 'I':
-            val = int(cmd[1])
-            if val not in pd:
-                b.insort_left(q, val)
-                pd[val] = 1
+            if (v := int(cmd[1])) in pd:
+                pd[v] += 1
             else:
-                pd[val] += 1
+                pd[v] = 1
+                if v >= 0:
+                    heappush(maxq, -v)
+                else:
+                    heappush(minq, v)
         else:
-            if not q:
+            if not minq and not maxq:
                 continue
             if cmd[1] == '1':
-                if (v := pd[q[-1]]) > 1:
-                    pd[q[-1]] = v-1
+                if maxq:
+                    if pd[(v := -maxq[0])] > 1:
+                        pd[v] -= 1
+                    else:
+                        heappop(maxq)
+                        pd.pop(v)
                 else:
-                    pd.pop(q[-1])
-                    q.pop()
+                    minq.sort()
+                    if pd[(v := minq[-1])] > 1:
+                        pd[v] -= 1
+                    else:
+                        pd.pop(v)
+                        minq.pop()
             else:
-                if (v := pd[q[0]]) > 1:
-                    pd[q[0]] = v-1
+                if minq:
+                    if pd[(v := minq[0])] > 1:
+                        pd[v] -= 1
+                    else:
+                        heappop(minq)
+                        pd.pop(v)
                 else:
-                    pd.pop(q[0])
-                    q.popleft()
-    if q:
-        print(q[-1], q[0])
+                    maxq.sort()
+                    if pd[(v:=-maxq[-1])] > 1:
+                        pd[v] -= 1
+                    else:
+                        pd.pop(v)
+                        maxq.pop()
+    if minq and maxq:
+        print(-maxq[0], minq[0])
+    elif minq:
+        minq.sort()
+        print(minq[-1], minq[0])
+    elif maxq:
+        maxq.sort()
+        print(-maxq[0], -maxq[-1])
     else:
         print("EMPTY")
 
