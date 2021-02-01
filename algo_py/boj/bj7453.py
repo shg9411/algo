@@ -24,6 +24,8 @@ def solve():
             else:
                 tmp = -tmp
                 radix[3][tmp & 255].append(tmp >> 8)
+
+    print((1 << 8) << 8)
     vstCnt = 1
     ans = 0
     for i in range(x):

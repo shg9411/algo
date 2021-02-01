@@ -1,17 +1,26 @@
-import heapq
 import sys
 input = sys.stdin.readline
 
 
 def solve():
-    q = []
-    res = 0
-    for s, e in sorted([tuple(map(int, input().split())) for _ in range(int(input()))]):
-        if not q or q[0] > s:
-            res += 1
+    s, e = [], []
+    n = int(input())
+    for _ in range(n):
+        x, y = map(int, input().split())
+        s.append(x)
+        e.append(y)
+    s.sort()
+    e.sort()
+    i = j = cnt = 0
+    res = 1
+    while i < n:
+        if s[i] < e[j]:
+            i += 1
+            cnt += 1
+            res = max(res, cnt)
         else:
-            heapq.heappop(q)
-        heapq.heappush(q, e)
+            j += 1
+            cnt -= 1
     print(res)
 
 
