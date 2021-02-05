@@ -1,6 +1,8 @@
-import sys
 from heapq import heappush, heappop
-input = sys.stdin.readline
+import io
+import os
+import sys
+input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
 
 
 def solve():
@@ -11,8 +13,8 @@ def solve():
 
     for _ in range(m):
         s, e, c = map(int, input().split())
-        if (tc := adj[s].get(e)):
-            adj[s][e] = min(tc, c)
+        if e in adj[s]:
+            adj[s][e] = min(adj[s][e], c)
         else:
             adj[s][e] = c
 
@@ -26,12 +28,14 @@ def solve():
             cost, now = heappop(hq)
             if dist[now] < cost:
                 continue
+            if now==end:
+                print(cost)
+                exit()
             for nxt, ncost in adj[now].items():
                 ncost += cost
                 if dist[nxt] > ncost:
                     dist[nxt] = ncost
                     heappush(hq, (ncost, nxt))
-        print(dist[end])
     dijkstra()
 
 

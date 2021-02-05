@@ -1,6 +1,8 @@
-import sys
 import heapq
-input = sys.stdin.readline
+import io
+import os
+import sys
+input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
 
 
 def solve():
@@ -27,7 +29,8 @@ def solve():
             r.append(t)
             t = i[t]
         return d[e], r[::-1]
-
+    
+    
     n = int(input())
     m = int(input())
     a = [dict() for _ in range(n+1)]
@@ -43,7 +46,7 @@ def solve():
     print(m)
     print(len(r))
     print(*r)
-
-
-if __name__ == '__main__':
+    
+    
+if __name__=='__main__':
     solve()
