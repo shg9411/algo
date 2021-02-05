@@ -1,31 +1,28 @@
 import sys
-from collections import deque
 input = sys.stdin.readline
 
 
 def solve():
-    p = list(input().rstrip())
+    p = list(input().rstrip().replace('RR', ''))
     n = int(input())
     res = input().rstrip()[1:-1].split(',')
-    if len(res) < p.count('D') or res == [''] and p.count('D') > 0:
-        print('error')
-        return
-    i, j = 0, 0
-    rev = False
+    i = j = rev = 0
     for cmd in p:
         if cmd == 'R':
             rev = not rev
+        elif rev:
+            j += 1
         else:
-            if not rev:
-                i += 1
-            else:
-                j += 1
-
-    res = res[i:n-j]
-    print('[', end='')
-    print(','.join(res[::-1] if rev else res), end=']\n')
+            i += 1
+    if i > n-j:
+        return 'error'
+    else:
+        res = res[i:n-j]
+        return '['+','.join(res[::-1] if rev else res)+']'
 
 
 if __name__ == '__main__':
+    r = []
     for _ in range(int(input())):
-        solve()
+        r.append(solve())
+    sys.stdout.write('\n'.join(r))
