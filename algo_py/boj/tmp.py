@@ -1,32 +1,37 @@
 import sys
+sys.setrecursionlimit(10**6)
 input = sys.stdin.readline
-def calculate(ans, nums):
-    k = len(nums)
-    if k == 1:
-        ans_value = nums[0]
-    elif k == 2:
-        ans_value = max(min(nums)*2, max(nums))
-    elif k == 3:
-        if min(nums) == nums[1]:
-            ans_value = max(min(nums)*3, max(nums))
+
+
+def dfs(i):
+    global ok
+    for num in edge[i]:
+        if check[num] != 0:
+            if check[i] == check[num]:
+                ok = False
+                return
         else:
-            nums.sort()
-            ans_value = max(nums[0]*3, nums[1]*2, nums[2])
-    else:
-        min_value = min(nums)
-        start = 0
-        array = [min_value * k]
-        for i in range(k):
-            if nums[i] == min_value and start != i:
-                array.append(calculate(ans, nums[start:i]))
-                start = i+1
-        array.append(calculate(ans, nums[start:k]))
-        ans_value = max(array)
-    if ans_value > ans:
-        ans = ans_value
-    return ans
-while True:
-    N = list(map(int, input().split()))
-    if N[0] == 0:
-        break
-    print(0, calculate(N[1:]))
+            if check[i] == 1:
+                check[num] = 2
+                dfs(num)
+            else:
+                check[num] = 1
+                dfs(num)
+
+
+for _ in range(int(input())):
+    v, e = map(int, input().split())
+    edge = [[] for _ in range(v+1)]
+    check = [0 for _ in range(v+1)]
+    ok = True
+    for _ in range(e):
+        u, v = map(int, input().split())
+        edge[u].append(v)
+        edge[v].append(u)
+    for i in range(1, v+1):
+        if not ok:
+            break
+        if check[i] == 0:
+            check[i] = 1
+            dfs(i)
+    print("YES" if ok else "NO")
