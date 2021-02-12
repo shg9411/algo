@@ -1,7 +1,9 @@
-import sys
 import heapq
 from collections import deque
-input = sys.stdin.readline
+import io
+import os
+import sys
+input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
 
 
 def solve():
