@@ -1,13 +1,11 @@
-import io
-import os
 import sys
 input = sys.stdin.readline
-#input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
 
 
 def solve():
     R, C = map(int, input().split())
     parent = [i for i in range(R*C)]
+    size = [1]*(R*C)
     cost = []
     for i in range(R):
         for j, v in enumerate(map(int, input().split()), start=i*C):
@@ -24,8 +22,12 @@ def solve():
         return parent[x]
 
     def union(x, y):
-        x, y = find(x), find(y)
+        if (x := find(x)) == (y := find(y)):
+            return
+        if size[x] < size[y]:
+            x, y = y, x
         parent[y] = x
+        size[x] += size[y]
 
     cnt = res = 0
     total = R*C-1
