@@ -8,9 +8,10 @@ p, m, mp, d = map(int, input().split())
 maxV = -1000000001
 minV = 1000000001
 
-
+cnt = 0
 def calculation(val, idx, p, m, mp, d):
-    global minV, maxV
+    global minV, maxV,cnt
+    cnt+=1
     if idx == n-1:
         if val > maxV:
             maxV = val
@@ -35,3 +36,4 @@ def calculation(val, idx, p, m, mp, d):
 calculation(num[0], 0, p, m, mp, d)
 print(maxV)
 print(minV)
+print(cnt)

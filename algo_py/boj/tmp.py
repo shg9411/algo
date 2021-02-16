@@ -1,46 +1,35 @@
-import io
-import os
-import sys
-input = sys.stdin.readline
-#input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
+d = 0
+def backtracking(k,num):
+    global Min,Max,d
+    d+=1
+    if k == N-1:
+        if num < Min:
+            Min = num
+        if num > Max:
+            Max = num
+        return
+    for i in range(N-1):
+        if chk[i]: continue
+        chk[i] = 1
+        if cal[i] == '+':
+            backtracking(k+1, num+A[k+1])
+        elif cal[i] == '-':
+            backtracking(k+1, num-A[k+1])
+        elif cal[i] == '*':
+            backtracking(k+1, num*A[k+1])
+        else:
+            if num < 0:
+                backtracking(k+1, -((-num)//A[k+1]))
+            else:
+                backtracking(k+1, num//A[k+1])
+        chk[i] = 0
 
-
-def solve():
-    R, C = map(int, input().split())
-    parent = [i for i in range(R*C)]
-    cost = []
-    for i in range(R):
-        for j, v in enumerate(map(int, input().split()), start=i*C):
-            cost.append((v, j, j+1))
-    for i in range(R-1):
-        for j, v in enumerate(map(int, input().split()), start=i*C):
-            cost.append((v, j, j+C))
-    cost.sort()
-
-    def find(x):
-        if parent[x] == x:
-            return x
-        parent[x] = find(parent[x])
-        return parent[x]
-
-    def union(x, y):
-        x, y = find(x), find(y)
-        parent[y] = x
-
-    cnt = res = 0
-    total = R*C-1
-    for a, b, c in cost:
-        if find(b) == find(c):
-            continue
-        cnt += 1
-        res += a
-        union(b, c)
-        if cnt == total:
-            return res
-
-
-if __name__ == '__main__':
-    res = []
-    for _ in range(int(input())):
-        res.append(solve())
-    sys.stdout.write('\n'.join(map(str, res)))
+N = int(input()) #수의 개수
+A = list(map(int,input().split())) #[A1, A2, ... An]
+cnt = list(map(int,input().split())) #[2,1,1,1]
+chk = [0] * (N-1) #[0,0,0,0,0]
+cal = ['+']*cnt[0] + ['-']*cnt[1] + ['*']*cnt[2] + ['%']*cnt[3] #['+','+','-','*','%']
+Max = -987654321;Min = 987654321
+backtracking(0,A[0])
+print(Max,Min,sep="\n")
+print(d)
