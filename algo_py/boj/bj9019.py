@@ -1,30 +1,60 @@
-from collections import deque
-maxV = 10000
-T = int(input())
-for _ in range(T):
-    A, B = map(int, input().split())
-    visited = [0 for _ in range(maxV)]
-    q = deque([A])
-    visited[A] = '.'
-    while q:
-        tmp = q.popleft()
-        val = visited[tmp]
-        if tmp == B:
-            print(val[1:])
-            break
-        x = tmp*2 % maxV
-        if not visited[x]:
-            visited[x] = val+'D'
-            q.append(x)
-        x = (tmp-1) % maxV
-        if not visited[x]:
-            visited[x] = val+'S'
-            q.append(x)
-        x = int((tmp % 1000) * 10 + tmp / 1000)
-        if not visited[x]:
-            visited[x] = val+'L'
-            q.append(x)
-        x = int((tmp % 10)*1000+tmp/10)
-        if not visited[x]:
-            visited[x] = val+'R'
-            q.append(x)
+import io
+import os
+input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
+
+
+def solve():
+    t = int(input())
+    inp = [[] for _ in range(10000)]
+    ans = [[] for _ in range(t)]
+    update = [0]*10000
+    dist = [0]*10001
+    path = [0]*10000
+    chk = [0]*10000
+    que = [0]*10010
+    chr = ['D', 'S', 'L', 'R']
+    for i in range(t):
+        a, b = map(int, input().split())
+        inp[a].append((b, i))
+
+    for i in range(10000):
+        if not inp[i]:
+            continue
+        n = 0
+        for j, _ in inp[i]:
+            if not chk[j]:
+                n += 1
+                chk[j] = 1
+        dist[i] = 0
+        path[i] = 0
+        update[i] = i+1
+        a = b = 0
+        que[a] = i
+        a += 1
+        while n:
+            no = que[b]
+            b += 1
+            nxt = [no << 1, no-1 if no else 9999, no %
+                   1000*10+no//1000, no//10+no % 10*1000]
+            if nxt[0] >= 10000:
+                nxt[0] -= 10000
+            for j in range(4):
+                if update[nxt[j]] != i+1:
+                    update[nxt[j]] = i+1
+                    if chk[nxt[j]]:
+                        n -= 1
+                        chk[nxt[j]] = 0
+                    dist[nxt[j]] = dist[no]+1
+                    path[nxt[j]] = no*10+j+1
+                    que[a] = nxt[j]
+                    a += 1
+        for m, idx in inp[i]:
+            while path[m]:
+                ans[idx].append(chr[path[m] % 10-1])
+                m = path[m]//10
+    for r in ans:
+        print(''.join(r[::-1]))
+
+
+if __name__ == "__main__":
+    solve()

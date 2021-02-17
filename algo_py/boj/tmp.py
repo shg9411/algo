@@ -1,35 +1,52 @@
-d = 0
-def backtracking(k,num):
-    global Min,Max,d
-    d+=1
-    if k == N-1:
-        if num < Min:
-            Min = num
-        if num > Max:
-            Max = num
-        return
-    for i in range(N-1):
-        if chk[i]: continue
-        chk[i] = 1
-        if cal[i] == '+':
-            backtracking(k+1, num+A[k+1])
-        elif cal[i] == '-':
-            backtracking(k+1, num-A[k+1])
-        elif cal[i] == '*':
-            backtracking(k+1, num*A[k+1])
-        else:
-            if num < 0:
-                backtracking(k+1, -((-num)//A[k+1]))
-            else:
-                backtracking(k+1, num//A[k+1])
-        chk[i] = 0
+import sys
+input = sys.stdin.readline
+t = int(input())
+inp = [[] for _ in range(10000)]
+ans = [[] for _ in range(t)]
+update = [0]*10000
+dist = [0]*10001
+path = [0]*10000
+chk = [0]*10000
+que = [0]*10010
+chr = ['D', 'S', 'L', 'R']
+for i in range(t):
+    a, b = map(int, input().split())
+    inp[a].append((b, i))
 
-N = int(input()) #수의 개수
-A = list(map(int,input().split())) #[A1, A2, ... An]
-cnt = list(map(int,input().split())) #[2,1,1,1]
-chk = [0] * (N-1) #[0,0,0,0,0]
-cal = ['+']*cnt[0] + ['-']*cnt[1] + ['*']*cnt[2] + ['%']*cnt[3] #['+','+','-','*','%']
-Max = -987654321;Min = 987654321
-backtracking(0,A[0])
-print(Max,Min,sep="\n")
-print(d)
+for i in range(10000):
+    if not inp[i]:
+        continue
+    n = 0
+    for j, k in inp[i]:
+        if not chk[j]:
+            n += 1
+            chk[j] = 1
+    dist[i] = 0
+    path[i] = 0
+    update[i] = i+1
+    a = b = 0
+    que[a] = i
+    a += 1
+    while n:
+        no = que[b]
+        b += 1
+        nxt = [no << 1, no-1 if no else 9999, no %
+               1000*10+no//1000, no//10+no % 10*1000]
+        if nxt[0] >= 10000:
+            nxt[0] -= 10000
+        for j in range(4):
+            if update[nxt[j]] != i+1:
+                update[nxt[j]] = i+1
+                if chk[nxt[j]]:
+                    n -= 1
+                    chk[nxt[j]] = 0
+                dist[nxt[j]] = dist[no]+1
+                path[nxt[j]] = no*10+j+1
+                que[a] = nxt[j]
+                a += 1
+    for m, idx in inp[i]:
+        while path[m]:
+            ans[idx].append(chr[path[m] % 10-1])
+            m = path[m]//10
+for r in ans:
+    print(''.join(r[::-1]))
