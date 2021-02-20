@@ -74,11 +74,11 @@ if __name__ == '__main__':
                 spoil.append((i, j))
                 garden[i][j] = 1
     res = 0
-    for comb in combinations(range(len(spoil)), G+R):
+    for comb in combinations(spoil, G+R):
         comb = set(comb)
         for g in combinations(comb, G):
             g = set(g)
-            green = deque(spoil[i] for i in g)
-            red = deque(spoil[i] for i in comb-g)
+            green = deque(g)
+            red = deque(comb-g)
             res = max(res, bfs(green, red))
     print(res)
