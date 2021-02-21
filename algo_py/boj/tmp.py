@@ -1,32 +1,18 @@
 import sys
+input = sys.stdin.readline
 
 
 def solve():
-    q = [0]*2000000
-    front = rear = 0
-    res = []
-    for string in sys.stdin.read().splitlines()[1:]:
-        t = string[1]
-        if t == "u":
-            q[rear] = string[5:]
-            rear += 1
-        elif t == "o":
-            if front == rear:
-                res.append('-1')
-            else:
-                res.append(q[front])
-                front += 1
-        elif t == "i":
-            res.append(str(rear-front))
-        elif t == "m":
-            res.append('1' if front == rear else '0')
-        elif t == "r":
-            res.append(q[front] if front != rear else '-1')
-        elif t == "a":
-            res.append(q[rear-1] if front != rear else '-1')
-
-    sys.stdout.write('\n'.join(res))
+    n = int(input())
+    last = [(idx, num)
+            for idx, num in enumerate(map(int, input().split()), start=1)]
+    changed = [list(map(int, input().split())) for _ in range(int(input()))]
+    if not changed:
+        sys.stdout.write(' '.join(map(str, (l[1] for l in last)))+'\n')
+    else:
+        pass
 
 
 if __name__ == '__main__':
-    solve()
+    for _ in range(int(input())):
+        solve()
