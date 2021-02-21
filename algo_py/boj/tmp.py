@@ -1,31 +1,32 @@
-import io
-import os
 import sys
-input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
-sys.setrecursionlimit(10**6)
 
 
 def solve():
-    def dfs(u):
-        if dp[u] != -1:
-            return dp[u]
-        m = max([dp[v] if dp[v] != -1 else dfs(v) for v in adj[u]], default=0)
-        dp[u] = m+t[u]
-        return dp[u]
+    q = [0]*2000000
+    front = rear = 0
+    res = []
+    for string in sys.stdin.read().splitlines()[1:]:
+        t = string[1]
+        if t == "u":
+            q[rear] = string[5:]
+            rear += 1
+        elif t == "o":
+            if front == rear:
+                res.append('-1')
+            else:
+                res.append(q[front])
+                front += 1
+        elif t == "i":
+            res.append(str(rear-front))
+        elif t == "m":
+            res.append('1' if front == rear else '0')
+        elif t == "r":
+            res.append(q[front] if front != rear else '-1')
+        elif t == "a":
+            res.append(q[rear-1] if front != rear else '-1')
 
-    n = int(input())
-    adj = [[] for _ in range(n+1)]
-    dp = [-1]*(n+1)
-    t = [0]*(n+1)
-    for i in range(1, n+1):
-        time, *others = map(int, input().split()[:-1])
-        t[i] = time
-        if not others:
-            dp[i] = t[i]
-        else:
-            adj[i].extend(others)
-    sys.stdout.write('\n'.join(map(str, [dfs(i) for i in range(1, n+1)])))
+    sys.stdout.write('\n'.join(res))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     solve()

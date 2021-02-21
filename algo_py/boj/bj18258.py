@@ -1,19 +1,32 @@
 import sys
-from collections import deque
-q = deque()
-res = []
-for tmp in sys.stdin.read().splitlines():
-    tmp = tmp.split()
-    if tmp[0][-1]=='h':
-        q.append(tmp[1])
-    elif tmp[0][0]=='f':
-        res.append(q[0] if q else '-1')
-    elif tmp[0][-1]=='p':
-        res.append(q.popleft() if q else '-1')
-    elif tmp[0][0]=='s':
-        res.append(str(len(q)))
-    elif tmp[0][0]=='e':
-        res.append('0' if q else '1')
-    elif tmp[0][0]=='b':
-        res.append(q[-1] if q else '-1')
-print('\n'.join(res))     
+
+
+def solve():
+    q = [0]*2000000
+    front = rear = 0
+    res = []
+    for string in sys.stdin.read().splitlines()[1:]:
+        t = string[1]
+        if t == "u":
+            q[rear] = string[5:]
+            rear += 1
+        elif t == "o":
+            if front == rear:
+                res.append('-1')
+            else:
+                res.append(q[front])
+                front += 1
+        elif t == "i":
+            res.append(str(rear-front))
+        elif t == "m":
+            res.append('1' if front == rear else '0')
+        elif t == "r":
+            res.append(q[front] if front != rear else '-1')
+        elif t == "a":
+            res.append(q[rear-1] if front != rear else '-1')
+
+    sys.stdout.write('\n'.join(res))
+
+
+if __name__ == '__main__':
+    solve()
