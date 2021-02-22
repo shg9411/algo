@@ -1,17 +1,20 @@
+import io
+import os
 import sys
 import heapq
-input = sys.stdin.readline
+input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
+
+
 def solve():
-    n = int(input())
     q = []
     res = []
-    for _ in range(n):
-        a = int(input())
-        if a:
-            heapq.heappush(q, (abs(a), str(a)))
+    for _ in range(int(input())):
+        if (a := int(input())):
+            heapq.heappush(q, (abs(a), a))
         else:
-            res.append(heapq.heappop(q)[1] if q else '0')
-    print('\n'.join(res))
+            res.append(heapq.heappop(q)[1] if q else 0)
+    sys.stdout.write('\n'.join(map(str, res)))
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     solve()
