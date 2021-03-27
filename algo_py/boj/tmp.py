@@ -1,104 +1,113 @@
 import sys
 INF = sys.maxsize
 
+
 n = int(input())
 cost = [list(map(int, input().split())) for _ in range(n)]
-lx = [0]*n
-ly = [0]*n
-max_match = 0
-lx = [0]*n
-ly = [0]*n
-xy = [-1]*n
-yx = [-1]*n
-s = [0]*n
-t = [0]*n
-slack = [0]*n
-slackx = [0]*n
-prev = [0]*n
-res = 0
-
-
-def init_labels():
-    for i in range(n):
+PHI = -1
+NOL = -2
+x = [[False]*n for _ in range(n)]
+ss = [0]*n
+st = [0]*n
+v = [0]*n
+p = [0]*n
+ls = [0]*n
+lt = [0]*n
+a = [0]*n
+u = [0]*n
+f = 0
+for i in range(n):
+    for j in range(n):
+        f = max(f, cost[i][j])
+for i in range(n):
+    u[i] = f
+    p[i] = INF
+    lt[i] = NOL
+    ls[i] = PHI
+    a[i] = -1
+while 1:
+    f = -1
+    i = 0
+    while i < n and f == -1:
+        if ls[i] != NOL and not ss[i]:
+            f = i
+        i += 1
+    if f != -1:
+        ss[f] = 1
         for j in range(n):
-            lx[i] = max(lx[i], cost[i][j])
-
-
-def add_to_tree(x, prevx):
-    global s, prev, slack, slacky, cost
-    s[x] = True
-    prev[x] = prevx
-    for y in range(n):
-        if lx[x] + ly[y] - cost[x][y] < slack[y]:
-            slack[y] = lx[x] + ly[y] - cost[x][y]
-            slackx[y] = x
-
-
-def augment():
-    global s, t
-    if max_match == n:
-        return
-    wr = rd = root = 0
-    q = [0]*n
-    s = [0]*n
-    t = [0]*n
-    prev = [-1]*n
-    for x in range(n):
-        if xy[x] == -1:
-            q[wr] = root = x
-            prev[x] = -2
-            s[x] = True
-            break
-    for y in range(n):
-        slack[y] = lx[root] + ly[y] - cost[root][y]
-        slackx[y] = root
-
-    while 1:
-        while rd < wr:
-            x = q[rd]
-            rd += 1
-            for y in range(n):
-                if cost[x][y] == lx[x] + ly[y] and not t[y]:
-                    if yx[y] == -1:
-                        break
-                    t[y] = 1
-                    q[wr] = yx[y]
-                    wr += 1
-                    add_to_tree(yx[x], x)
-            if y < n:
+            if not x[f][j] and u[f] + v[j] - cost[f][j] < p[j]:
+                lt[j] = f
+                p[j] = u[f]+v[j] - cost[f][j]
+    else:
+        i = 0
+        while i < n and f == -1:
+            if lt[i] != NOL and not st[i] and p[i] == 0:
+                f = i
+            i += 1
+        if f == -1:
+            d1 = d2 = INF
+            d = 0
+            for i in u:
+                d1 = min(d1, i)
+            for i in p:
+                if i > 0:
+                    d2 = min(d2, i)
+            d = min(d1, d2)
+            for i in range(n):
+                if ls[i] != NOL:
+                    u[i] -= d
+            for i in range(n):
+                if p[i] == 0:
+                    v[i] += d
+                if p[i] > 0 and lt[i] != NOL:
+                    p[i] -= d
+            if d2 >= d1:
                 break
-        if y < n:
-            break
-        #update_labels()
-        wr = rd = 0
-        for y in range(n):
-            if not t[y] and slack[y] == 0:
-                if yx[y] == -1:
-                    x = slackx[y]
-                    break
-                else:
-                    t[y] = 1
-                    if not s[yx][y]:
-                        q[wr] = yx[y]
-                        wr += 1
-                        add_to_tree(yx[y], slackx[y])
-        if y < n:
-            break
-    if y < n:
-        max_match += 1
-        cx = x
-        cy = y
-        while cx != -2:
-            ty = xy[cx]
-            yx[cy] = cx
-            xy[cx] = cy
-            cx = prev[cx]
-            cy = ty
-        augment()
+        else:
+            st[f] = 1
+            s = -1
+            i = 0
+            while i < n and s == -1:
+                if x[i][f]:
+                    s = i
+                i += 1
+            if s == -1:
+                l = r = 0
+                while 1:
+                    r = f
+                    l = lt[r]
+                    if r >= 0 and l >= 0:
+                        x[l][r] = not x[l][r]
+                    else:
+                        break
+                    r = ls[l]
+                    if r >= 0 and l >= 0:
+                        x[l][r] = not x[l][r]
+                    else:
+                        break
+                    f = r
+                p = [INF]*n
+                lt = [NOL]*n
+                ls = [NOL]*n
+                ss = [0]*n
+                st = [0]*n
+                for i in range(n):
+                    ex = 1
+                    j = 0
+                    while j < n and ex:
+                        ex = not x[i][j]
+                        j += 1
+                    if ex:
+                        ls[i] = PHI
+            else:
+                ls[s] = f
 
-
-init_labels()
-augment()
-for x in range(n):
-    res += cost[x][xy[x]]
+for i in range(n):
+    for j in range(n):
+        if x[i][j]:
+            a[j] = i
+res = 0
+for i in range(n):
+    print(i, a[i])
+    res += cost[a[i]][i]
 print(res)
