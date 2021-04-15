@@ -1,7 +1,8 @@
 def solve():
     r, c, n = map(int, input().split())
     if n == 1:
-        print(*input() for _ in range(r))
+        for _ in range(r):
+            print(input())
     elif not n % 2:
         for _ in range(r):
             print('O'*c)
