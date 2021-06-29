@@ -1,41 +1,46 @@
 import sys
-import heapq
+import heapq as hq
 input = sys.stdin.readline
 
 
-def getRecommend(x):
-    if x == 1:
-        while -max_heap[0][1] in solved or -max_heap[0][0] != problem_set[-max_heap[0][1]]:
-            heapq.heappop(max_heap)
-        print(-max_heap[0][1])
-    else:
-        while min_heap[0][1] in solved or min_heap[0][0] != problem_set[min_heap[0][1]]:
-            heapq.heappop(min_heap)
-        print(min_heap[0][1])
+def solve():
+    def getRecommend(x):
+        if x == 1:
+            while -maxH[0][1] in solved or -maxH[0][0] != problem_set[-maxH[0][1]]:
+                hq.heappop(maxH)
+            res.append(-maxH[0][1])
+        else:
+            while minH[0][1] in solved or minH[0][0] != problem_set[minH[0][1]]:
+                hq.heappop(minH)
+            res.append(minH[0][1])
 
-
-max_heap = []
-min_heap = []
-solved = set()
-problem_set = {}
-for _ in range(int(input())):
-    num, level = map(int, input().split())
-    problem_set[num] = level
-    min_heap.append((level, num))
-    max_heap.append((-level, -num))
-
-heapq.heapify(max_heap)
-heapq.heapify(min_heap)
-
-
-for _ in range(int(input())):
-    cmd, *etc = input().split()
-    if cmd[0] == 'a':
-        num, level = map(int, etc)
+    maxH = []
+    minH = []
+    solved = set()
+    problem_set = {}
+    res = []
+    for _ in range(int(input())):
+        num, level = map(int, input().split())
         problem_set[num] = level
-        heapq.heappush(min_heap, (level, num))
-        heapq.heappush(max_heap, (-level, -num))
-    elif cmd[0] == 's':
-        solved.add(int(etc[0]))
-    else:
-        getRecommend(int(etc[0]))
+        minH.append((level, num))
+        maxH.append((-level, -num))
+
+    hq.heapify(maxH)
+    hq.heapify(minH)
+
+    for _ in range(int(input())):
+        cmd, *etc = input().split()
+        if cmd[0] == 'a':
+            num, level = map(int, etc)
+            problem_set[num] = level
+            hq.heappush(minH, (level, num))
+            hq.heappush(maxH, (-level, -num))
+        elif cmd[0] == 's':
+            solved.add(int(etc[0]))
+        else:
+            getRecommend(int(etc[0]))
+    print('\n'.join(map(str, res)))
+
+
+if __name__ == '__main__':
+    solve()
