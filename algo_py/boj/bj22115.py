@@ -1,7 +1,7 @@
 n, k = map(int, input().split())
 coffees = list(map(int, input().split()))
 
-dp = [999]*(k+1)
+dp = [n+1]*(k+1)
 dp[0] = 0
 
 for coffee in coffees:
